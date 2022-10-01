@@ -48,6 +48,9 @@ flutter:
 
   assets:
     - assets/images/
+    - assets/json/goal.json
+    - assets/json/lineup.json
+    - assets/json/player.json
 
 #  fonts:
   #   - family: Schyler

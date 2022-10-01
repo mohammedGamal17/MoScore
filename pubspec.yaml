@@ -1,0 +1,64 @@
+name: moscore
+
+description: MoScore is football live application
+
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+
+version: 1.0.0+1
+
+environment:
+  sdk: '>=2.18.0 <3.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  cupertino_icons: ^1.0.5
+  flutter_svg: ^1.1.5
+  dio: ^4.0.6
+  retrofit: ^3.0.1+1
+  json_serializable: ^6.4.1
+  analyzer: 5.1.0
+  dartz: ^0.10.1
+  connectivity_plus: ^2.3.7
+  internet_connection_checker: 1.0.0+1
+  pretty_dio_logger: ^1.1.1
+  shared_preferences: ^2.0.15
+  freezed: 2.1.1
+  get_it: ^7.2.0
+  lottie: ^1.4.3
+  flutter_bloc: ^8.1.1
+  bloc: ^8.1.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  flutter_lints: ^2.0.1
+  build_runner: ^2.2.1
+  retrofit_generator: 4.1.0+1
+
+# The following section is specific to Flutter packages.
+flutter:
+
+  uses-material-design: true
+
+  # To add assets to your application, add an assets section, like this:
+
+  assets:
+    - assets/images/
+
+#  fonts:
+  #   - family: Schyler
+  #     fonts:
+  #       - asset: fonts/Schyler-Regular.ttf
+  #       - asset: fonts/Schyler-Italic.ttf
+  #         style: italic
+  #   - family: Trajan Pro
+  #     fonts:
+  #       - asset: fonts/TrajanPro.ttf
+  #       - asset: fonts/TrajanPro_Bold.ttf
+  #         weight: 700
+  #
+  # For details regarding fonts from package dependencies,
+  # see https://flutter.dev/custom-fonts/#from-packages

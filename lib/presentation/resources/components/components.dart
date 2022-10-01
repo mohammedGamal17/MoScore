@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:hexcolor/hexcolor.dart';
 import 'package:moscore/presentation/resources/colors/color_manager.dart';
 
 
@@ -53,8 +52,6 @@ Widget textFormField({
         borderRadius: BorderRadius.circular(borderRadius),
       ),
       labelText: labelText,
-      hoverColor: HexColor('023E8A'),
-      focusColor: HexColor('03045E'),
       filled: true,
       labelStyle:  TextStyle(color: ColorManager.white),
       prefixIcon: Icon(prefix, color: ColorManager.white),
@@ -85,21 +82,21 @@ Widget textFormField({
   );
 }
 
-Widget separator() {
-  return Padding(
-    padding: const EdgeInsets.all(10.0),
-    child: Container(
-      height: 2.0,
-      color: HexColor('DEE2E6'),
-    ),
-  );
-}
+// Widget separator() {
+//   return Padding(
+//     padding: const EdgeInsets.all(10.0),
+//     child: Container(
+//       height: 2.0,
+//       //color: HexColor('DEE2E6'),
+//     ),
+//   );
+// }
 
 Widget circularProgressIndicator() {
   return Center(
       child: CircularProgressIndicator(
-    backgroundColor: HexColor('FFFFFF'),
-    color: HexColor('0077B6'),
+    backgroundColor: ColorManager.backGround,
+    color: ColorManager.primary
   ));
 }
 
@@ -120,13 +117,13 @@ Widget decorationButton(
         alignment: Alignment.center,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(15.0),
-          color: buttonColor,
+          color: ColorManager.backGround,
           gradient: LinearGradient(
             begin: AlignmentDirectional.topStart,
             end: AlignmentDirectional.bottomEnd,
             colors: [
-              HexColor('0077B6'),
-              HexColor('023E8A'),
+              ColorManager.lightPrimary,
+              ColorManager.primary
             ],
           ),
         ),
@@ -155,36 +152,36 @@ ScaffoldFeatureController<SnackBar, SnackBarClosedReason> snack(
   ));
 }
 
-Widget courserSlider() {
-  return CarouselSlider(
-      items: model.data?.banners?.map((i) {
-        return Builder(
-          builder: (BuildContext context) {
-            return Container(
-              width: double.infinity,
-              decoration: BoxDecoration(
-                color: HexColor('0096C7'),
-                image: DecorationImage(
-                  image: NetworkImage('${i.image}'),
-                  fit: BoxFit.fill,
-                ),
-              ),
-            );
-          },
-        );
-      }).toList(),
-      options: CarouselOptions(
-        height: 250.0,
-        aspectRatio: 16 / 9,
-        viewportFraction: 0.8,
-        initialPage: 0,
-        enableInfiniteScroll: true,
-        reverse: false,
-        autoPlay: true,
-        autoPlayInterval: const Duration(seconds: 3),
-        autoPlayAnimationDuration: const Duration(milliseconds: 800),
-        autoPlayCurve: Curves.fastOutSlowIn,
-        enlargeCenterPage: true,
-        scrollDirection: Axis.horizontal,
-      ));
-}
+// Widget courserSlider() {
+//   return CarouselSlider(
+//       items: model.data?.banners?.map((i) {
+//         return Builder(
+//           builder: (BuildContext context) {
+//             return Container(
+//               width: double.infinity,
+//               decoration: BoxDecoration(
+//                 color: HexColor('0096C7'),
+//                 image: DecorationImage(
+//                   image: NetworkImage('${i.image}'),
+//                   fit: BoxFit.fill,
+//                 ),
+//               ),
+//             );
+//           },
+//         );
+//       }).toList(),
+//       options: CarouselOptions(
+//         height: 250.0,
+//         aspectRatio: 16 / 9,
+//         viewportFraction: 0.8,
+//         initialPage: 0,
+//         enableInfiniteScroll: true,
+//         reverse: false,
+//         autoPlay: true,
+//         autoPlayInterval: const Duration(seconds: 3),
+//         autoPlayAnimationDuration: const Duration(milliseconds: 800),
+//         autoPlayCurve: Curves.fastOutSlowIn,
+//         enlargeCenterPage: true,
+//         scrollDirection: Axis.horizontal,
+//       ));
+// }

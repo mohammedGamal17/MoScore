@@ -31,6 +31,9 @@ dependencies:
   bloc: ^8.1.0
   introduction_screen: ^3.0.2
 
+  # Firebase Packages
+  firebase_core: ^1.24.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

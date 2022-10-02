@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:introduction_screen/introduction_screen.dart';
 import 'package:lottie/lottie.dart';
 import 'package:moscore/presentation/resources/colors/color_manager.dart';
 import 'package:moscore/presentation/resources/string/string_manager.dart';
 import 'package:moscore/presentation/resources/values/values_manager.dart';
-
 
 import '../resources/assets/assets.dart';
 
@@ -32,7 +32,16 @@ class OnBoarding extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: ColorManager.white,
+      backgroundColor: ColorManager.backGround,
+      appBar: AppBar(
+        systemOverlayStyle: SystemUiOverlayStyle(
+          statusBarColor: ColorManager.backGround,
+          statusBarIconBrightness: Brightness.dark,
+          statusBarBrightness: Brightness.dark,
+        ),
+        backgroundColor: ColorManager.backGround,
+        elevation: AppSize.s0,
+      ),
       body: Padding(
         padding: const EdgeInsets.all(AppSize.s20),
         child: IntroductionScreen(

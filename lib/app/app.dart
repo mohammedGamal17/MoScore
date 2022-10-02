@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../presentation/view/on_boarding.dart';
+import '../presentation/resources/routes/routes_manager.dart';
+import '../presentation/view/on_boarding_view.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -9,7 +10,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: OnBoarding(),
+      onGenerateRoute: RoutesGenerator.getRoute,
+      initialRoute: Routes.splash,
     );
   }
 }

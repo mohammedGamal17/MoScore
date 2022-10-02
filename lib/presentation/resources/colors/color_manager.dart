@@ -4,7 +4,7 @@ class ColorManager {
   static Color primary = const Color(0xFFF010C0);
   static Color darkPrimary = const Color(0xFFCD0DA4);
   static Color lightPrimary = const Color(0xFFF787DF);
-static Color selectedItem = const Color(0xFF831E98);
+  static Color selectedItem = const Color(0xFF831E98);
 
   static Color headLine = const Color(0xFF525252);
   static Color settingList = const Color(0xFF707070);

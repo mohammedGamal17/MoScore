@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:moscore/presentation/view/authentication/login_view.dart';
-import 'package:moscore/presentation/view/splach_view.dart';
+import 'package:moscore/presentation/view/splash_view.dart';
 
 import '../../view/authentication/register_view.dart';
 import '../../view/home_view.dart';
-import '../../view/matches_details.dart';
+import '../../view/matches_details_view.dart';
 import '../../view/matches_view.dart';
 import '../../view/on_boarding_view.dart';
 import '../string/string_manager.dart';

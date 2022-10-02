@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "441058980658",
+    "project_id": "mo-score",
+    "storage_bucket": "mo-score.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:441058980658:android:766966d0faabe01dad9d2b",
+        "android_client_info": {
+          "package_name": "com.impactsolutions.moscore"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "441058980658-rh6ivbirufmni6cnlpijetbkd6j3uhnb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB1l_umJbcqc3jghVFyWoFrZn9IiE13P0I"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "441058980658-rh6ivbirufmni6cnlpijetbkd6j3uhnb.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

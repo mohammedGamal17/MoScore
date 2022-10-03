@@ -55,7 +55,7 @@ flutter:
     - assets/json/lineup.json
     - assets/json/player.json
 
-#  fonts:
+  #  fonts:
   #   - family: Schyler
   #     fonts:
   #       - asset: fonts/Schyler-Regular.ttf
@@ -69,3 +69,12 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+  fonts:
+    - family: TitilliumWeb
+      fonts:
+        - asset: assets/fonts/TitilliumWeb-Black.ttf
+        - asset: assets/fonts/TitilliumWeb-Bold.ttf
+        - asset: assets/fonts/TitilliumWeb-ExtraLight.ttf
+        - asset: assets/fonts/TitilliumWeb-Light.ttf
+        - asset: assets/fonts/TitilliumWeb-Regular.ttf
+        - asset: assets/fonts/TitilliumWeb-SemiBold.ttf

@@ -53,7 +53,7 @@ ThemeData getLightModeThemeData() {
         fontSize: FontsSize.s16,
       ),
       bodyMedium: getTextSemiBoldStyle(
-        //  matches details titles data win
+        //  matches details titles data win and login head line
         color: ColorManager.primary,
         fontSize: FontsSize.s16,
       ),
@@ -86,7 +86,6 @@ ThemeData getLightModeThemeData() {
         fontSize: FontsSize.s14,
       ),
       displaySmall: getTextRegularStyle(
-        //login and register font style
         color: ColorManager.primary,
         fontSize: FontsSize.s12,
         overflow: TextOverflow.ellipsis,

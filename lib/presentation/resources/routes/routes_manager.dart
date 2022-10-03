@@ -28,7 +28,7 @@ class RoutesGenerator {
       case Routes.onBoarding:
         return MaterialPageRoute(builder: (context) => OnBoarding());
       case Routes.login:
-        return MaterialPageRoute(builder: (context) => const LoginView());
+        return MaterialPageRoute(builder: (context) =>  LoginView());
       case Routes.register:
         return MaterialPageRoute(builder: (context) => const RegisterView());
       case Routes.home:

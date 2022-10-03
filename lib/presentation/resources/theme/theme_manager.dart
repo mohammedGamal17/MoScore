@@ -113,13 +113,13 @@ ThemeData getLightModeThemeData() {
       enabledBorder: OutlineInputBorder(
         borderSide:
             BorderSide(color: ColorManager.formFieldText, width: AppSize.s1),
-        borderRadius: BorderRadius.circular(AppSize.s12),
+        borderRadius: BorderRadius.circular(AppSize.s10),
       ),
 
       //focus
       focusedBorder: OutlineInputBorder(
-        borderSide: BorderSide(color: ColorManager.primary, width: AppSize.s1),
-        borderRadius: BorderRadius.circular(AppSize.s12),
+        borderSide: BorderSide(color: ColorManager.selectedItem, width: AppSize.s1),
+        borderRadius: BorderRadius.circular(AppSize.s10),
       ),
 
       //error style
@@ -131,7 +131,7 @@ ThemeData getLightModeThemeData() {
           borderRadius: const BorderRadius.all(Radius.circular(AppSize.s8))),
       focusedErrorBorder: OutlineInputBorder(
           borderSide:
-              BorderSide(color: ColorManager.primary, width: AppSize.s1),
+              BorderSide(color: ColorManager.selectedItem, width: AppSize.s1),
           borderRadius: const BorderRadius.all(Radius.circular(AppSize.s8))),
       suffixIconColor: ColorManager.content,
     ),
@@ -170,7 +170,7 @@ ThemeData getLightModeThemeData() {
         ),
         backgroundColor: ColorManager.primary,
         fixedSize: const Size(double.maxFinite, AppSize.s40),
-        elevation: AppSize.s2,
+        elevation: AppSize.s4,
         shadowColor: ColorManager.lightPrimary,
         textStyle: getTextRegularStyle(
           color: ColorManager.backGround,

@@ -6,9 +6,9 @@ import 'package:moscore/presentation/resources/colors/color_manager.dart';
 import 'package:moscore/presentation/resources/fonts/fonts_manager.dart';
 import 'package:moscore/presentation/resources/string/string_manager.dart';
 import 'package:moscore/presentation/resources/values/values_manager.dart';
-import 'package:moscore/presentation/view/authentication/login_view.dart';
 
 import '../resources/assets/assets.dart';
+import '../resources/routes/routes_manager.dart';
 
 class OnBoarding extends StatelessWidget {
   OnBoarding({super.key});
@@ -50,14 +50,10 @@ class OnBoarding extends StatelessWidget {
           pages: _list,
           curve: Curves.bounceInOut,
           onDone: () {
-            MaterialPageRoute(
-              builder: (context) => const LoginView(),
-            );
+            Navigator.pushReplacementNamed(context, Routes.login);
           },
           onSkip: () {
-            MaterialPageRoute(
-              builder: (context) => const LoginView(),
-            );
+            Navigator.pushReplacementNamed(context, Routes.login);
           },
           showSkipButton: true,
           skipOrBackFlex: 0,

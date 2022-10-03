@@ -24,7 +24,8 @@ class StringManager {
   static const String errorPassword = "Please Write Your Password";
   static const String login = "Login";
   static const String forgetPassword = "Forget Password";
-  static const String register = "Not a member ? Sign up";
+  static const String register = "Sign up";
+  static const String notMember = "Not a member ?";
 
   // error handler
   static const String success = "success";

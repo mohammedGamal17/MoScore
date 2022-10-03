@@ -1,7 +1,9 @@
 const String imagePath = 'assets/images';
 const String jsonPath = 'assets/json';
 
-class AssetsResources {}
+class AssetsResources {
+  static const String imagesLoginBackground = '$imagePath/loginBackground.svg';
+}
 
 class JsonResources {
   static const String goal = '$jsonPath/goal.json';

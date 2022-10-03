@@ -51,6 +51,7 @@ flutter:
 
   assets:
     - assets/images/
+    - assets/images/loginBackground.svg
     - assets/json/goal.json
     - assets/json/lineup.json
     - assets/json/player.json

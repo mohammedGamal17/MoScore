@@ -19,13 +19,16 @@ class StringManager {
   static const String done = "Done";
 
   static const String email = "Email";
+  static const String name = "Name";
   static const String password = "Password";
   static const String errorEmail = "Please Write Your Email";
   static const String errorPassword = "Please Write Your Password";
-  static const String login = "Login";
+  static const String login = "Log In";
   static const String forgetPassword = "Forget Password";
-  static const String register = "Sign up";
+  static const String register = "Sign Up";
   static const String notMember = "Not a member ?";
+  static const String orLoginWith = "Or Log In With";
+  static const String orRegisterWith = "Or Sign Up with";
 
   // error handler
   static const String success = "success";

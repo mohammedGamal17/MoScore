@@ -13,7 +13,7 @@ class Routes {
   static const String splash = '/';
   static const String onBoarding = '/onBoarding';
   static const String login = '/login';
-  static const String register = '/onBoarding';
+  static const String register = '/register';
   static const String home = '/home';
   static const String matches = '/matches';
   static const String matchesDetails = '/matchesDetails';
@@ -28,9 +28,9 @@ class RoutesGenerator {
       case Routes.onBoarding:
         return MaterialPageRoute(builder: (context) => OnBoarding());
       case Routes.login:
-        return MaterialPageRoute(builder: (context) =>  LoginView());
+        return MaterialPageRoute(builder: (context) => LoginView());
       case Routes.register:
-        return MaterialPageRoute(builder: (context) => const RegisterView());
+        return MaterialPageRoute(builder: (context) => RegisterView());
       case Routes.home:
         return MaterialPageRoute(builder: (context) => const HomeView());
       case Routes.matches:

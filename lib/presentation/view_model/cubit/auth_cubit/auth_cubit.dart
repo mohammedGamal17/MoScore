@@ -6,4 +6,10 @@ class AuthCubit extends Cubit<AuthState> {
   AuthCubit() : super(AuthInitial());
 
   static AuthCubit get(context) => BlocProvider.of(context);
+  bool isShow = false;
+
+  void changePasswordVisibility() {
+    isShow = !isShow;
+    emit(PasswordVisibilityy());
+  }
 }

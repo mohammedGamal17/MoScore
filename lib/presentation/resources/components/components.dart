@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:moscore/presentation/resources/colors/color_manager.dart';
 
+import '../values/values_manager.dart';
 
-
-void navigateTo(context, widget) =>
-    Navigator.push(context, MaterialPageRoute(builder: (context) {
-      return widget;
-    }));
+void navigateTo(context, widget) => Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) {
+          return widget;
+        },
+      ),
+    );
 
 void navigateToAndReplace(context, widget) => Navigator.pushAndRemoveUntil(
       context,
@@ -37,12 +41,12 @@ Widget textFormField({
 }) {
   return TextFormField(
     keyboardType: textInputType,
-    style:  TextStyle(color: ColorManager.white),
+    style: TextStyle(color: ColorManager.white),
     controller: controller,
     autofocus: autoFocus,
     obscureText: isPassword,
     decoration: InputDecoration(
-      focusedBorder:  OutlineInputBorder(
+      focusedBorder: OutlineInputBorder(
         borderSide: BorderSide(color: ColorManager.white, width: 3.0),
       ),
       enabledBorder: const OutlineInputBorder(
@@ -53,7 +57,7 @@ Widget textFormField({
       ),
       labelText: labelText,
       filled: true,
-      labelStyle:  TextStyle(color: ColorManager.white),
+      labelStyle: TextStyle(color: ColorManager.white),
       prefixIcon: Icon(prefix, color: ColorManager.white),
       suffixIcon: suffix != null
           ? IconButton(
@@ -82,52 +86,65 @@ Widget textFormField({
   );
 }
 
-// Widget separator() {
-//   return Padding(
-//     padding: const EdgeInsets.all(10.0),
-//     child: Container(
-//       height: 2.0,
-//       //color: HexColor('DEE2E6'),
-//     ),
-//   );
-// }
+Widget separator() {
+  return Padding(
+    padding: const EdgeInsets.all(10.0),
+    child: Container(
+      height: 2.0,
+      decoration: BoxDecoration(
+        color: ColorManager.backGround,
+        gradient: LinearGradient(
+          begin: AlignmentDirectional.topStart,
+          end: AlignmentDirectional.bottomEnd,
+          colors: [
+            ColorManager.primary,
+            ColorManager.selectedItem,
+          ],
+        ),
+      ),
+    ),
+  );
+}
 
 Widget circularProgressIndicator() {
   return Center(
-      child: CircularProgressIndicator(
-    backgroundColor: ColorManager.backGround,
-    color: ColorManager.primary
-  ));
+    child: CircularProgressIndicator(
+      backgroundColor: ColorManager.backGround,
+      color: ColorManager.primary,
+    ),
+  );
 }
 
 Widget decorationButton(
   context, {
-  Widget? pageRoute,
-  Color? color,
-  required String text,
+  required Function function,
+  required Widget widget,
+  double? height = AppSize.s40,
+  double? width = double.infinity,
+  double? radius = AppSize.s10,
 }) {
   return InkWell(
     onTap: () {
-      navigateTo(context, pageRoute);
+      function();
     },
     child: Center(
       child: Container(
-        height: 40.0,
-        width: double.infinity,
+        height: height,
+        width: width,
         alignment: Alignment.center,
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(15.0),
+          borderRadius: BorderRadius.circular(radius!),
           color: ColorManager.backGround,
           gradient: LinearGradient(
             begin: AlignmentDirectional.topStart,
             end: AlignmentDirectional.bottomEnd,
             colors: [
-              ColorManager.lightPrimary,
-              ColorManager.primary
+              ColorManager.primary,
+              ColorManager.selectedItem,
             ],
           ),
         ),
-        child: Text(text, style: Theme.of(context).textTheme.bodyText1),
+        child: widget,
       ),
     ),
   );

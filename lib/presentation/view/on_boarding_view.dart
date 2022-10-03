@@ -3,8 +3,10 @@ import 'package:flutter/services.dart';
 import 'package:introduction_screen/introduction_screen.dart';
 import 'package:lottie/lottie.dart';
 import 'package:moscore/presentation/resources/colors/color_manager.dart';
+import 'package:moscore/presentation/resources/fonts/fonts_manager.dart';
 import 'package:moscore/presentation/resources/string/string_manager.dart';
 import 'package:moscore/presentation/resources/values/values_manager.dart';
+import 'package:moscore/presentation/view/authentication/login_view.dart';
 
 import '../resources/assets/assets.dart';
 
@@ -23,8 +25,8 @@ class OnBoarding extends StatelessWidget {
       image: Lottie.asset(JsonResources.lineUp),
     ),
     PageViewModel(
-      body: StringManager.onBoardModelTitle2,
-      title: StringManager.onBoardModelSubTitle2,
+      body: StringManager.onBoardModelTitle3,
+      title: StringManager.onBoardModelSubTitle3,
       image: Lottie.asset(JsonResources.player),
     ),
   ];
@@ -47,20 +49,43 @@ class OnBoarding extends StatelessWidget {
         child: IntroductionScreen(
           pages: _list,
           curve: Curves.bounceInOut,
-          onDone: () => null,
-          onSkip: () => null,
-          // You can override onSkip callback
+          onDone: () {
+            MaterialPageRoute(
+              builder: (context) => const LoginView(),
+            );
+          },
+          onSkip: () {
+            MaterialPageRoute(
+              builder: (context) => const LoginView(),
+            );
+          },
           showSkipButton: true,
           skipOrBackFlex: 0,
           nextFlex: 0,
           showBackButton: false,
-          //rtl: true, // Display as right-to-left
-          back: const Icon(Icons.arrow_back),
-          skip: const Text(StringManager.skip,
-              style: TextStyle(fontWeight: FontWeight.w600)),
-          next: const Icon(Icons.arrow_forward),
-          done: const Text(StringManager.done,
-              style: TextStyle(fontWeight: FontWeight.w600)),
+          back: Icon(Icons.arrow_back, color: ColorManager.primary),
+          skip: Text(
+            StringManager.skip,
+            style: Theme.of(context).textTheme.labelSmall,
+          ),
+          next: Icon(Icons.arrow_forward, color: ColorManager.primary),
+          done: Text(
+            StringManager.done,
+            style: Theme.of(context)
+                .textTheme
+                .displaySmall
+                ?.copyWith(fontSize: FontsSize.s17),
+          ),
+          dotsDecorator: DotsDecorator(
+              size: const Size.square(AppSize.s10),
+              activeSize: const Size(AppSize.s24, AppSize.s10),
+              activeColor: ColorManager.primary,
+              color: Colors.black26,
+              spacing: const EdgeInsets.symmetric(horizontal: 3.0),
+              activeShape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(AppSize.s24),
+              ),
+          ),
         ),
       ),
     );

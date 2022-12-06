@@ -2,13 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:introduction_screen/introduction_screen.dart';
 import 'package:lottie/lottie.dart';
+import 'package:moscore/app/shared_preferences/shared_preferences.dart';
 import 'package:moscore/presentation/resources/colors/color_manager.dart';
 import 'package:moscore/presentation/resources/fonts/fonts_manager.dart';
 import 'package:moscore/presentation/resources/string/string_manager.dart';
 import 'package:moscore/presentation/resources/values/values_manager.dart';
 
-import '../resources/assets/assets.dart';
-import '../resources/routes/routes_manager.dart';
+import '../../../app/dependency_injection/dependency_injection.dart';
+import '../../resources/assets/assets.dart';
+import '../../resources/routes/routes_manager.dart';
 
 class OnBoarding extends StatelessWidget {
   OnBoarding({super.key});
@@ -31,6 +33,8 @@ class OnBoarding extends StatelessWidget {
     ),
   ];
 
+  final AppPreferences _appPreferences = getIt<AppPreferences>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -50,9 +54,11 @@ class OnBoarding extends StatelessWidget {
           pages: _list,
           curve: Curves.bounceInOut,
           onDone: () {
+            _appPreferences.setIsOnBoarding();
             Navigator.pushReplacementNamed(context, Routes.login);
           },
           onSkip: () {
+            _appPreferences.setIsOnBoarding();
             Navigator.pushReplacementNamed(context, Routes.login);
           },
           showSkipButton: true,
@@ -73,14 +79,14 @@ class OnBoarding extends StatelessWidget {
                 ?.copyWith(fontSize: FontsSize.s17),
           ),
           dotsDecorator: DotsDecorator(
-              size: const Size.square(AppSize.s10),
-              activeSize: const Size(AppSize.s24, AppSize.s10),
-              activeColor: ColorManager.primary,
-              color: Colors.black26,
-              spacing: const EdgeInsets.symmetric(horizontal: 3.0),
-              activeShape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(AppSize.s24),
-              ),
+            size: const Size.square(AppSize.s10),
+            activeSize: const Size(AppSize.s24, AppSize.s10),
+            activeColor: ColorManager.primary,
+            color: Colors.black26,
+            spacing: const EdgeInsets.symmetric(horizontal: 3.0),
+            activeShape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(AppSize.s24),
+            ),
           ),
         ),
       ),

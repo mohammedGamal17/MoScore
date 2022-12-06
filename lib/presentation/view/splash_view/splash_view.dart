@@ -5,10 +5,12 @@ import 'package:flutter/services.dart';
 import 'package:lottie/lottie.dart';
 import 'package:moscore/presentation/resources/assets/assets.dart';
 
-import '../resources/colors/color_manager.dart';
-import '../resources/constants/constants.dart';
-import '../resources/routes/routes_manager.dart';
-import '../resources/values/values_manager.dart';
+import '../../../app/dependency_injection/dependency_injection.dart';
+import '../../../app/shared_preferences/shared_preferences.dart';
+import '../../resources/colors/color_manager.dart';
+import '../../resources/constants/constants.dart';
+import '../../resources/routes/routes_manager.dart';
+import '../../resources/values/values_manager.dart';
 
 class SplashView extends StatefulWidget {
   const SplashView({super.key});
@@ -19,13 +21,30 @@ class SplashView extends StatefulWidget {
 
 class _SplashViewState extends State<SplashView> {
   Timer? _timer;
+  final AppPreferences _appPreferences = getIt<AppPreferences>();
 
   _startDelay() {
     _timer = Timer(const Duration(seconds: AppConst.splashDelay), _goNext);
   }
 
   _goNext() {
-    Navigator.pushReplacementNamed(context, Routes.onBoarding);
+    _appPreferences.getIsOnBoarding().then(
+      (isOnBoarding) {
+        if (!isOnBoarding) {
+          Navigator.pushReplacementNamed(context, Routes.onBoarding);
+        } else {
+          _appPreferences.getIsSignIn().then(
+            (isSignIn) {
+              if (!isSignIn) {
+                Navigator.pushReplacementNamed(context, Routes.login);
+              } else {
+                Navigator.pushReplacementNamed(context, Routes.home);
+              }
+            },
+          );
+        }
+      },
+    );
   }
 
   @override

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:moscore/presentation/resources/routes/routes_manager.dart';
 import '../../common/header_section_of_auth_views.dart';
 import '../../common/social_media_buttons_components.dart';
 import '../../resources/components/components.dart';
@@ -20,7 +21,12 @@ class RegisterView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<AuthCubit, AuthState>(
-      listener: (context, state) {},
+      listener: (context, state) {
+        if (state is CreateUserSuccess) {
+          Navigator.pushNamed(context, Routes.login);
+          snack(context, content: StringManager.registerSuccess);
+        }
+      },
       builder: (context, state) {
         var cubit = AuthCubit.get(context);
         return Scaffold(
@@ -46,8 +52,10 @@ class RegisterView extends StatelessWidget {
                           nameTextEditController: _nameTextEditController,
                           emailTextEditController: _emailTextEditController,
                           passwordTextEditController:
-                          _passwordTextEditController,
+                              _passwordTextEditController,
                           cubit: cubit,
+                          formKey: _formKey,
+                          state: state,
                         ),
                         const SocialMediaSection(
                             text: StringManager.orRegisterWith),
@@ -71,12 +79,16 @@ class RegisterFormSection extends StatelessWidget {
     required this.emailTextEditController,
     required this.passwordTextEditController,
     required this.cubit,
+    required this.formKey,
+    required this.state,
   });
 
   final TextEditingController nameTextEditController;
   final TextEditingController emailTextEditController;
   final TextEditingController passwordTextEditController;
   final AuthCubit cubit;
+  final GlobalKey<FormState> formKey;
+  final AuthState state;
 
   @override
   Widget build(BuildContext context) {
@@ -89,6 +101,31 @@ class RegisterFormSection extends StatelessWidget {
             labelText: StringManager.name,
             hintText: StringManager.name,
           ),
+          validator: (value) {
+            /// regular expression to check if string
+            RegExp nameValid = RegExp('[a-zA-Z]');
+
+            /// A function that validate user entered email
+            bool validateFullName(String user) {
+              String name = user.trim();
+              if (nameValid.hasMatch(name)) {
+                return true;
+              } else {
+                return false;
+              }
+            }
+
+            if (value!.isEmpty || value.length < 4) {
+              return StringManager.pleaseEnterYourFullName;
+            } else {
+              bool result = validateFullName(value);
+              if (result) {
+                return null;
+              } else {
+                return StringManager.pleaseWriteValidName;
+              }
+            }
+          },
         ),
         const SizedBox(height: AppSize.s20),
         TextFormField(
@@ -98,6 +135,33 @@ class RegisterFormSection extends StatelessWidget {
             labelText: StringManager.email,
             hintText: StringManager.email,
           ),
+          validator: (value) {
+            /// regular expression to check if string
+            RegExp emailValid = RegExp(
+              r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+",
+            );
+
+            /// A function that validate user entered email
+            bool validateUsername(String user) {
+              String email = user.trim();
+              if (emailValid.hasMatch(email)) {
+                return true;
+              } else {
+                return false;
+              }
+            }
+
+            if (value!.isEmpty || value.length < 4) {
+              return StringManager.pleaseEnterYourEmail;
+            } else {
+              bool result = validateUsername(value);
+              if (result) {
+                return null;
+              } else {
+                return StringManager.pleaseWriteValidEmail;
+              }
+            }
+          },
         ),
         const SizedBox(height: AppSize.s20),
         TextFormField(
@@ -112,27 +176,64 @@ class RegisterFormSection extends StatelessWidget {
               },
               icon: cubit.isShow != false
                   ? const Icon(
-                Icons.visibility_outlined,
-              )
+                      Icons.visibility_outlined,
+                    )
                   : const Icon(
-                Icons.visibility_off_outlined,
-              ),
+                      Icons.visibility_off_outlined,
+                    ),
             ),
           ),
+          validator: (value) {
+            // regular expression to check if string
+            RegExp passValid =
+                RegExp(r"(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*\W)");
+            //A function that validate user entered password
+            bool validatePassword(String pass) {
+              String password = pass.trim();
+              if (passValid.hasMatch(password)) {
+                return true;
+              } else {
+                return false;
+              }
+            }
+
+            if (value!.isEmpty) {
+              return StringManager.pleaseEnterYourPassword;
+            } else {
+              bool result = validatePassword(value);
+              if (result) {
+                return null;
+              } else {
+                return StringManager.passwordValidate;
+              }
+            }
+          },
         ),
         const SizedBox(height: AppSize.s20),
-        decorationButton(
-          context,
-          function: () {},
-          widget: Text(
-            StringManager.register,
-            style: Theme
-                .of(context)
-                .textTheme
-                .labelLarge
-                ?.copyWith(fontSize: FontsSize.s16),
-          ),
-        ),
+        state is CreateUserLoading
+            ? AdaptiveCircleIndicator()
+            : decorationButton(
+                context,
+                function: () {
+                  if (formKey.currentState!.validate()) {
+                    cubit.createUserWithEmailAndPassword(
+                      context: context,
+                      emailAddress: emailTextEditController.text,
+                      password: passwordTextEditController.text,
+                      name: nameTextEditController.text,
+                      imageUrl:
+                          'https://www.juventus.com/assets/thirdparties/juventus_logo_white.png',
+                    );
+                  }
+                },
+                widget: Text(
+                  StringManager.register,
+                  style: Theme.of(context)
+                      .textTheme
+                      .labelLarge
+                      ?.copyWith(fontSize: FontsSize.s16),
+                ),
+              ),
         const SizedBox(height: AppSize.s24),
       ],
     );

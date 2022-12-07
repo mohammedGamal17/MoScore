@@ -13,3 +13,13 @@ class CreateUserFail extends AuthState {
 
   CreateUserFail(this.message);
 }
+
+class UserLoginLoading extends AuthState {}
+
+class UserLoginSuccess extends AuthState {}
+
+class UserLoginFail extends AuthState {
+  final String message;
+
+  UserLoginFail(this.message);
+}

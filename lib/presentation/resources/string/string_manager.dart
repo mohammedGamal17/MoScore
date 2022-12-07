@@ -51,4 +51,15 @@ class StringManager {
   static const String ok = "OK";
   static const String error = "Error";
   static const String empty = "No data founded";
+
+  // Authentication screens
+  static const String pleaseEnterYourFullName = 'Please Enter Your Full Name';
+  static const String pleaseWriteValidName = 'Please Write Valid Name';
+  static const String pleaseEnterYourEmail = 'Please Enter Your Email';
+  static const String pleaseWriteValidEmail = 'Please Write Valid Email';
+  static const String pleaseEnterYourPassword = 'Please Enter Your Password';
+  static const String passwordValidate =
+      'Password should contain:\nCapital, small letter\nNumber & Special Character.';
+  static const String registerSuccess = 'Register Success';
+  static const String loginSuccess = 'Login Success';
 }

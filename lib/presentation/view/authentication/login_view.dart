@@ -21,7 +21,11 @@ class LoginView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<AuthCubit, AuthState>(
-      listener: (context, state) {},
+      listener: (context, state) {
+        if (state is UserLoginSuccess) {
+          Navigator.pushReplacementNamed(context, Routes.home);
+        }
+      },
       builder: (context, state) {
         var cubit = AuthCubit.get(context);
         return Scaffold(
@@ -46,8 +50,10 @@ class LoginView extends StatelessWidget {
                         LoginFormSection(
                           emailTextEditController: _emailTextEditController,
                           passwordTextEditController:
-                          _passwordTextEditController,
+                              _passwordTextEditController,
                           cubit: cubit,
+                          formKey: _formKey,
+                          state: state,
                         ),
                         const SocialMediaSection(
                           text: StringManager.orLoginWith,
@@ -71,11 +77,15 @@ class LoginFormSection extends StatelessWidget {
     required this.emailTextEditController,
     required this.passwordTextEditController,
     required this.cubit,
+    required this.formKey,
+    required this.state,
   });
 
   final TextEditingController emailTextEditController;
   final TextEditingController passwordTextEditController;
   final AuthCubit cubit;
+  final GlobalKey<FormState> formKey;
+  final AuthState state;
 
   @override
   Widget build(BuildContext context) {
@@ -88,6 +98,33 @@ class LoginFormSection extends StatelessWidget {
             labelText: StringManager.email,
             hintText: StringManager.email,
           ),
+          validator: (value) {
+            /// regular expression to check if string
+            RegExp emailValid = RegExp(
+              r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+",
+            );
+
+            /// A function that validate user entered email
+            bool validateUsername(String user) {
+              String email = user.trim();
+              if (emailValid.hasMatch(email)) {
+                return true;
+              } else {
+                return false;
+              }
+            }
+
+            if (value!.isEmpty || value.length < 4) {
+              return StringManager.pleaseEnterYourEmail;
+            } else {
+              bool result = validateUsername(value);
+              if (result) {
+                return null;
+              } else {
+                return StringManager.pleaseWriteValidEmail;
+              }
+            }
+          },
         ),
         const SizedBox(height: AppSize.s20),
         TextFormField(
@@ -109,19 +146,53 @@ class LoginFormSection extends StatelessWidget {
                     ),
             ),
           ),
+          validator: (value) {
+            // regular expression to check if string
+            RegExp passValid =
+                RegExp(r"(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*\W)");
+            //A function that validate user entered password
+            bool validatePassword(String pass) {
+              String password = pass.trim();
+              if (passValid.hasMatch(password)) {
+                return true;
+              } else {
+                return false;
+              }
+            }
+
+            if (value!.isEmpty) {
+              return StringManager.pleaseEnterYourPassword;
+            } else {
+              bool result = validatePassword(value);
+              if (result) {
+                return null;
+              } else {
+                return StringManager.passwordValidate;
+              }
+            }
+          },
         ),
         const SizedBox(height: AppSize.s20),
-        decorationButton(
-          context,
-          function: () {},
-          widget: Text(
-            StringManager.login,
-            style: Theme.of(context)
-                .textTheme
-                .labelLarge
-                ?.copyWith(fontSize: FontsSize.s16),
-          ),
-        ),
+        state is UserLoginLoading
+            ? AdaptiveCircleIndicator()
+            : decorationButton(
+                context,
+                function: () {
+                  if (formKey.currentState!.validate()) {
+                    cubit.signInWithEmailAndPassword(
+                        context: context,
+                        emailAddress: emailTextEditController.text,
+                        password: passwordTextEditController.text);
+                  }
+                },
+                widget: Text(
+                  StringManager.login,
+                  style: Theme.of(context)
+                      .textTheme
+                      .labelLarge
+                      ?.copyWith(fontSize: FontsSize.s16),
+                ),
+              ),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [

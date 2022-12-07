@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:moscore/app/constants/constants.dart';
 import 'package:moscore/presentation/resources/colors/color_manager.dart';
 
+import '../constants/constants.dart';
 import '../values/values_manager.dart';
 
 void navigateTo(context, widget) => Navigator.push(
@@ -106,15 +109,6 @@ Widget separator() {
   );
 }
 
-Widget circularProgressIndicator() {
-  return Center(
-    child: CircularProgressIndicator(
-      backgroundColor: ColorManager.backGround,
-      color: ColorManager.primary,
-    ),
-  );
-}
-
 Widget decorationButton(
   context, {
   required Function function,
@@ -155,50 +149,47 @@ ScaffoldFeatureController<SnackBar, SnackBarClosedReason> snack(
   required String content,
   Color? bgColor = Colors.green,
 }) {
-  return ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-    content: Text(
-      content,
-      style: Theme.of(context).textTheme.bodyText1,
-      textAlign: TextAlign.center,
+  return ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(
+      content: Text(
+        content,
+        style: Theme.of(context).textTheme.labelLarge,
+        textAlign: TextAlign.center,
+        maxLines: 2,
+      ),
+      duration: const Duration(milliseconds: AppConst.snakeTimer),
+      padding: const EdgeInsets.symmetric(
+        vertical: AppPadding.p10,
+        horizontal: AppPadding.p20,
+      ),
+      backgroundColor: bgColor,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(AppSize.s40),
+      ),
+      behavior: SnackBarBehavior.fixed,
     ),
-    duration: const Duration(milliseconds: 4000),
-    padding: const EdgeInsets.all(8),
-    backgroundColor: bgColor,
-    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50.0)),
-    behavior: SnackBarBehavior.fixed,
-  ));
+  );
 }
 
-// Widget courserSlider() {
-//   return CarouselSlider(
-//       items: model.data?.banners?.map((i) {
-//         return Builder(
-//           builder: (BuildContext context) {
-//             return Container(
-//               width: double.infinity,
-//               decoration: BoxDecoration(
-//                 color: HexColor('0096C7'),
-//                 image: DecorationImage(
-//                   image: NetworkImage('${i.image}'),
-//                   fit: BoxFit.fill,
-//                 ),
-//               ),
-//             );
-//           },
-//         );
-//       }).toList(),
-//       options: CarouselOptions(
-//         height: 250.0,
-//         aspectRatio: 16 / 9,
-//         viewportFraction: 0.8,
-//         initialPage: 0,
-//         enableInfiniteScroll: true,
-//         reverse: false,
-//         autoPlay: true,
-//         autoPlayInterval: const Duration(seconds: 3),
-//         autoPlayAnimationDuration: const Duration(milliseconds: 800),
-//         autoPlayCurve: Curves.fastOutSlowIn,
-//         enlargeCenterPage: true,
-//         scrollDirection: Axis.horizontal,
-//       ));
-// }
+class AdaptiveCircleIndicator extends StatelessWidget {
+  AdaptiveCircleIndicator({
+    Key? key,
+  }) : super(key: key);
+  final String os = AppConstants.os;
+
+  @override
+  Widget build(BuildContext context) {
+    if (os == 'IOS' || os == 'MacOS' || os == 'ios') {
+      return Center(
+        child:
+            CupertinoActivityIndicator(color: Theme.of(context).primaryColor),
+      );
+    }
+    return Center(
+      child: CircularProgressIndicator(
+        backgroundColor: Theme.of(context).backgroundColor,
+        color: Theme.of(context).primaryColor,
+      ),
+    );
+  }
+}

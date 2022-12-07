@@ -1,15 +1,16 @@
-import 'package:flutter/foundation.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:moscore/domain/use_cases/auth_use_cases/register_use_case.dart';
+import 'package:moscore/domain/entities/entities.dart';
 
+import '../../../resources/colors/color_manager.dart';
+import '../../../resources/components/components.dart';
 import 'auth_state.dart';
 
 class AuthCubit extends Cubit<AuthState> {
-  AuthCubit(this.registerUseCase) : super(AuthInitial());
+  AuthCubit() : super(AuthInitial());
 
   static AuthCubit get(context) => BlocProvider.of(context);
-  final RegisterUseCase registerUseCase;
   bool isShow = false;
 
   void changePasswordVisibility() {
@@ -17,7 +18,24 @@ class AuthCubit extends Cubit<AuthState> {
     emit(PasswordVisibility());
   }
 
+  void userCreate({
+    required String displayName,
+    required String email,
+    required String photoURL,
+    required String uId,
+  }) {
+    Users user = Users(
+      name: displayName,
+      email: email,
+      image: photoURL,
+      uId: uId,
+    );
+  }
+
+  /// Create User With Email And Password With Firebase
   void createUserWithEmailAndPassword({
+    required BuildContext context,
+    required String name,
     required String emailAddress,
     required String password,
     required String imageUrl,
@@ -29,35 +47,46 @@ class AuthCubit extends Cubit<AuthState> {
         email: emailAddress,
         password: password,
       )
-          .then((value) {
-        imageUrl = value.user!.photoURL!;
-        registerUseCase.call(
-          RegisterInputs(
-            value.user!.displayName!,
-            emailAddress,
-            password,
-            value.user!.photoURL!,
-          ),
-        );
-      });
+          .then(
+        (data) {
+          userCreate(
+            displayName: name,
+            email: emailAddress,
+            photoURL: imageUrl,
+            uId: data.user!.uid,
+          );
+          emit(CreateUserLoading());
+        },
+      );
       emit(CreateUserSuccess());
     } on FirebaseAuthException catch (e) {
       emit(CreateUserFail(e.message.toString()));
-
-      if (e.code == 'weak-password') {
-        if (kDebugMode) {
-          print('The password provided is too weak.');
-        }
-      } else if (e.code == 'email-already-in-use') {
-        if (kDebugMode) {
-          print('The account already exists for that email.');
-        }
-      }
+      snack(context, content: e.message.toString(), bgColor: ColorManager.red);
     } catch (e) {
       emit(CreateUserFail(e.toString()));
-      if (kDebugMode) {
-        print(e);
-      }
+      snack(context, content: e.toString(), bgColor: ColorManager.red);
+    }
+  }
+
+  /// Sign In With Email And Password With Firebase
+  void signInWithEmailAndPassword({
+    required BuildContext context,
+    required String emailAddress,
+    required String password,
+  }) async {
+    try {
+      emit(UserLoginLoading());
+      await FirebaseAuth.instance
+          .signInWithEmailAndPassword(
+        email: emailAddress,
+        password: password,
+      )
+          .then((value) {
+        emit(UserLoginSuccess());
+      });
+    } on FirebaseAuthException catch (e) {
+      emit(UserLoginFail(e.message.toString()));
+      snack(context, content: e.message.toString(), bgColor: ColorManager.red);
     }
   }
 }

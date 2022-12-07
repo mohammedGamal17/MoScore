@@ -16,12 +16,12 @@ class Response {
 }
 
 class Users extends Equatable {
-  String? name;
-  String? email;
-  String? image;
-  late String uId;
+  final String name;
+  final String email;
+  final String image;
+  final String uId;
 
-  Users({
+  const Users({
     required this.name,
     required this.email,
     required this.image,

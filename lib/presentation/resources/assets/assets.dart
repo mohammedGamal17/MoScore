@@ -3,6 +3,7 @@ const String jsonPath = 'assets/json';
 
 class AssetsResources {
   static const String imagesLoginBackground = '$imagePath/loginBackground.svg';
+  static const String logo = '$imagePath/logo.png';
 }
 
 class JsonResources {

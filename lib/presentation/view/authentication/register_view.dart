@@ -218,11 +218,9 @@ class RegisterFormSection extends StatelessWidget {
                   if (formKey.currentState!.validate()) {
                     cubit.createUserWithEmailAndPassword(
                       context: context,
-                      emailAddress: emailTextEditController.text,
+                      email: emailTextEditController.text,
                       password: passwordTextEditController.text,
                       name: nameTextEditController.text,
-                      imageUrl:
-                          'https://www.juventus.com/assets/thirdparties/juventus_logo_white.png',
                     );
                   }
                 },

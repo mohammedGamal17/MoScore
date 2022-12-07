@@ -1,8 +1,14 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:moscore/domain/entities/entities.dart';
+import 'package:moscore/app/dependency_injection/dependency_injection.dart';
+import 'package:moscore/app/shared_preferences/shared_preferences.dart';
+import 'package:moscore/data/models/user/users_model.dart';
+import 'package:quickalert/models/quickalert_type.dart';
 
+import '../../../resources/assets/assets.dart';
 import '../../../resources/colors/color_manager.dart';
 import '../../../resources/components/components.dart';
 import 'auth_state.dart';
@@ -18,53 +24,67 @@ class AuthCubit extends Cubit<AuthState> {
     emit(PasswordVisibility());
   }
 
-  void userCreate({
+  Future<void> userCreate(
+    BuildContext context, {
     required String displayName,
     required String email,
-    required String photoURL,
     required String uId,
-  }) {
-    Users user = Users(
+    String photoURL = AssetsResources.logo,
+  }) async {
+    emit(CreateUserLoading());
+    UsersModel usersModel = UsersModel(
       name: displayName,
       email: email,
       image: photoURL,
       uId: uId,
     );
+    CollectionReference users = FirebaseFirestore.instance.collection('users');
+    return await users.doc(uId).set(usersModel.toJson()).then((value) {
+      emit(CreateUserSuccess());
+    }).catchError((onError) {
+      emit(CreateUserFail(onError.toString()));
+      if (kDebugMode) {
+        print(onError.toString());
+      }
+      snack(context, content: onError.toString(), bgColor: ColorManager.red);
+    });
   }
 
   /// Create User With Email And Password With Firebase
   void createUserWithEmailAndPassword({
     required BuildContext context,
     required String name,
-    required String emailAddress,
+    required String email,
     required String password,
-    required String imageUrl,
   }) async {
     try {
-      emit(CreateUserLoading());
+      emit(UserRegisterLoading());
       await FirebaseAuth.instance
           .createUserWithEmailAndPassword(
-        email: emailAddress,
+        email: email,
         password: password,
       )
           .then(
         (data) {
           userCreate(
+            context,
             displayName: name,
-            email: emailAddress,
-            photoURL: imageUrl,
+            email: email,
             uId: data.user!.uid,
           );
-          emit(CreateUserLoading());
         },
       );
-      emit(CreateUserSuccess());
+      emit(UserRegisterSuccess());
     } on FirebaseAuthException catch (e) {
-      emit(CreateUserFail(e.message.toString()));
+      emit(UserRegisterFail(e.message.toString()));
       snack(context, content: e.message.toString(), bgColor: ColorManager.red);
+
     } catch (e) {
-      emit(CreateUserFail(e.toString()));
+      emit(UserRegisterFail(e.toString()));
       snack(context, content: e.toString(), bgColor: ColorManager.red);
+      if (kDebugMode) {
+        print(onError.toString());
+      }
     }
   }
 
@@ -82,11 +102,21 @@ class AuthCubit extends Cubit<AuthState> {
         password: password,
       )
           .then((value) {
+        getIt<AppPreferences>().setUId(uID: value.user!.uid);
         emit(UserLoginSuccess());
       });
     } on FirebaseAuthException catch (e) {
       emit(UserLoginFail(e.message.toString()));
-      snack(context, content: e.message.toString(), bgColor: ColorManager.red);
+      //snack(context, content: e.message.toString(), bgColor: ColorManager.error);
+      alert(
+        context,
+        quickAlertType: QuickAlertType.error,
+        text: e.message.toString(),
+        textColor: ColorManager.error,
+      );
+      if (kDebugMode) {
+        print(onError.toString());
+      }
     }
   }
 }

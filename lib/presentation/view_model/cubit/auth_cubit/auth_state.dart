@@ -14,6 +14,16 @@ class CreateUserFail extends AuthState {
   CreateUserFail(this.message);
 }
 
+class UserRegisterLoading extends AuthState {}
+
+class UserRegisterSuccess extends AuthState {}
+
+class UserRegisterFail extends AuthState {
+  final String message;
+
+  UserRegisterFail(this.message);
+}
+
 class UserLoginLoading extends AuthState {}
 
 class UserLoginSuccess extends AuthState {}

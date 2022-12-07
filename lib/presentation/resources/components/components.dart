@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:moscore/app/constants/constants.dart';
 import 'package:moscore/presentation/resources/colors/color_manager.dart';
+import 'package:quickalert/quickalert.dart';
 
 import '../constants/constants.dart';
 import '../values/values_manager.dart';
@@ -192,4 +193,20 @@ class AdaptiveCircleIndicator extends StatelessWidget {
       ),
     );
   }
+}
+
+Future alert(
+  context, {
+  required QuickAlertType quickAlertType,
+  required String text,
+  required Color textColor,
+  double borderRadius = AppSize.s20,
+}) {
+  return QuickAlert.show(
+    context: context,
+    type: quickAlertType,
+    textColor: textColor,
+    text: text,
+    borderRadius: borderRadius,
+  );
 }

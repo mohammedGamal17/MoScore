@@ -15,13 +15,13 @@ class Response {
   Response(this.name, this.code, this.flag);
 }
 
-class User extends Equatable {
-  final String name;
-  final String email;
-  final String image;
-  final String uId;
+class Users extends Equatable {
+  String? name;
+  String? email;
+  String? image;
+  late String uId;
 
-  const User({
+  Users({
     required this.name,
     required this.email,
     required this.image,
@@ -29,5 +29,5 @@ class User extends Equatable {
   });
 
   @override
-  List<Object> get props => [name, email, image, uId];
+  List<Object?> get props => [name, email, image, uId];
 }

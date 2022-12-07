@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:moscore/app/dependency_injection/dependency_injection.dart';
 import 'package:moscore/presentation/resources/theme/theme_manager.dart';
+import 'package:moscore/presentation/view_model/cubit/app_cubit/app_cubit.dart';
 
 import '../presentation/resources/routes/routes_manager.dart';
 import '../presentation/view_model/cubit/auth_cubit/auth_cubit.dart';
@@ -14,6 +15,7 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (context) => getIt<AuthCubit>()),
+        BlocProvider(create: (context) => getIt<AppCubit>()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

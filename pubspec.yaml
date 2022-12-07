@@ -25,10 +25,12 @@ dependencies:
   introduction_screen: ^3.1.1
   font_awesome_flutter: ^10.3.0
   equatable: ^2.0.5
+  universal_io: ^2.0.4
 
   # Firebase Packages
   firebase_core: ^2.3.0
   firebase_auth: ^4.1.5
+  cloud_firestore: ^4.1.0
 
 
 dev_dependencies:

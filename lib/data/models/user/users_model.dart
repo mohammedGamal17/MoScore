@@ -7,6 +7,7 @@ class UsersModel extends Users {
     required super.image,
     required super.uId,
   });
+
   factory UsersModel.fromJson(Map<String, dynamic> json) {
     return UsersModel(
       name: json['name'],
@@ -15,6 +16,7 @@ class UsersModel extends Users {
       image: json['image'],
     );
   }
+
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['name'] = name;

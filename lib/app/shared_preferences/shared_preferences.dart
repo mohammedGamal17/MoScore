@@ -2,6 +2,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 const String isOnBoardingShow = 'isOnBoardingShow';
 const String isSignIn = 'isLoggedIn';
+const String uId = 'uId';
 
 class AppPreferences {
   final SharedPreferences _sharedPreferences;
@@ -28,5 +29,17 @@ class AppPreferences {
   /// Get Value of isSignIn
   Future<bool> getIsSignIn() async {
     return _sharedPreferences.getBool(isSignIn) ?? false;
+  }
+
+  /// Set Value Of UID
+  setUId({
+    required String uID,
+  }) async {
+    await _sharedPreferences.setString(uId, uID);
+  }
+
+  /// Get Value Of UID
+  String? getUId() {
+    return _sharedPreferences.getString(uId);
   }
 }

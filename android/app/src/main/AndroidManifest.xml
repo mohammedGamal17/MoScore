@@ -2,7 +2,7 @@
     package="com.impactsolutions.moscore">
    <application
         android:label="MoScore"
-        android:name="MoScore"
+        android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"

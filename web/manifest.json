@@ -1,6 +1,6 @@
 {
-    "name": "moscore",
-    "short_name": "moscore",
+    "name": "MoScore",
+    "short_name": "MoScore",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

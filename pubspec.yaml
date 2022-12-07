@@ -26,6 +26,7 @@ dependencies:
   font_awesome_flutter: ^10.3.0
   equatable: ^2.0.5
   universal_io: ^2.0.4
+  quickalert: ^1.0.1
 
   # Firebase Packages
   firebase_core: ^2.3.0
@@ -48,6 +49,7 @@ flutter:
   assets:
     - assets/images/
     - assets/images/loginBackground.svg
+    - assets/images/logo.png
     - assets/json/goal.json
     - assets/json/lineup.json
     - assets/json/player.json
@@ -67,11 +69,21 @@ flutter:
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
   fonts:
-    - family: TitilliumWeb
+    - family: TitilliumWeb-Black
       fonts:
         - asset: assets/fonts/TitilliumWeb-Black.ttf
+    - family: TitilliumWeb-Bold
+      fonts:
         - asset: assets/fonts/TitilliumWeb-Bold.ttf
+    - family: TitilliumWeb-ExtraLight
+      fonts:
         - asset: assets/fonts/TitilliumWeb-ExtraLight.ttf
+    - family: TitilliumWeb-Light
+      fonts:
         - asset: assets/fonts/TitilliumWeb-Light.ttf
+    - family: TitilliumWeb-Regular
+      fonts:
         - asset: assets/fonts/TitilliumWeb-Regular.ttf
+    - family: TitilliumWeb-SemiBold
+      fonts:
         - asset: assets/fonts/TitilliumWeb-SemiBold.ttf

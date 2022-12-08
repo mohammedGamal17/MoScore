@@ -26,7 +26,7 @@ class Di {
 
     // Repositories
     getIt.registerLazySingleton<Repositories>(
-        () => RepositoriesImplementation(getIt()));
+        () => RepositoriesImplementation());
     // UseCases
 
     // Cubit

@@ -27,6 +27,7 @@ dependencies:
   equatable: ^2.0.5
   universal_io: ^2.0.4
   quickalert: ^1.0.1
+  internet_connection_checker: ^1.0.0+1
 
   # Firebase Packages
   firebase_core: ^2.3.0

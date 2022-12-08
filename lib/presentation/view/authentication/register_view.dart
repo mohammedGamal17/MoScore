@@ -58,7 +58,8 @@ class RegisterView extends StatelessWidget {
                           state: state,
                         ),
                         const SocialMediaSection(
-                            text: StringManager.orRegisterWith),
+                          text: StringManager.orRegisterWith,
+                        ),
                       ],
                     ),
                   ),
@@ -138,7 +139,7 @@ class RegisterFormSection extends StatelessWidget {
           validator: (value) {
             /// regular expression to check if string
             RegExp emailValid = RegExp(
-              r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+",
+              r'^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$',
             );
 
             /// A function that validate user entered email
@@ -185,8 +186,9 @@ class RegisterFormSection extends StatelessWidget {
           ),
           validator: (value) {
             // regular expression to check if string
-            RegExp passValid =
-                RegExp(r"(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*\W)");
+            RegExp passValid = RegExp(
+                r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$');
+
             //A function that validate user entered password
             bool validatePassword(String pass) {
               String password = pass.trim();
@@ -210,7 +212,7 @@ class RegisterFormSection extends StatelessWidget {
           },
         ),
         const SizedBox(height: AppSize.s20),
-        state is CreateUserLoading
+        state is UserRegisterLoading || state is CreateUserLoading
             ? AdaptiveCircleIndicator()
             : decorationButton(
                 context,

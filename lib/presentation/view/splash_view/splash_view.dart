@@ -28,17 +28,17 @@ class _SplashViewState extends State<SplashView> {
   }
 
   _goNext() {
-    _appPreferences.getIsOnBoarding().then(
-      (isOnBoarding) {
-        if (!isOnBoarding) {
-          Navigator.pushReplacementNamed(context, Routes.onBoarding);
+    _appPreferences.getIsSignIn().then(
+      (isSignIn) {
+        if (isSignIn) {
+          Navigator.pushReplacementNamed(context, Routes.home);
         } else {
-          _appPreferences.getIsSignIn().then(
-            (isSignIn) {
-              if (!isSignIn) {
+          _appPreferences.getIsOnBoarding().then(
+            (isOnBoardingShow) {
+              if (isOnBoardingShow) {
                 Navigator.pushReplacementNamed(context, Routes.login);
               } else {
-                Navigator.pushReplacementNamed(context, Routes.home);
+                Navigator.pushReplacementNamed(context, Routes.onBoarding);
               }
             },
           );

@@ -43,7 +43,7 @@ class StringManager {
   static const String timeoutError = "timeout_error";
   static const String defaultError = "default_error";
   static const String cacheError = "cache_error";
-  static const String noInternetError = "no_internet_error";
+  static const String noInternetError = "No Internet... Check Your Connection";
 
   // Render State
   static const String retry = "Retry Again";

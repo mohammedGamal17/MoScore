@@ -101,7 +101,7 @@ class LoginFormSection extends StatelessWidget {
           validator: (value) {
             /// regular expression to check if string
             RegExp emailValid = RegExp(
-              r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+",
+              r'^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$',
             );
 
             /// A function that validate user entered email
@@ -149,7 +149,7 @@ class LoginFormSection extends StatelessWidget {
           validator: (value) {
             // regular expression to check if string
             RegExp passValid =
-                RegExp(r"(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*\W)");
+                RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$');
             //A function that validate user entered password
             bool validatePassword(String pass) {
               String password = pass.trim();

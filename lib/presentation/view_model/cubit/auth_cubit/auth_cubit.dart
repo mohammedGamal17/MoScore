@@ -6,17 +6,20 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:moscore/app/dependency_injection/dependency_injection.dart';
 import 'package:moscore/app/shared_preferences/shared_preferences.dart';
 import 'package:moscore/data/models/user/users_model.dart';
+import 'package:moscore/data/network/remote/info/network_info.dart';
 import 'package:quickalert/models/quickalert_type.dart';
 
 import '../../../resources/assets/assets.dart';
 import '../../../resources/colors/color_manager.dart';
 import '../../../resources/components/components.dart';
+import '../../../resources/string/string_manager.dart';
 import 'auth_state.dart';
 
 class AuthCubit extends Cubit<AuthState> {
-  AuthCubit() : super(AuthInitial());
+  AuthCubit(this._networkInfo) : super(AuthInitial());
 
   static AuthCubit get(context) => BlocProvider.of(context);
+  final NetworkInfo _networkInfo;
   bool isShow = false;
 
   void changePasswordVisibility() {
@@ -57,34 +60,46 @@ class AuthCubit extends Cubit<AuthState> {
     required String email,
     required String password,
   }) async {
-    try {
-      emit(UserRegisterLoading());
-      await FirebaseAuth.instance
-          .createUserWithEmailAndPassword(
-        email: email,
-        password: password,
-      )
-          .then(
-        (data) {
-          userCreate(
-            context,
-            displayName: name,
-            email: email,
-            uId: data.user!.uid,
-          );
-        },
-      );
-      emit(UserRegisterSuccess());
-    } on FirebaseAuthException catch (e) {
-      emit(UserRegisterFail(e.message.toString()));
-      snack(context, content: e.message.toString(), bgColor: ColorManager.red);
-
-    } catch (e) {
-      emit(UserRegisterFail(e.toString()));
-      snack(context, content: e.toString(), bgColor: ColorManager.red);
-      if (kDebugMode) {
-        print(onError.toString());
+    if (await _networkInfo.isConnected) {
+      try {
+        emit(UserRegisterLoading());
+        await FirebaseAuth.instance
+            .createUserWithEmailAndPassword(
+          email: email,
+          password: password,
+        )
+            .then(
+          (data) {
+            userCreate(
+              context,
+              displayName: name,
+              email: email,
+              uId: data.user!.uid,
+            );
+          },
+        );
+        emit(UserRegisterSuccess());
+      } on FirebaseAuthException catch (e) {
+        emit(UserRegisterFail(e.message.toString()));
+        snack(context,
+            content: e.message.toString(), bgColor: ColorManager.red);
+      } catch (e) {
+        emit(UserRegisterFail(e.toString()));
+        snack(context, content: e.toString(), bgColor: ColorManager.red);
+        if (kDebugMode) {
+          print(onError.toString());
+        }
       }
+    } else {
+      if (kDebugMode) {
+        print(StringManager.noInternetError);
+      }
+      return alert(
+        context,
+        quickAlertType: QuickAlertType.error,
+        text: StringManager.noInternetError,
+        textColor: ColorManager.error,
+      );
     }
   }
 
@@ -94,29 +109,41 @@ class AuthCubit extends Cubit<AuthState> {
     required String emailAddress,
     required String password,
   }) async {
-    try {
-      emit(UserLoginLoading());
-      await FirebaseAuth.instance
-          .signInWithEmailAndPassword(
-        email: emailAddress,
-        password: password,
-      )
-          .then((value) {
-        getIt<AppPreferences>().setUId(uID: value.user!.uid);
-        emit(UserLoginSuccess());
-      });
-    } on FirebaseAuthException catch (e) {
-      emit(UserLoginFail(e.message.toString()));
-      //snack(context, content: e.message.toString(), bgColor: ColorManager.error);
-      alert(
+    if (await _networkInfo.isConnected) {
+      try {
+        emit(UserLoginLoading());
+        await FirebaseAuth.instance
+            .signInWithEmailAndPassword(
+          email: emailAddress,
+          password: password,
+        )
+            .then((value) {
+          getIt<AppPreferences>().setUId(uID: value.user!.uid);
+          emit(UserLoginSuccess());
+        });
+      } on FirebaseAuthException catch (e) {
+        emit(UserLoginFail(e.message.toString()));
+        //snack(context, content: e.message.toString(), bgColor: ColorManager.error);
+        alert(
+          context,
+          quickAlertType: QuickAlertType.error,
+          text: e.message.toString(),
+          textColor: ColorManager.error,
+        );
+        if (kDebugMode) {
+          print(onError.toString());
+        }
+      }
+    } else {
+      if (kDebugMode) {
+        print(StringManager.noInternetError);
+      }
+      return alert(
         context,
         quickAlertType: QuickAlertType.error,
-        text: e.message.toString(),
+        text: StringManager.noInternetError,
         textColor: ColorManager.error,
       );
-      if (kDebugMode) {
-        print(onError.toString());
-      }
     }
   }
 }

@@ -30,7 +30,7 @@ class Di {
     // UseCases
 
     // Cubit
-    getIt.registerFactory<AuthCubit>(() => AuthCubit(getIt()));
+    getIt.registerFactory<AuthCubit>(() => AuthCubit(getIt<NetworkInfo>()));
     getIt.registerFactory<AppCubit>(() => AppCubit());
   }
 }

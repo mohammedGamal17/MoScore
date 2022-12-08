@@ -5,11 +5,14 @@ import '../resources/colors/color_manager.dart';
 import '../resources/components/components.dart';
 import '../resources/fonts/fonts_manager.dart';
 import '../resources/values/values_manager.dart';
+import '../view_model/cubit/auth_cubit/auth_cubit.dart';
 
 class SocialMediaSection extends StatelessWidget {
-  const SocialMediaSection({super.key, required this.text});
+  const SocialMediaSection(
+      {super.key, required this.text, required this.cubit});
 
   final String text;
+  final AuthCubit cubit;
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +50,9 @@ class SocialMediaSection extends StatelessWidget {
               width: AppSize.s40,
               radius: AppSize.s20,
               widget: IconButton(
-                onPressed: () {},
+                onPressed: () {
+                  cubit.signInWithGoogle(context);
+                },
                 icon: FaIcon(
                   FontAwesomeIcons.google,
                   color: ColorManager.white,

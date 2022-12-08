@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import '../colors/color_manager.dart';
 import '../fonts/fonts_manager.dart';
 import '../style/style_manager.dart';
@@ -118,7 +119,8 @@ ThemeData getLightModeThemeData() {
 
       //focus
       focusedBorder: OutlineInputBorder(
-        borderSide: BorderSide(color: ColorManager.selectedItem, width: AppSize.s1),
+        borderSide:
+            BorderSide(color: ColorManager.selectedItem, width: AppSize.s1),
         borderRadius: BorderRadius.circular(AppSize.s10),
       ),
 
@@ -151,6 +153,9 @@ ThemeData getLightModeThemeData() {
       titleTextStyle: getTextRegularStyle(
         color: ColorManager.backGround,
         fontSize: FontsSize.s16,
+      ),
+      systemOverlayStyle: SystemUiOverlayStyle(
+        statusBarColor: ColorManager.primary,
       ),
     ),
 

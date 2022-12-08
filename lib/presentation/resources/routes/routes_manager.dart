@@ -7,7 +7,6 @@ import '../../view/home/home_view.dart';
 import '../../view/matches/matches_details_view.dart';
 import '../../view/matches/matches_view.dart';
 import '../../view/on_boarding/on_boarding_view.dart';
-import '../../view_model/cubit/auth_cubit/auth_cubit.dart';
 import '../string/string_manager.dart';
 
 class Routes {

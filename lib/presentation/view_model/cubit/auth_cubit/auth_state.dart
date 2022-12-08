@@ -33,3 +33,13 @@ class UserLoginFail extends AuthState {
 
   UserLoginFail(this.message);
 }
+
+class SignInWithGoogleLoading extends AuthState {}
+
+class SignInWithGoogleSuccess extends AuthState {}
+
+class SignInWithGoogleFail extends AuthState {
+  final String message;
+
+  SignInWithGoogleFail(this.message);
+}

@@ -5,6 +5,8 @@ import 'package:moscore/presentation/resources/string/string_manager.dart';
 import 'package:moscore/presentation/resources/values/values_manager.dart';
 import 'package:moscore/presentation/view_model/cubit/auth_cubit/auth_cubit.dart';
 
+import '../../../app/dependency_injection/dependency_injection.dart';
+import '../../../app/shared_preferences/shared_preferences.dart';
 import '../../common/header_section_of_auth_views.dart';
 import '../../common/social_media_buttons_components.dart';
 import '../../resources/components/components.dart';
@@ -17,13 +19,15 @@ class LoginView extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
   final _emailTextEditController = TextEditingController();
   final _passwordTextEditController = TextEditingController();
+  final AppPreferences _appPreferences = getIt<AppPreferences>();
 
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<AuthCubit, AuthState>(
       listener: (context, state) {
-        if (state is UserLoginSuccess) {
+        if (state is UserLoginSuccess || state is SignInWithGoogleSuccess) {
           Navigator.pushReplacementNamed(context, Routes.home);
+          _appPreferences.setIsSignIn();
         }
       },
       builder: (context, state) {
@@ -55,8 +59,9 @@ class LoginView extends StatelessWidget {
                           formKey: _formKey,
                           state: state,
                         ),
-                        const SocialMediaSection(
+                        SocialMediaSection(
                           text: StringManager.orLoginWith,
+                          cubit: cubit,
                         ),
                       ],
                     ),
@@ -148,8 +153,8 @@ class LoginFormSection extends StatelessWidget {
           ),
           validator: (value) {
             // regular expression to check if string
-            RegExp passValid =
-                RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$');
+            RegExp passValid = RegExp(
+                r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$');
             //A function that validate user entered password
             bool validatePassword(String pass) {
               String password = pass.trim();

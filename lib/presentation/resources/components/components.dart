@@ -201,6 +201,7 @@ Future alert(
   required String text,
   required Color textColor,
   double borderRadius = AppSize.s20,
+  Widget? widget,
 }) {
   return QuickAlert.show(
     context: context,
@@ -208,5 +209,7 @@ Future alert(
     textColor: textColor,
     text: text,
     borderRadius: borderRadius,
+    confirmBtnColor: ColorManager.primary,
+    widget: widget,
   );
 }

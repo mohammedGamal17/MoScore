@@ -1,8 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:moscore/app/dependency_injection/dependency_injection.dart';
 import 'package:moscore/app/shared_preferences/shared_preferences.dart';
 import 'package:moscore/data/models/user/users_model.dart';
@@ -49,7 +51,6 @@ class AuthCubit extends Cubit<AuthState> {
       if (kDebugMode) {
         print(onError.toString());
       }
-      snack(context, content: onError.toString(), bgColor: ColorManager.red);
     });
   }
 
@@ -144,6 +145,83 @@ class AuthCubit extends Cubit<AuthState> {
         text: StringManager.noInternetError,
         textColor: ColorManager.error,
       );
+    }
+  }
+
+  // Future<UserCredential> signInWithGoogle(context) async {
+  //   emit(SignInWithGoogleLoading());
+  //   final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+  //   final GoogleSignInAuthentication? googleAuth =
+  //       await googleUser?.authentication;
+  //
+  //   final credential = GoogleAuthProvider.credential(
+  //     accessToken: googleAuth?.accessToken,
+  //     idToken: googleAuth?.idToken,
+  //   );
+  //   return await FirebaseAuth.instance
+  //       .signInWithCredential(credential)
+  //       .then((value) {
+  //     userCreate(
+  //       context,
+  //       displayName: value.user!.displayName!,
+  //       email: value.user!.email!,
+  //       uId: value.user!.uid,
+  //     );
+  //     emit(SignInWithGoogleSuccess());
+  //     return value;
+  //   }).catchError((onError) {
+  //     if (kDebugMode) {
+  //       print(onError.toString());
+  //     }
+  //     alert(
+  //       context,
+  //       quickAlertType: QuickAlertType.error,
+  //       text: onError.toString(),
+  //       textColor: ColorManager.error,
+  //     );
+  //   });
+  // }
+  Future<UserCredential?> signInWithGoogle(context) async {
+    if (await _networkInfo.isConnected) {
+      final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+
+      final GoogleSignInAuthentication? googleAuth =
+          await googleUser?.authentication;
+      final credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth?.accessToken,
+        idToken: googleAuth?.idToken,
+      );
+      return await FirebaseAuth.instance
+          .signInWithCredential(credential)
+          .then((value) {
+        getIt<AppPreferences>().setUId(uID: value.user!.uid);
+        userCreate(
+          context,
+          displayName: value.user!.displayName!,
+          email: value.user!.email!,
+          uId: value.user!.uid,
+        );
+        emit(SignInWithGoogleSuccess());
+        return value;
+      }).catchError((onError) {
+        if (kDebugMode) {
+          print(onError.toString());
+        }
+        alert(
+          context,
+          quickAlertType: QuickAlertType.error,
+          text: onError.toString(),
+          textColor: ColorManager.red,
+        );
+      });
+    } else {
+      alert(
+        context,
+        quickAlertType: QuickAlertType.error,
+        text: StringManager.noInternetError,
+        textColor: ColorManager.error,
+      );
+      return null;
     }
   }
 }

@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:moscore/app/dependency_injection/dependency_injection.dart';
 import 'package:moscore/presentation/resources/components/components.dart';
-import 'package:quickalert/quickalert.dart';
 
+import '../../common/logout_button.dart';
 import '../../view_model/cubit/app_cubit/app_cubit.dart';
 import '../../view_model/cubit/app_cubit/app_state.dart';
 
@@ -12,19 +13,37 @@ class HomeView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => AppCubit()..getUserData(context),
+      create: (context) => getIt<AppCubit>()..getUserData(context),
       child: BlocConsumer<AppCubit, AppState>(
         listener: (context, state) {},
         builder: (context, state) {
           AppCubit cubit = AppCubit.get(context);
           return Scaffold(
             body: cubit.usersModel != null
-                ? Center(
-                    child: Text(cubit.usersModel!.name),
-                  )
+                ? Body(appCubit: cubit)
                 : AdaptiveCircleIndicator(),
           );
         },
+      ),
+    );
+  }
+}
+
+class Body extends StatelessWidget {
+  const Body({super.key, required this.appCubit});
+
+  final AppCubit appCubit;
+
+  @override
+  Widget build(BuildContext context) {
+    return SafeArea(
+      child: Column(
+        children: [
+          Center(
+            child: Text(appCubit.usersModel!.name),
+          ),
+          const LogOutButton(),
+        ],
       ),
     );
   }

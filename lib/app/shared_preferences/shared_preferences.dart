@@ -22,8 +22,8 @@ class AppPreferences {
 
   //login
   /// Set Value in Is SignIn to be TRUE in shared pref
-  Future<void> setIsSignIn() async {
-    await _sharedPreferences.setBool(isSignIn, true);
+  Future<void> setIsSignIn({required bool isSign}) async {
+    await _sharedPreferences.setBool(isSignIn, isSign);
   }
 
   /// Get Value of isSignIn

@@ -149,13 +149,14 @@ ThemeData getLightModeThemeData() {
       centerTitle: true,
       color: ColorManager.primary,
       shadowColor: ColorManager.lightPrimary,
-      elevation: AppSize.s2,
+      elevation: AppSize.s0,
       titleTextStyle: getTextRegularStyle(
         color: ColorManager.backGround,
         fontSize: FontsSize.s16,
       ),
       systemOverlayStyle: SystemUiOverlayStyle(
         statusBarColor: ColorManager.primary,
+        statusBarIconBrightness: Brightness.light
       ),
     ),
 

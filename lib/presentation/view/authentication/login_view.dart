@@ -25,14 +25,31 @@ class LoginView extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocConsumer<AuthCubit, AuthState>(
       listener: (context, state) {
-        if (state is UserLoginSuccess || state is SignInWithGoogleSuccess) {
+        if (state is UserLoginSuccess ||
+            state is SignInWithGoogleSuccess ||
+            state is SignInWithFaceBookSuccess ||
+            state is SignInAnonymouslySuccess) {
           Navigator.pushReplacementNamed(context, Routes.home);
-          _appPreferences.setIsSignIn();
+          _appPreferences.setIsSignIn(isSign: true);
         }
       },
       builder: (context, state) {
         var cubit = AuthCubit.get(context);
         return Scaffold(
+          appBar: AppBar(
+            backgroundColor: Theme.of(context).backgroundColor,
+            actions: [
+              MaterialButton(
+                onPressed: () {
+                  cubit.signInAnonymously(context);
+                },
+                child: Text(
+                  StringManager.loginLater,
+                  style: Theme.of(context).textTheme.displaySmall,
+                ),
+              )
+            ],
+          ),
           body: Center(
             child: SingleChildScrollView(
               child: Padding(
@@ -178,7 +195,9 @@ class LoginFormSection extends StatelessWidget {
           },
         ),
         const SizedBox(height: AppSize.s20),
-        state is UserLoginLoading
+        state is UserLoginLoading ||
+                state is SignInWithGoogleLoading ||
+                state is SignInWithFaceBookLoading
             ? AdaptiveCircleIndicator()
             : decorationButton(
                 context,

@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:moscore/presentation/resources/colors/color_manager.dart';
 import 'package:moscore/presentation/resources/routes/routes_manager.dart';
 import '../../common/header_section_of_auth_views.dart';
 import '../../resources/components/components.dart';

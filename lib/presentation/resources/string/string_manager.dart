@@ -62,4 +62,13 @@ class StringManager {
       'Password should contain:\nCapital, small letter\nNumber & Special Character.';
   static const String registerSuccess = 'Register Success';
   static const String loginSuccess = 'Login Success';
+  static const String loginLater = 'Login Later';
+
+  static const String logOut = 'Log Out';
+
+  static String anonymouslyUser({required String firstThreeIndex}) =>
+      'User $firstThreeIndex';
+
+  static String anonymouslyMail({required String firstThreeIndex}) =>
+      '$firstThreeIndex@mail.com';
 }

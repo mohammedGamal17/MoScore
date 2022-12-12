@@ -66,7 +66,9 @@ class SocialMediaSection extends StatelessWidget {
               width: AppSize.s40,
               radius: AppSize.s20,
               widget: IconButton(
-                onPressed: () {},
+                onPressed: () {
+                  cubit.signInWithFacebook(context);
+                },
                 icon: FaIcon(
                   FontAwesomeIcons.facebook,
                   color: ColorManager.white,

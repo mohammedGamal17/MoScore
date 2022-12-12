@@ -14,6 +14,16 @@ class CreateUserFail extends AuthState {
   CreateUserFail(this.message);
 }
 
+class SignInAnonymouslyLoading extends AuthState {}
+
+class SignInAnonymouslySuccess extends AuthState {}
+
+class SignInAnonymouslyFail extends AuthState {
+  final String message;
+
+  SignInAnonymouslyFail(this.message);
+}
+
 class UserRegisterLoading extends AuthState {}
 
 class UserRegisterSuccess extends AuthState {}
@@ -42,4 +52,24 @@ class SignInWithGoogleFail extends AuthState {
   final String message;
 
   SignInWithGoogleFail(this.message);
+}
+
+class SignInWithFaceBookLoading extends AuthState {}
+
+class SignInWithFaceBookSuccess extends AuthState {}
+
+class SignInWithFaceBookFail extends AuthState {
+  final String message;
+
+  SignInWithFaceBookFail(this.message);
+}
+
+class SignOutLoading extends AuthState {}
+
+class SignOutSuccess extends AuthState {}
+
+class SignOutFail extends AuthState {
+  final String message;
+
+  SignOutFail(this.message);
 }

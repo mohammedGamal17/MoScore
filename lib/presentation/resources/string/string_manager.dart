@@ -66,6 +66,14 @@ class StringManager {
 
   static const String logOut = 'Log Out';
 
+  // Home Screen
+  static const String profile = 'Profile';
+  static const String search = 'Search';
+  static const String live = 'Live';
+  static const String settings = 'Settings';
+  static const String rateUs = 'Rate us';
+  static const String shareMoScore = 'Share MoScore';
+
   static String anonymouslyUser({required String firstThreeIndex}) =>
       'User $firstThreeIndex';
 

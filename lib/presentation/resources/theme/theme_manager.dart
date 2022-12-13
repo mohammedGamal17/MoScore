@@ -16,6 +16,7 @@ ThemeData getLightModeThemeData() {
     disabledColor: ColorManager.settingList,
     splashColor: ColorManager.darkPrimary,
     backgroundColor: ColorManager.backGround,
+    iconTheme: IconThemeData(color: ColorManager.primary),
     // text
     textTheme: TextTheme(
       headlineLarge: getTextSemiBoldStyle(
@@ -93,6 +94,10 @@ ThemeData getLightModeThemeData() {
       ),
     ),
 
+    drawerTheme: DrawerThemeData(
+      backgroundColor: ColorManager.backGround,
+    ),
+
     // input
     inputDecorationTheme: InputDecorationTheme(
       // content padding
@@ -155,9 +160,8 @@ ThemeData getLightModeThemeData() {
         fontSize: FontsSize.s16,
       ),
       systemOverlayStyle: SystemUiOverlayStyle(
-        statusBarColor: ColorManager.primary,
-        statusBarIconBrightness: Brightness.light
-      ),
+          statusBarColor: ColorManager.primary,
+          statusBarIconBrightness: Brightness.light),
     ),
 
     // button
@@ -228,6 +232,10 @@ ThemeData getLightModeThemeData() {
       unselectedIconTheme: IconThemeData(
         color: ColorManager.navigationBarItemColor,
       ),
+    ),
+    listTileTheme: ListTileThemeData(
+      textColor: ColorManager.primary,
+      iconColor: ColorManager.primary,
     ),
   );
 }

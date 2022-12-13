@@ -5,7 +5,7 @@ import 'package:moscore/domain/repositories/repositories.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../data/network/remote/info/network_info.dart';
-import '../../data/repositories_implementation/repositories_implemntation.dart';
+import '../../data/repositories_implementation/repositories_implementation.dart';
 import '../../presentation/view_model/cubit/app_cubit/app_cubit.dart';
 import '../../presentation/view_model/cubit/auth_cubit/auth_cubit.dart';
 import '../shared_preferences/shared_preferences.dart';

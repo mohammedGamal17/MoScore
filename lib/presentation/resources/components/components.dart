@@ -90,9 +90,11 @@ Widget textFormField({
   );
 }
 
-Widget separator() {
+Widget separator({
+  double padding = AppPadding.p20,
+}) {
   return Padding(
-    padding: const EdgeInsets.all(10.0),
+    padding: EdgeInsets.all(padding),
     child: Container(
       height: 2.0,
       decoration: BoxDecoration(

@@ -28,6 +28,7 @@ dependencies:
   universal_io: ^2.0.4
   quickalert: ^1.0.1
   internet_connection_checker: ^1.0.0+1
+  cached_network_image: ^3.2.3
 
   # Firebase Packages
   firebase_core: 2.4.0
@@ -42,6 +43,24 @@ dev_dependencies:
     sdk: flutter
 
   flutter_lints: ^2.0.1
+  flutter_launcher_icons: "^0.11.0"
+
+flutter_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/images/logo.png"
+  web:
+    generate: true
+    image_path: "assets/images/logo.png"
+    background_color: "#ffffff"
+    theme_color: "#ffffff"
+  windows:
+    generate: true
+    image_path: "assets/images/logo.png"
+    icon_size: 48 # min:48, max:256, default: 48
+  macos:
+    generate: true
+    image_path: "assets/images/logo.png"
 
 flutter:
 

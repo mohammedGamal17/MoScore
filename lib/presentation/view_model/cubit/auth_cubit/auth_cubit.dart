@@ -12,7 +12,6 @@ import 'package:moscore/data/models/user/users_model.dart';
 import 'package:moscore/data/network/remote/info/network_info.dart';
 import 'package:quickalert/models/quickalert_type.dart';
 
-import '../../../resources/assets/assets.dart';
 import '../../../resources/colors/color_manager.dart';
 import '../../../resources/components/components.dart';
 import '../../../resources/routes/routes_manager.dart';
@@ -33,17 +32,18 @@ class AuthCubit extends Cubit<AuthState> {
 
   /// Create User Firebase Fire Store
   Future<void> userCreate(
-      BuildContext context, {
-        required String displayName,
-        required String email,
-        required String uId,
-        String photoURL = AssetsResources.logo,
-      }) async {
+    BuildContext context, {
+    required String displayName,
+    required String email,
+    required String uId,
+    String? photoURL,
+  }) async {
     emit(CreateUserLoading());
     UsersModel usersModel = UsersModel(
       name: displayName,
       email: email,
-      image: photoURL,
+      image: photoURL ??
+          'https://i.pinimg.com/564x/b5/58/89/b5588903c3aa0d3c0940fca614b399f9.jpg',
       uId: uId,
     );
     CollectionReference users = FirebaseFirestore.instance.collection('users');
@@ -66,18 +66,18 @@ class AuthCubit extends Cubit<AuthState> {
       try {
         await FirebaseAuth.instance.signInAnonymously().then((value) {
           getIt<AppPreferences>().setUId(uID: value.user!.uid);
-          // userCreate(
-          //   context,
-          //   displayName: value.user!.displayName ??
-          //       StringManager.anonymouslyUser(
-          //         firstThreeIndex: value.user!.uid.substring(1, 4),
-          //       ),
-          //   email: value.user!.email ??
-          //       StringManager.anonymouslyMail(
-          //         firstThreeIndex: value.user!.uid.substring(1, 4),
-          //       ),
-          //   uId: value.user!.uid,
-          // );
+          userCreate(
+            context,
+            displayName: value.user!.displayName ??
+                StringManager.anonymouslyUser(
+                  firstThreeIndex: value.user!.uid.substring(1, 4),
+                ),
+            email: value.user!.email ??
+                StringManager.anonymouslyMail(
+                  firstThreeIndex: value.user!.uid.substring(1, 4),
+                ),
+            uId: value.user!.uid,
+          );
           emit(SignInAnonymouslySuccess());
         });
       } on FirebaseAuthException catch (e) {
@@ -220,11 +220,15 @@ class AuthCubit extends Cubit<AuthState> {
           .signInWithCredential(credential)
           .then((value) {
         getIt<AppPreferences>().setUId(uID: value.user!.uid);
+        if (kDebugMode) {
+          print(value.user!.photoURL);
+        }
         userCreate(
           context,
           displayName: value.user!.displayName!,
           email: value.user!.email!,
           uId: value.user!.uid,
+          photoURL: value.user!.photoURL,
         );
         emit(SignInWithGoogleSuccess());
         return value;
@@ -266,6 +270,7 @@ class AuthCubit extends Cubit<AuthState> {
           displayName: value.user!.displayName!,
           email: value.user!.email!,
           uId: value.user!.uid,
+          photoURL: value.user!.photoURL,
         );
         emit(SignInWithFaceBookSuccess());
         return value;

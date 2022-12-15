@@ -1,18 +1,19 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:moscore/app/dependency_injection/dependency_injection.dart';
 import 'package:moscore/app/shared_preferences/shared_preferences.dart';
 import 'package:moscore/data/models/user/users_model.dart';
 
 import '../../../resources/colors/color_manager.dart';
 import '../../../resources/components/components.dart';
-import 'app_state.dart';
+import 'profile_state.dart';
 
-class AppCubit extends Cubit<AppState> {
-  AppCubit() : super(AppInitial());
+class ProfileCubit extends Cubit<ProfileState> {
+  ProfileCubit() : super(ProfileInitial());
 
-  static AppCubit get(context) => BlocProvider.of(context);
+  static ProfileCubit get(context) => BlocProvider.of(context);
   UsersModel? usersModel;
   final String? uId = getIt<AppPreferences>().getUId();
 
@@ -34,5 +35,12 @@ class AppCubit extends Cubit<AppState> {
         print(onError.toString());
       }
     });
+  }
+
+  final ImagePicker _picker = ImagePicker();
+
+  Future<void> pickImage() async {
+    final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
+    print(image!.path);
   }
 }

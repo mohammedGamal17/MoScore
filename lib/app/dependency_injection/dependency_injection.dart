@@ -6,7 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../data/network/remote/info/network_info.dart';
 import '../../data/repositories_implementation/repositories_implementation.dart';
-import '../../presentation/view_model/cubit/app_cubit/app_cubit.dart';
+import '../../presentation/view_model/cubit/profile_cubit/profile_cubit.dart';
 import '../../presentation/view_model/cubit/auth_cubit/auth_cubit.dart';
 import '../shared_preferences/shared_preferences.dart';
 
@@ -31,6 +31,6 @@ class Di {
 
     // Cubit
     getIt.registerFactory<AuthCubit>(() => AuthCubit(getIt<NetworkInfo>()));
-    getIt.registerFactory<AppCubit>(() => AppCubit());
+    getIt.registerFactory<ProfileCubit>(() => ProfileCubit(getIt<NetworkInfo>()));
   }
 }

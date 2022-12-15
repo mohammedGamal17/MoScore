@@ -7,6 +7,7 @@ import '../../view/home/home_view.dart';
 import '../../view/matches/matches_details_view.dart';
 import '../../view/matches/matches_view.dart';
 import '../../view/on_boarding/on_boarding_view.dart';
+import '../../view/profile/profile_view.dart';
 import '../string/string_manager.dart';
 
 class Routes {
@@ -39,7 +40,7 @@ class RoutesGenerator {
         return MaterialPageRoute(
             builder: (context) => const MatchesDetailsView());
       case Routes.profile:
-        return MaterialPageRoute(builder: (context) => OnBoarding());
+        return MaterialPageRoute(builder: (context) => const ProfileView());
       default:
         return unDefinedRoute();
     }

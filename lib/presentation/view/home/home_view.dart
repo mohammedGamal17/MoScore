@@ -8,9 +8,10 @@ import 'package:moscore/presentation/resources/values/values_manager.dart';
 
 import '../../common/logout_button.dart';
 import '../../resources/assets/assets.dart';
+import '../../resources/routes/routes_manager.dart';
 import '../../resources/string/string_manager.dart';
-import '../../view_model/cubit/app_cubit/app_cubit.dart';
-import '../../view_model/cubit/app_cubit/app_state.dart';
+import '../../view_model/cubit/profile_cubit/profile_cubit.dart';
+import '../../view_model/cubit/profile_cubit/profile_state.dart';
 
 class HomeView extends StatelessWidget {
   const HomeView({super.key});
@@ -18,11 +19,11 @@ class HomeView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => getIt<AppCubit>()..getUserData(context),
-      child: BlocConsumer<AppCubit, AppState>(
+      create: (context) => getIt<ProfileCubit>()..getUserData(context),
+      child: BlocConsumer<ProfileCubit, ProfileState>(
         listener: (context, state) {},
         builder: (context, state) {
-          AppCubit appCubit = AppCubit.get(context);
+          ProfileCubit appCubit = ProfileCubit.get(context);
           return appCubit.usersModel != null
               ? Scaffold(
                   appBar: AppBar(),
@@ -46,7 +47,7 @@ class HomeView extends StatelessWidget {
 class DrawerComponent extends StatelessWidget {
   const DrawerComponent({super.key, required this.appCubit});
 
-  final AppCubit appCubit;
+  final ProfileCubit appCubit;
 
   @override
   Widget build(BuildContext context) {
@@ -96,7 +97,7 @@ class DrawerComponent extends StatelessWidget {
 class DrawerHeaderComponent extends StatelessWidget {
   const DrawerHeaderComponent({super.key, required this.appCubit});
 
-  final AppCubit appCubit;
+  final ProfileCubit appCubit;
 
   @override
   Widget build(BuildContext context) {
@@ -140,7 +141,7 @@ class DrawerHeaderComponent extends StatelessWidget {
           const SizedBox(height: AppSize.s10),
           InkWell(
             onTap: () {
-              //TODO PROFILE SCREEN
+              Navigator.pushNamed(context, Routes.profile);
             },
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -163,7 +164,7 @@ class DrawerHeaderComponent extends StatelessWidget {
 class Body extends StatelessWidget {
   const Body({super.key, required this.appCubit});
 
-  final AppCubit appCubit;
+  final ProfileCubit appCubit;
 
   @override
   Widget build(BuildContext context) {

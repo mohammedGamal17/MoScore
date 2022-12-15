@@ -74,6 +74,15 @@ class StringManager {
   static const String rateUs = 'Rate us';
   static const String shareMoScore = 'Share MoScore';
 
+  // Profile Screen
+  static const String updated = 'Updated';
+  static const String favourites = 'Favourites';
+  static const String player = 'Player';
+  static const String team = 'Team';
+  static const String league = 'League';
+  static const String updateImage = 'Update Image';
+
+
   static String anonymouslyUser({required String firstThreeIndex}) =>
       'User $firstThreeIndex';
 

@@ -19,7 +19,7 @@ dependencies:
   dartz: ^0.10.1
   shared_preferences: ^2.0.15
   get_it: ^7.2.0
-  lottie: ^2.0.0
+  lottie: ^2.1.0
   flutter_bloc: ^8.1.1
   bloc: ^8.1.0
   introduction_screen: ^3.1.1
@@ -29,6 +29,8 @@ dependencies:
   quickalert: ^1.0.1
   internet_connection_checker: ^1.0.0+1
   cached_network_image: ^3.2.3
+  image_picker: ^0.8.6
+  draggable_home: ^1.0.4
 
   # Firebase Packages
   firebase_core: 2.4.0
@@ -36,6 +38,7 @@ dependencies:
   cloud_firestore: 4.2.0
   google_sign_in: ^5.4.2
   flutter_facebook_auth: ^5.0.6
+  firebase_storage: ^11.0.7
 
 
 dev_dependencies:

@@ -6,6 +6,7 @@ import 'package:shimmer/shimmer.dart';
 import '../../../app/dependency_injection/dependency_injection.dart';
 import '../../resources/colors/color_manager.dart';
 import '../../resources/components/components.dart';
+import '../../resources/routes/routes_manager.dart';
 import '../../resources/string/string_manager.dart';
 import '../../resources/values/values_manager.dart';
 import '../../view_model/cubit/profile_cubit/profile_cubit.dart';
@@ -15,20 +16,25 @@ class ProfileUpdate extends StatelessWidget {
   ProfileUpdate({super.key});
 
   final _formKey = GlobalKey<FormState>();
+  final _nameEditController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => getIt<ProfileCubit>()..getUserData(context),
       child: BlocConsumer<ProfileCubit, ProfileState>(
-        listener: (context, state) {},
+        listener: (context, state) {
+          if (state is UpdateUserDataSuccess) {
+            Navigator.pushReplacementNamed(context, Routes.home);
+          }
+        },
         builder: (context, state) {
           ProfileCubit profileCubit = ProfileCubit.get(context);
           return Scaffold(
             appBar: AppBar(),
             body: profileCubit.usersModel != null
                 ? SingleChildScrollView(
-                  child: Padding(
+                    child: Padding(
                       padding: const EdgeInsets.all(AppPadding.p20),
                       child: Align(
                         alignment: Alignment.topCenter,
@@ -40,6 +46,7 @@ class ProfileUpdate extends StatelessWidget {
                               separator(horizontalPadding: AppPadding.p0),
                               DataSection(
                                 profileCubit: profileCubit,
+                                nameEditController: _nameEditController,
                               ),
                               ElevatedButton(
                                 onPressed: () {
@@ -47,7 +54,10 @@ class ProfileUpdate extends StatelessWidget {
                                     if (state is ImagePickedSuccess) {
                                       profileCubit.uploadImage(context);
                                     }
-                                    profileCubit.userUpdateData(context);
+                                    profileCubit.userUpdateData(
+                                      context,
+                                      displayName: _nameEditController.text,
+                                    );
                                   }
                                 },
                                 child: const Text(StringManager.update),
@@ -57,7 +67,7 @@ class ProfileUpdate extends StatelessWidget {
                         ),
                       ),
                     ),
-                )
+                  )
                 : AdaptiveCircleIndicator(),
           );
         },
@@ -134,19 +144,22 @@ class ImageSection extends StatelessWidget {
 }
 
 class DataSection extends StatelessWidget {
-  DataSection({super.key, required this.profileCubit});
+  const DataSection(
+      {super.key,
+      required this.profileCubit,
+      required this.nameEditController});
 
   final ProfileCubit profileCubit;
 
-  final _nameEditController = TextEditingController();
+  final TextEditingController nameEditController;
 
   @override
   Widget build(BuildContext context) {
-    _nameEditController.text = profileCubit.usersModel!.name;
+    nameEditController.text = profileCubit.usersModel!.name;
     return Column(
       children: [
         TextFormField(
-          controller: _nameEditController,
+          controller: nameEditController,
           decoration: const InputDecoration(
             labelText: StringManager.name,
             hintText: StringManager.name,

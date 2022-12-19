@@ -31,14 +31,16 @@ dependencies:
   cached_network_image: ^3.2.3
   image_picker: ^0.8.6
   draggable_home: ^1.0.4
+  shimmer: ^2.0.0
+  google_mobile_ads: ^2.3.0
 
   # Firebase Packages
   firebase_core: 2.4.0
-  firebase_auth: 4.2.0
+  firebase_auth: 4.2.1
   cloud_firestore: 4.2.0
   google_sign_in: ^5.4.2
   flutter_facebook_auth: ^5.0.6
-  firebase_storage: ^11.0.7
+  firebase_storage: 11.0.8
 
 
 dev_dependencies:

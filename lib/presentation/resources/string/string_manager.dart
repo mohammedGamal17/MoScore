@@ -80,8 +80,13 @@ class StringManager {
   static const String player = 'Player';
   static const String team = 'Team';
   static const String league = 'League';
-  static const String updateImage = 'Update Image';
 
+  static String profileUpdate = 'Update Your Profile';
+
+  // Update Profile Screen
+  static const String update = 'Update';
+  static const String updateImage = 'Update Image';
+  static const String imageUploaded = 'Image Uploaded';
 
   static String anonymouslyUser({required String firstThreeIndex}) =>
       'User $firstThreeIndex';

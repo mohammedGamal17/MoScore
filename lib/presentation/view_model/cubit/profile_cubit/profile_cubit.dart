@@ -59,7 +59,7 @@ class ProfileCubit extends Cubit<ProfileState> {
       );
       CollectionReference users =
           FirebaseFirestore.instance.collection('users');
-      return await users.doc(uId).set(userModel.toJson()).then((value) {
+      return await users.doc(uId).update(userModel.toJson()).then((value) {
         alert(
           context,
           quickAlertType: QuickAlertType.success,
@@ -104,19 +104,22 @@ class ProfileCubit extends Cubit<ProfileState> {
 
   Future uploadImage(context) async {
     if (await _networkInfo.isConnected) {
+      emit(ImageUploadLoading());
       final storageRef = FirebaseStorage.instance.ref();
 
       final imagesRef = storageRef
           .child('users/${(Uri.file(imagePath!.path).pathSegments.last)}');
       try {
         final imageUrl = await imagesRef.putFile(imagePath!);
-        imageUrl.ref.getDownloadURL().then(
-              (value) => userUpdateData(
+        imageUrl.ref.getDownloadURL().then((value) => {
+              userUpdateData(
                 context,
                 photoURL: value,
               ),
-            );
+              emit(ImageUploadSuccess()),
+            });
       } on FirebaseException catch (e) {
+        emit(ImageUploadFail(e.message.toString()));
         alert(
           context,
           quickAlertType: QuickAlertType.error,
@@ -125,6 +128,7 @@ class ProfileCubit extends Cubit<ProfileState> {
         );
       }
     } else {
+      emit(ImageUploadFail(StringManager.noInternetError));
       alert(
         context,
         quickAlertType: QuickAlertType.error,
@@ -137,4 +141,20 @@ class ProfileCubit extends Cubit<ProfileState> {
   List favPlayer = [1, 1, 1, 1, 1, 1];
   List favTeam = [1, 1, 1, 1, 1, 1, 1, 1];
   List favLeague = [1, 1, 1];
+
+  bool readOnly = true;
+
+  bool changeReadOnly() {
+    readOnly = !readOnly;
+    emit(ChangeReadOnly());
+    return readOnly;
+  }
+
+  bool nameChanged = false;
+
+  bool changeName() {
+    nameChanged != nameChanged;
+    emit(ChangeName());
+    return nameChanged;
+  }
 }

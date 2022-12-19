@@ -1,12 +1,13 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:draggable_home/draggable_home.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:moscore/presentation/common/logout_button.dart';
-import 'package:moscore/presentation/resources/assets/assets.dart';
 import 'package:moscore/presentation/resources/colors/color_manager.dart';
 import 'package:moscore/presentation/resources/fonts/fonts_manager.dart';
 import 'package:moscore/presentation/resources/string/string_manager.dart';
 import 'package:moscore/presentation/resources/values/values_manager.dart';
+import 'package:shimmer/shimmer.dart';
 
 import '../../../app/dependency_injection/dependency_injection.dart';
 import '../../resources/components/components.dart';
@@ -39,22 +40,15 @@ class ProfileView extends StatelessWidget {
 }
 
 class ProfileData extends StatelessWidget {
-  const ProfileData({super.key, required this.profileCubit});
+  ProfileData({super.key, required this.profileCubit});
 
   final ProfileCubit profileCubit;
+  final _nameEditController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
+    _nameEditController.text = profileCubit.usersModel!.name;
     return DraggableHome(
-      actions: [
-        InkWell(
-          onTap: () {},
-          child: const Padding(
-            padding: EdgeInsets.all(10.0),
-            child: Icon(Icons.edit),
-          ),
-        )
-      ],
       title: Text(
         profileCubit.usersModel!.name,
         style: Theme.of(context).textTheme.headlineMedium,
@@ -84,27 +78,24 @@ class ProfileHeader extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Stack(
-          alignment: Alignment.bottomRight,
-          children: [
-            CircleAvatar(
-              backgroundImage: NetworkImage(profileCubit.usersModel!.image),
-              onBackgroundImageError: (exception, stackTrace) => const Image(
-                image: AssetImage(AssetsResources.logo),
+        ClipRRect(
+          borderRadius: BorderRadius.circular(AppSize.s70),
+          child: CachedNetworkImage(
+            imageUrl: profileCubit.usersModel!.image,
+            fit: BoxFit.cover,
+            placeholder: (context, url) => Shimmer(
+              gradient: LinearGradient(
+                colors: [
+                  ColorManager.primary,
+                  ColorManager.lightPrimary,
+                  ColorManager.white,
+                ],
               ),
-              radius: AppSize.s60,
+              child: const CircleAvatar(radius: AppSize.s30),
             ),
-            CircleAvatar(
-              backgroundColor: ColorManager.darkPrimary,
-              child: InkWell(
-                onTap: () {
-                  profileCubit.pickImage();
-                },
-                child:
-                    Icon(Icons.camera_alt_outlined, color: ColorManager.white),
-              ),
-            ),
-          ],
+            height: AppSize.s144,
+            width: AppSize.s144,
+          ),
         ),
         const SizedBox(height: AppSize.s10),
         Text(
@@ -114,35 +105,7 @@ class ProfileHeader extends StatelessWidget {
               .headlineMedium!
               .copyWith(fontSize: FontsSize.s22),
         ),
-        if (profileCubit.state is ImagePickedSuccess)
-          Column(
-            children: [
-              const SizedBox(height: AppSize.s10),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  profileCubit.state is UpdateUserDataLoading
-                      ? AdaptiveCircleIndicator()
-                      : MaterialButton(
-                          onPressed: () {
-                            profileCubit.uploadImage(context);
-                          },
-                          textColor: ColorManager.white,
-                          color: ColorManager.lightPrimary,
-                          height: AppSize.s40,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(AppSize.s10),
-                          ),
-                          child: const Text(StringManager.updateImage),
-                        ),
-                  Icon(
-                    Icons.image,
-                    color: ColorManager.white,
-                  )
-                ],
-              ),
-            ],
-          )
+
       ],
     );
   }
@@ -172,6 +135,15 @@ class ProfileBody extends StatelessWidget {
           favType: StringManager.league,
           length: profileCubit.favLeague.length,
         ),
+        Padding(
+          padding: const EdgeInsets.all(AppPadding.p20),
+          child: ElevatedButton(
+            child: Text(StringManager.profileUpdate),
+            onPressed: () {
+              Navigator.pushNamed(context, Routes.profileUpdate);
+            },
+          ),
+        )
       ],
     );
   }

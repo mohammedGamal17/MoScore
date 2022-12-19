@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:moscore/presentation/view/authentication/login_view.dart';
+import 'package:moscore/presentation/view/profile/profile_update.dart';
 import 'package:moscore/presentation/view/splash_view/splash_view.dart';
 
 import '../../view/authentication/register_view.dart';
@@ -19,6 +20,7 @@ class Routes {
   static const String matches = '/matches';
   static const String matchesDetails = '/matchesDetails';
   static const String profile = '/profile';
+  static const String profileUpdate = '/profile/profileUpdate';
 }
 
 class RoutesGenerator {
@@ -41,6 +43,8 @@ class RoutesGenerator {
             builder: (context) => const MatchesDetailsView());
       case Routes.profile:
         return MaterialPageRoute(builder: (context) => const ProfileView());
+      case Routes.profileUpdate:
+        return MaterialPageRoute(builder: (context) => ProfileUpdate());
       default:
         return unDefinedRoute();
     }

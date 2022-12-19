@@ -1,15 +1,17 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:moscore/app/dependency_injection/dependency_injection.dart';
-import 'package:moscore/presentation/resources/colors/color_manager.dart';
-import 'package:moscore/presentation/resources/components/components.dart';
-import 'package:moscore/presentation/resources/fonts/fonts_manager.dart';
-import 'package:moscore/presentation/resources/values/values_manager.dart';
+import 'package:shimmer/shimmer.dart';
 
+import '../../../app/dependency_injection/dependency_injection.dart';
 import '../../common/logout_button.dart';
 import '../../resources/assets/assets.dart';
+import '../../resources/colors/color_manager.dart';
+import '../../resources/components/components.dart';
+import '../../resources/fonts/fonts_manager.dart';
 import '../../resources/routes/routes_manager.dart';
 import '../../resources/string/string_manager.dart';
+import '../../resources/values/values_manager.dart';
 import '../../view_model/cubit/profile_cubit/profile_cubit.dart';
 import '../../view_model/cubit/profile_cubit/profile_state.dart';
 
@@ -72,7 +74,10 @@ class DrawerComponent extends StatelessWidget {
             title: const Text(StringManager.live),
             onTap: () {},
           ),
-          separator(padding: AppPadding.p0),
+          separator(
+            horizontalPadding: AppPadding.p0,
+            verticalPadding: AppPadding.p0,
+          ),
           ListTile(
             leading: const Icon(Icons.settings),
             title: const Text(StringManager.settings),
@@ -123,12 +128,23 @@ class DrawerHeaderComponent extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          CircleAvatar(
-            radius: AppSize.s34,
-            backgroundImage: NetworkImage(appCubit.usersModel!.image),
-            onBackgroundImageError: (exception, stackTrace) {
-              const AssetImage(AssetsResources.logo);
-            },
+          ClipRRect(
+            borderRadius: BorderRadius.circular(AppSize.s30),
+            child: CachedNetworkImage(
+              imageUrl: appCubit.usersModel!.image,
+              placeholder: (context, url) => Shimmer(
+                gradient: LinearGradient(
+                  colors: [
+                    ColorManager.primary,
+                    ColorManager.lightPrimary,
+                    ColorManager.white,
+                  ],
+                ),
+                child: const CircleAvatar(radius: AppSize.s30),
+              ),
+              height: AppSize.s60,
+              width: AppSize.s60,
+            ),
           ),
           const SizedBox(height: AppSize.s10),
           Text(

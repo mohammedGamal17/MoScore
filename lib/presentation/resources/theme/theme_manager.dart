@@ -202,6 +202,14 @@ ThemeData getLightModeThemeData() {
         ),
       ),
     ),
+    textButtonTheme: TextButtonThemeData(
+      style: TextButton.styleFrom(
+        textStyle: TextStyle(
+          color: ColorManager.white,
+          fontSize: FontsSize.s16,
+        ),
+      ),
+    ),
 
     // floating Action
     floatingActionButtonTheme: FloatingActionButtonThemeData(

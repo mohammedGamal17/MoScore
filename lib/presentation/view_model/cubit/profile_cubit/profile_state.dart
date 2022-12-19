@@ -25,3 +25,18 @@ class UpdateUserDataFail extends ProfileState {
 class ImagePickedSuccess extends ProfileState {}
 
 class ImagePickedFail extends ProfileState {}
+
+class ImageUploadLoading extends ProfileState {}
+
+class ImageUploadSuccess extends ProfileState {}
+
+class ImageUploadFail extends ProfileState {
+  final String message;
+
+  ImageUploadFail(this.message);
+}
+
+class ChangeReadOnly extends ProfileState {
+}
+
+class ChangeName extends ProfileState {}

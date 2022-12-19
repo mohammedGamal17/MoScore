@@ -28,10 +28,10 @@ void navigateToAndReplace(context, widget) => Navigator.pushAndRemoveUntil(
 
 Widget textFormField({
   required TextEditingController controller,
-  required Function validate,
   required String labelText,
   required IconData prefix,
   required TextInputType textInputType,
+  required Function validate,
   double borderRadius = 10.0,
   bool autoFocus = false,
   bool isPassword = false,
@@ -41,6 +41,7 @@ Widget textFormField({
   Function? onChange,
   Function? onSubmit,
   TextDirection? textDirection,
+  Color? fillColor,
   int maxLen = 75,
 }) {
   return TextFormField(
@@ -61,6 +62,7 @@ Widget textFormField({
       ),
       labelText: labelText,
       filled: true,
+      fillColor: fillColor,
       labelStyle: TextStyle(color: ColorManager.white),
       prefixIcon: Icon(prefix, color: ColorManager.white),
       suffixIcon: suffix != null
@@ -91,10 +93,14 @@ Widget textFormField({
 }
 
 Widget separator({
-  double padding = AppPadding.p20,
+  double verticalPadding = AppPadding.p20,
+  double horizontalPadding = AppPadding.p20,
 }) {
   return Padding(
-    padding: EdgeInsets.all(padding),
+    padding: EdgeInsets.symmetric(
+      vertical: verticalPadding,
+      horizontal: horizontalPadding,
+    ),
     child: Container(
       height: 2.0,
       decoration: BoxDecoration(

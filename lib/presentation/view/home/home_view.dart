@@ -26,20 +26,20 @@ class HomeView extends StatelessWidget {
         listener: (context, state) {},
         builder: (context, state) {
           ProfileCubit appCubit = ProfileCubit.get(context);
-          return appCubit.usersModel != null
-              ? Scaffold(
-                  appBar: AppBar(),
-                  drawer: DrawerComponent(appCubit: appCubit),
-                  body: Center(
+          return Scaffold(
+            appBar: AppBar(),
+            drawer: DrawerComponent(appCubit: appCubit),
+            body: appCubit.usersModel != null
+                ? Center(
                     child: Column(
                       children: [
                         Text(appCubit.usersModel!.name),
                         const LogOutButton(),
                       ],
                     ),
-                  ),
-                )
-              : AdaptiveCircleIndicator();
+                  )
+                : AdaptiveCircleIndicator(),
+          );
         },
       ),
     );

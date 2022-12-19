@@ -2,6 +2,7 @@
     package="com.impactsolutions.moscore">
 
     <uses-permission android:name="android.permission.INTERNET"/>
+
    <application
         android:label="MoScore"
         android:name="${applicationName}"
@@ -9,7 +10,9 @@
 
        <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id"/>
        <meta-data android:name="com.facebook.sdk.ClientToken" android:value="@string/facebook_client_token"/>
-
+       <meta-data
+           android:name="com.google.android.gms.ads.APPLICATION_ID"
+           android:value="ca-app-pub-3940256099942544~3347511713"/>
         <activity
             android:name=".MainActivity"
             android:exported="true"

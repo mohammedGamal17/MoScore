@@ -25,6 +25,7 @@ class ProfileCubit extends Cubit<ProfileState> {
   final String? uId = getIt<AppPreferences>().getUId();
   final ImagePicker _picker = ImagePicker();
   File? imagePath;
+  String? imageLink;
 
   void getUserData(context) {
     emit(GetUserDataLoading());
@@ -116,6 +117,7 @@ class ProfileCubit extends Cubit<ProfileState> {
                 context,
                 photoURL: value,
               ),
+              imageLink = value,
               emit(ImageUploadSuccess()),
             });
       } on FirebaseException catch (e) {

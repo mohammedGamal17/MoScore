@@ -89,7 +89,7 @@ class StringManager {
   static const String imageUploaded = 'Image Uploaded';
 
   static String anonymouslyUser({required String firstThreeIndex}) =>
-      'User $firstThreeIndex';
+      'User$firstThreeIndex';
 
   static String anonymouslyMail({required String firstThreeIndex}) =>
       '$firstThreeIndex@mail.com';

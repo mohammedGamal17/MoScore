@@ -120,8 +120,8 @@ Widget separator({
 
 Widget decorationButton(
   context, {
-  required Function function,
   required Widget widget,
+  required Function function,
   double? height = AppSize.s40,
   double? width = double.infinity,
   double? radius = AppSize.s10,

@@ -17,7 +17,7 @@ class Users extends Equatable {
   List<Object> get props => [name, email, image, uId];
 }
 
-class Response extends Equatable {
+class FixtureResponse extends Equatable {
   final Fixture fixture;
   final League league;
   final Teams teams;
@@ -25,7 +25,7 @@ class Response extends Equatable {
   final Score score;
   final List<Events> events;
 
-  const Response({
+  const FixtureResponse({
     required this.fixture,
     required this.league,
     required this.teams,

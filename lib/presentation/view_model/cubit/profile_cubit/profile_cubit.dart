@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -55,12 +56,16 @@ class ProfileCubit extends Cubit<ProfileState> {
       UsersModel userModel = UsersModel(
         name: displayName ?? usersModel!.name,
         image: photoURL ?? usersModel!.image,
-        email: usersModel!.email,
+        email: email ?? usersModel!.email,
         uId: uId!,
       );
+
       CollectionReference users =
           FirebaseFirestore.instance.collection('users');
       return await users.doc(uId).update(userModel.toJson()).then((value) {
+        //FirebaseAuth.instance.currentUser!.updateEmail(email!);
+        FirebaseAuth.instance.currentUser!.updateDisplayName(displayName);
+        FirebaseAuth.instance.currentUser!.updatePhotoURL(photoURL);
         alert(
           context,
           quickAlertType: QuickAlertType.success,

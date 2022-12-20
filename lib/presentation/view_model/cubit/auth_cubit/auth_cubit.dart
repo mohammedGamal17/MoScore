@@ -66,6 +66,7 @@ class AuthCubit extends Cubit<AuthState> {
       try {
         await FirebaseAuth.instance.signInAnonymously().then((value) {
           getIt<AppPreferences>().setUId(uID: value.user!.uid);
+          getIt<AppPreferences>().setIsAnonymously(isAnonymous: true);
           userCreate(
             context,
             displayName: value.user!.displayName ??
@@ -81,17 +82,6 @@ class AuthCubit extends Cubit<AuthState> {
           emit(SignInAnonymouslySuccess());
         });
       } on FirebaseAuthException catch (e) {
-        switch (e.code) {
-          case "operation-not-allowed":
-            if (kDebugMode) {
-              print("Anonymous auth hasn't been enabled for this project.");
-            }
-            break;
-          default:
-            if (kDebugMode) {
-              print("Unknown error.");
-            }
-        }
         emit(SignInAnonymouslyFail(e.message.toString()));
         alert(
           context,
@@ -302,6 +292,7 @@ class AuthCubit extends Cubit<AuthState> {
   Future signOut(context) async {
     emit(SignOutLoading());
     await FirebaseAuth.instance.signOut().then((value) {
+      getIt<AppPreferences>().clearAllCache();
       alert(
         context,
         quickAlertType: QuickAlertType.success,

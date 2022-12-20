@@ -78,6 +78,7 @@ flutter:
     - assets/json/goal.json
     - assets/json/lineup.json
     - assets/json/player.json
+    - assets/json/signIn.json
 
   fonts:
     - family: TitilliumWeb-Black

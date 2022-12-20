@@ -34,7 +34,6 @@ class HomeView extends StatelessWidget {
                     child: Column(
                       children: [
                         Text(appCubit.usersModel!.name),
-                        const LogOutButton(),
                       ],
                     ),
                   )
@@ -190,7 +189,6 @@ class Body extends StatelessWidget {
           Center(
             child: Text(appCubit.usersModel!.name),
           ),
-          const LogOutButton(),
         ],
       ),
     );

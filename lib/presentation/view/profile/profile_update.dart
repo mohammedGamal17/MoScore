@@ -16,7 +16,9 @@ class ProfileUpdate extends StatelessWidget {
   ProfileUpdate({super.key});
 
   final _formKey = GlobalKey<FormState>();
-  final _nameEditController = TextEditingController();
+  final _nameTextEditController = TextEditingController();
+  final _emailTextEditController = TextEditingController();
+  final _passwordTextEditController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +48,11 @@ class ProfileUpdate extends StatelessWidget {
                               separator(horizontalPadding: AppPadding.p0),
                               DataSection(
                                 profileCubit: profileCubit,
-                                nameEditController: _nameEditController,
+                                nameTextEditController: _nameTextEditController,
+                                emailTextEditController:
+                                    _emailTextEditController,
+                                passwordTextEditController:
+                                    _passwordTextEditController,
                               ),
                               ElevatedButton(
                                 onPressed: () {
@@ -56,7 +62,8 @@ class ProfileUpdate extends StatelessWidget {
                                     }
                                     profileCubit.userUpdateData(
                                       context,
-                                      displayName: _nameEditController.text,
+                                      displayName: _nameTextEditController.text,
+                                      email: _emailTextEditController.text,
                                     );
                                   }
                                 },
@@ -144,22 +151,28 @@ class ImageSection extends StatelessWidget {
 }
 
 class DataSection extends StatelessWidget {
-  const DataSection(
-      {super.key,
-      required this.profileCubit,
-      required this.nameEditController});
+  const DataSection({
+    super.key,
+    required this.profileCubit,
+    required this.nameTextEditController,
+    required this.emailTextEditController,
+    required this.passwordTextEditController,
+  });
 
   final ProfileCubit profileCubit;
 
-  final TextEditingController nameEditController;
+  final TextEditingController nameTextEditController;
+  final TextEditingController emailTextEditController;
+  final TextEditingController passwordTextEditController;
 
   @override
   Widget build(BuildContext context) {
-    nameEditController.text = profileCubit.usersModel!.name;
+    nameTextEditController.text = profileCubit.usersModel!.name;
+    emailTextEditController.text = profileCubit.usersModel!.email;
     return Column(
       children: [
         TextFormField(
-          controller: nameEditController,
+          controller: nameTextEditController,
           decoration: const InputDecoration(
             labelText: StringManager.name,
             hintText: StringManager.name,
@@ -193,6 +206,44 @@ class DataSection extends StatelessWidget {
         const SizedBox(
           height: AppSize.s20,
         ),
+        // TextFormField(
+        //   controller: emailTextEditController,
+        //   autofocus: true,
+        //   decoration: const InputDecoration(
+        //     labelText: StringManager.email,
+        //     hintText: StringManager.email,
+        //   ),
+        //   validator: (value) {
+        //     /// regular expression to check if string
+        //     RegExp emailValid = RegExp(
+        //       r'^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$',
+        //     );
+        //
+        //     /// A function that validate user entered email
+        //     bool validateUsername(String user) {
+        //       String email = user.trim();
+        //       if (emailValid.hasMatch(email)) {
+        //         return true;
+        //       } else {
+        //         return false;
+        //       }
+        //     }
+        //
+        //     if (value!.isEmpty || value.length < 4) {
+        //       return StringManager.pleaseEnterYourEmail;
+        //     } else {
+        //       bool result = validateUsername(value);
+        //       if (result) {
+        //         return null;
+        //       } else {
+        //         return StringManager.pleaseWriteValidEmail;
+        //       }
+        //     }
+        //   },
+        // ),
+        // const SizedBox(
+        //   height: AppSize.s20,
+        // ),
       ],
     );
   }

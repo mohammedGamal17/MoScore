@@ -10,7 +10,9 @@ import 'package:moscore/presentation/resources/values/values_manager.dart';
 import 'package:shimmer/shimmer.dart';
 
 import '../../../app/dependency_injection/dependency_injection.dart';
+import '../../../app/shared_preferences/shared_preferences.dart';
 import '../../resources/components/components.dart';
+import '../../resources/components/sign_in_anonymously.dart';
 import '../../resources/routes/routes_manager.dart';
 import '../../view_model/cubit/profile_cubit/profile_cubit.dart';
 import '../../view_model/cubit/profile_cubit/profile_state.dart';
@@ -32,7 +34,7 @@ class ProfileView extends StatelessWidget {
           ProfileCubit profileCubit = ProfileCubit.get(context);
           return profileCubit.usersModel != null
               ? ProfileData(profileCubit: profileCubit)
-              : AdaptiveCircleIndicator();
+              : Scaffold(body: AdaptiveCircleIndicator());
         },
       ),
     );
@@ -48,22 +50,24 @@ class ProfileData extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     _nameEditController.text = profileCubit.usersModel!.name;
-    return DraggableHome(
-      title: Text(
-        profileCubit.usersModel!.name,
-        style: Theme.of(context).textTheme.headlineMedium,
-      ),
-      headerWidget: ProfileHeader(profileCubit: profileCubit),
-      body: [
-        Text(
-          StringManager.favourites,
-          style: Theme.of(context).textTheme.bodyMedium,
-        ),
-        separator(),
-        ProfileBody(profileCubit: profileCubit),
-        const LogOutButton(),
-      ],
-    );
+    return getIt<AppPreferences>().getIsAnonymously()
+        ? const SignInAnonymously()
+        : DraggableHome(
+            title: Text(
+              profileCubit.usersModel!.name,
+              style: Theme.of(context).textTheme.headlineMedium,
+            ),
+            headerWidget: ProfileHeader(profileCubit: profileCubit),
+            body: [
+              Text(
+                StringManager.favourites,
+                style: Theme.of(context).textTheme.bodyMedium,
+              ),
+              separator(),
+              ProfileBody(profileCubit: profileCubit),
+              const LogOutButton(),
+            ],
+          );
   }
 }
 
@@ -105,7 +109,6 @@ class ProfileHeader extends StatelessWidget {
               .headlineMedium!
               .copyWith(fontSize: FontsSize.s22),
         ),
-
       ],
     );
   }

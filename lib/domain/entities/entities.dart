@@ -40,21 +40,17 @@ class FixtureResponse extends Equatable {
 
 class Fixture extends Equatable {
   final int id;
-  final String? referee;
-  final String timezone;
   final String date;
   final int timestamp;
-  final Periods periods;
   final Venue venue;
   final Status status;
+  final String? referee;
 
   const Fixture({
     required this.id,
     this.referee,
-    required this.timezone,
     required this.date,
     required this.timestamp,
-    required this.periods,
     required this.venue,
     required this.status,
   });
@@ -63,26 +59,11 @@ class Fixture extends Equatable {
   List<Object?> get props => [
         id,
         referee,
-        timezone,
         date,
         timestamp,
-        periods,
         venue,
         status,
       ];
-}
-
-class Periods extends Equatable {
-  final int first;
-  final int second;
-
-  const Periods({
-    required this.first,
-    required this.second,
-  });
-
-  @override
-  List<Object> get props => [first, second];
 }
 
 /// Venue = Stadium

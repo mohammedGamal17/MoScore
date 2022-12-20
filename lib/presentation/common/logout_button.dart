@@ -18,8 +18,8 @@ class LogOutButton extends StatelessWidget {
         AuthCubit cubit = AuthCubit.get(context);
         return state is SignOutLoading
             ? AdaptiveCircleIndicator()
-            : MaterialButton(
-                onPressed: () async {
+            : InkWell(
+                onTap: () async {
                   return await cubit.signOut(context);
                 },
                 child: const Text(StringManager.logOut),

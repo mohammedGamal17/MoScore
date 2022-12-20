@@ -8,7 +8,7 @@ import 'package:moscore/presentation/view_model/cubit/auth_cubit/auth_cubit.dart
 import '../../../app/dependency_injection/dependency_injection.dart';
 import '../../../app/shared_preferences/shared_preferences.dart';
 import '../../common/header_section_of_auth_views.dart';
-import '../../common/social_media_buttons_components.dart';
+import '../../resources/components/social_media_buttons_components.dart';
 import '../../resources/components/components.dart';
 import '../../resources/routes/routes_manager.dart';
 import '../../view_model/cubit/auth_cubit/auth_state.dart';
@@ -78,7 +78,7 @@ class LoginView extends StatelessWidget {
                         ),
                         SocialMediaSection(
                           text: StringManager.orLoginWith,
-                          cubit: cubit,
+                          authCubit: cubit,
                         ),
                       ],
                     ),

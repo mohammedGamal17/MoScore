@@ -1,11 +1,13 @@
 import 'package:get_it/get_it.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
-
-import 'package:moscore/domain/repositories/repositories.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../data/network/remote/info/network_info.dart';
+import '../../data/network/remote/remote_data_source/remote_data_source.dart';
 import '../../data/repositories_implementation/repositories_implementation.dart';
+import '../../domain/repositories/repositories.dart';
+import '../../domain/use_cases/live_fixture_use_case.dart';
+import '../../presentation/view_model/cubit/fixture_cubit/fixture_cubit.dart';
 import '../../presentation/view_model/cubit/profile_cubit/profile_cubit.dart';
 import '../../presentation/view_model/cubit/auth_cubit/auth_cubit.dart';
 import '../shared_preferences/shared_preferences.dart';
@@ -24,13 +26,22 @@ class Di {
     getIt.registerLazySingleton<NetworkInfo>(
         () => NetworkInfoImplement(InternetConnectionChecker()));
 
+    // Remote Data Source
+    getIt.registerLazySingleton<BaseRemoteDataSource>(
+        () => RemoteDataSourceImplement());
+
     // Repositories
     getIt.registerLazySingleton<Repositories>(
-        () => RepositoriesImplementation());
+        () => RepositoriesImplementation(getIt<BaseRemoteDataSource>()));
     // UseCases
+    getIt.registerLazySingleton<LiveFixtureUseCase>(
+        () => LiveFixtureUseCase(getIt<Repositories>()));
 
     // Cubit
     getIt.registerFactory<AuthCubit>(() => AuthCubit(getIt<NetworkInfo>()));
-    getIt.registerFactory<ProfileCubit>(() => ProfileCubit(getIt<NetworkInfo>()));
+    getIt.registerFactory<ProfileCubit>(
+        () => ProfileCubit(getIt<NetworkInfo>()));
+    getIt.registerFactory<FixtureCubit>(
+        () => FixtureCubit(getIt<NetworkInfo>(),getIt<LiveFixtureUseCase>()));
   }
 }

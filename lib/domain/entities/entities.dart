@@ -212,11 +212,11 @@ class HalfTime extends Equatable {
 
 class FullTime extends Equatable {
   final int? home;
-  final int? away;
+  final int ?away;
 
   const FullTime({
-    this.home,
-    this.away,
+    required this.home,
+    required this.away,
   });
 
   @override
@@ -225,11 +225,11 @@ class FullTime extends Equatable {
 
 class ExtraTime extends Equatable {
   final int? home;
-  final int? away;
+  final int ?away;
 
   const ExtraTime({
-    this.home,
-    this.away,
+    required this.home,
+    required this.away,
   });
 
   @override
@@ -237,8 +237,8 @@ class ExtraTime extends Equatable {
 }
 
 class Penalty extends Equatable {
-  final int? home;
-  final int? away;
+  final int home;
+  final int away;
 
   const Penalty({
     required this.home,

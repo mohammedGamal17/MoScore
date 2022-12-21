@@ -1,4 +1,5 @@
 import '../../../domain/entities/entities.dart';
+import '../../../presentation/resources/string/string_manager.dart';
 
 class FixtureResponseModel extends FixtureResponse {
   const FixtureResponseModel({
@@ -9,6 +10,7 @@ class FixtureResponseModel extends FixtureResponse {
     required super.score,
     required super.events,
   });
+
   factory FixtureResponseModel.fromJson(Map<String, dynamic> json) {
     return FixtureResponseModel(
       fixture: FixtureModel.fromJson(json['fixture']),
@@ -40,7 +42,7 @@ class FixtureModel extends Fixture {
       timestamp: json['timestamp'],
       venue: VenueModel.fromJson(json['venue']),
       status: StatusModel.fromJson(json['status']),
-      referee: json['referee'] ?? 'Unknown',
+      referee: json['referee'] ?? StringManager.unKnown,
     );
   }
 }
@@ -94,7 +96,7 @@ class LeagueModel extends League {
       name: json['name'],
       country: json['country'],
       logo: json['logo'],
-      flag: json['flag'],
+      flag: json['flag'] ?? StringManager.unKnown,
       season: json['season'],
       round: json['round'],
     );
@@ -154,6 +156,7 @@ class GoalsModel extends Goals {
     required super.home,
     required super.away,
   });
+
   factory GoalsModel.fromJson(Map<String, dynamic> json) {
     return GoalsModel(
       home: json['home'] ?? 0,
@@ -246,6 +249,7 @@ class EventsModel extends Events {
     required super.detail,
     required super.comments,
   });
+
   factory EventsModel.fromJson(Map<String, dynamic> json) {
     return EventsModel(
       time: TimeModel.fromJson(json['time']),
@@ -298,7 +302,7 @@ class PlayerModel extends Player {
   factory PlayerModel.fromJson(Map<String, dynamic> json) {
     return PlayerModel(
       id: json['id'] ?? -60,
-      name: json['name'],
+      name: json['name']?? StringManager.unKnown,
     );
   }
 }
@@ -312,7 +316,7 @@ class AssistModel extends Assist {
   factory AssistModel.fromJson(Map<String, dynamic> json) {
     return AssistModel(
       id: json['id'] ?? -70,
-      name: json['name'] ?? '',
+      name: json['name'] ?? StringManager.unKnown,
     );
   }
 }

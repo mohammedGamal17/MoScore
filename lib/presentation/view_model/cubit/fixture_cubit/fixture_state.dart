@@ -1,6 +1,26 @@
-part of 'fixure_cubit.dart';
+import '../../../../domain/entities/entities.dart';
 
-@immutable
-abstract class FixureState {}
+abstract class FixtureState {}
 
-class FixureInitial extends FixureState {}
+class FixtureInitial extends FixtureState {}
+
+class GetLiveFixtureLoading extends FixtureState {}
+
+class GetLiveFixtureSuccess extends FixtureState {
+  final List<FixtureResponse> result;
+
+  GetLiveFixtureSuccess({
+    required this.result,
+  });
+}
+
+class GetLiveFixtureFail extends FixtureState {
+  final List<FixtureResponse> result;
+
+  final String message;
+
+  GetLiveFixtureFail({
+    required this.message,
+    this.result = const [],
+  });
+}

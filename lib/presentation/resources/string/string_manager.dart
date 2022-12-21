@@ -70,6 +70,7 @@ class StringManager {
   static const String profile = 'Profile';
   static const String search = 'Search';
   static const String live = 'Live';
+  static const String liveMatch = 'Live Match';
   static const String settings = 'Settings';
   static const String rateUs = 'Rate us';
   static const String shareMoScore = 'Share MoScore';
@@ -93,4 +94,6 @@ class StringManager {
 
   static String anonymouslyMail({required String firstThreeIndex}) =>
       '$firstThreeIndex@mail.com';
+
+  static const String unKnown = 'unKnown';
 }

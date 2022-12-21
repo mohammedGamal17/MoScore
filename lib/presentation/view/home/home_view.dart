@@ -19,8 +19,12 @@ class HomeView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => getIt<ProfileCubit>()..getUserData(context),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => getIt<ProfileCubit>()..getUserData(context),
+        ),
+      ],
       child: BlocConsumer<ProfileCubit, ProfileState>(
         listener: (context, state) {},
         builder: (context, state) {
@@ -89,7 +93,9 @@ class DrawerComponent extends StatelessWidget {
           ListTile(
             leading: const Icon(Icons.share),
             title: const Text(StringManager.shareMoScore),
-            onTap: () {},
+            onTap: () {
+              Navigator.pushNamed(context, Routes.matches);
+            },
           ),
         ],
       ),

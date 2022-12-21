@@ -1,8 +1,46 @@
-import 'package:bloc/bloc.dart';
-import 'package:meta/meta.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:moscore/presentation/resources/components/components.dart';
+import 'package:quickalert/models/quickalert_type.dart';
 
-part 'fixure_state.dart';
+import '../../../../app/no_input.dart';
+import '../../../../data/network/remote/info/network_info.dart';
+import '../../../../domain/entities/entities.dart';
+import '../../../../domain/use_cases/live_fixture_use_case.dart';
+import '../../../resources/colors/color_manager.dart';
+import '../../../resources/string/string_manager.dart';
+import 'fixture_state.dart';
 
-class FixureCubit extends Cubit<FixureState> {
-  FixureCubit() : super(FixureInitial());
+class FixtureCubit extends Cubit<FixtureState> {
+  FixtureCubit(this._networkInfo, this._liveFixtureUseCase)
+      : super(FixtureInitial());
+
+  static FixtureCubit get(context) => BlocProvider.of(context);
+
+  final NetworkInfo _networkInfo;
+  final LiveFixtureUseCase _liveFixtureUseCase;
+
+  List<FixtureResponse> liveFixture = [];
+
+  void getLiveFixture(context) async {
+    if (await _networkInfo.isConnected) {
+      emit(GetLiveFixtureLoading());
+      final result = await _liveFixtureUseCase.call(const NoInput());
+      result.fold(
+        (l) => emit(GetLiveFixtureFail(message: l.message)),
+        (r) => {
+          r.forEach((element) {
+            liveFixture.add(element);
+          }),
+          emit(GetLiveFixtureSuccess(result: r)),
+        },
+      );
+    } else {
+      alert(
+        context,
+        quickAlertType: QuickAlertType.error,
+        text: StringManager.noInternetError,
+        textColor: ColorManager.error,
+      );
+    }
+  }
 }

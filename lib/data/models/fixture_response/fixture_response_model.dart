@@ -57,8 +57,8 @@ class VenueModel extends Venue {
   factory VenueModel.fromJson(Map<String, dynamic> json) {
     return VenueModel(
       id: json['id'] ?? -10,
-      name: json['name'],
-      city: json['city'],
+      name: json['name'] ?? StringManager.unKnown,
+      city: json['city'] ?? StringManager.unKnown,
     );
   }
 }
@@ -302,7 +302,7 @@ class PlayerModel extends Player {
   factory PlayerModel.fromJson(Map<String, dynamic> json) {
     return PlayerModel(
       id: json['id'] ?? -60,
-      name: json['name']?? StringManager.unKnown,
+      name: json['name'] ?? StringManager.unKnown,
     );
   }
 }

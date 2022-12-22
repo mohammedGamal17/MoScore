@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:moscore/presentation/view/authentication/login_view.dart';
-import 'package:moscore/presentation/view/profile/profile_update.dart';
-import 'package:moscore/presentation/view/splash_view/splash_view.dart';
-
+import '../../view/authentication/login_view.dart';
 import '../../view/authentication/register_view.dart';
 import '../../view/home/home_view.dart';
-import '../../view/matches/matches_details_view.dart';
 import '../../view/matches/matches_view.dart';
 import '../../view/on_boarding/on_boarding_view.dart';
+import '../../view/profile/profile_update.dart';
 import '../../view/profile/profile_view.dart';
+import '../../view/splash_view/splash_view.dart';
 import '../string/string_manager.dart';
 
 class Routes {
@@ -38,9 +36,6 @@ class RoutesGenerator {
         return MaterialPageRoute(builder: (context) => const HomeView());
       case Routes.matches:
         return MaterialPageRoute(builder: (context) => const MatchesView());
-      case Routes.matchesDetails:
-        return MaterialPageRoute(
-            builder: (context) => const MatchesDetailsView());
       case Routes.profile:
         return MaterialPageRoute(builder: (context) => const ProfileView());
       case Routes.profileUpdate:

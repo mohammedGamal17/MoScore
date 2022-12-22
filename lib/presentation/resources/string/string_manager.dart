@@ -76,6 +76,7 @@ class StringManager {
   static const String shareMoScore = 'Share MoScore';
   static const String noLive = 'There are no live events at the moment';
   static const String checkAgainLater = 'Please check again later.';
+  static const String stadium ='Stadium';
   static const String home = 'Home';
   static const String away = 'Away';
   static const String round = 'Round';
@@ -93,6 +94,8 @@ class StringManager {
   static const String update = 'Update';
   static const String updateImage = 'Update Image';
   static const String imageUploaded = 'Image Uploaded';
+
+
 
 
 

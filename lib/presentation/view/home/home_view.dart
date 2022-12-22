@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shimmer/shimmer.dart';
 
-import '../../../app/dependency_injection/dependency_injection.dart';
 import '../../resources/assets/assets.dart';
 import '../../resources/colors/color_manager.dart';
 import '../../resources/components/components.dart';
+import '../../resources/components/live_matches.dart';
 import '../../resources/fonts/fonts_manager.dart';
 import '../../resources/routes/routes_manager.dart';
 import '../../resources/string/string_manager.dart';
@@ -19,94 +19,85 @@ class HomeView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider(
-          create: (context) => getIt<ProfileCubit>()..getUserData(context),
+    return Scaffold(
+      backgroundColor: Theme.of(context).backgroundColor,
+      appBar: AppBar(),
+      drawer: const DrawerComponent(),
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: AppPadding.p20),
+        child: Column(
+          children: const [
+            LiveMatches(),
+          ],
         ),
-      ],
-      child: BlocConsumer<ProfileCubit, ProfileState>(
-        listener: (context, state) {},
-        builder: (context, state) {
-          ProfileCubit appCubit = ProfileCubit.get(context);
-          return Scaffold(
-            appBar: AppBar(),
-            drawer: DrawerComponent(appCubit: appCubit),
-            body: appCubit.usersModel != null
-                ? Center(
-                    child: Column(
-                      children: [
-                        Text(appCubit.usersModel!.name),
-                      ],
-                    ),
-                  )
-                : AdaptiveCircleIndicator(),
-          );
-        },
       ),
     );
   }
 }
 
 class DrawerComponent extends StatelessWidget {
-  const DrawerComponent({super.key, required this.appCubit});
-
-  final ProfileCubit appCubit;
+  const DrawerComponent({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Drawer(
-      child: ListView(
-        physics: const BouncingScrollPhysics(),
-        children: [
-          DrawerHeaderComponent(appCubit: appCubit),
-          ListTile(
-            leading: const Icon(
-              Icons.search,
-            ),
-            title: const Text(StringManager.search),
-            onTap: () {
-              // TODO SEARCH FROM API
-            },
+    return BlocConsumer<ProfileCubit, ProfileState>(
+      listener: (context, state) {},
+      builder: (context, state) {
+        ProfileCubit profileCubit = ProfileCubit.get(context);
+        return Drawer(
+          child: ListView(
+            physics: const BouncingScrollPhysics(),
+            children: [
+              DrawerHeaderComponent(profileCubit: profileCubit),
+              ListTile(
+                leading: const Icon(
+                  Icons.search,
+                ),
+                title: const Text(StringManager.search),
+                onTap: () {
+                  // TODO SEARCH FROM API
+                },
+              ),
+              ListTile(
+                leading: const Icon(
+                  Icons.live_tv_outlined,
+                ),
+                title: const Text(StringManager.live),
+                onTap: () {},
+              ),
+              separator(
+                horizontalPadding: AppPadding.p0,
+                verticalPadding: AppPadding.p0,
+              ),
+              ListTile(
+                leading: const Icon(Icons.settings),
+                title: const Text(StringManager.settings),
+                onTap: () {},
+              ),
+              ListTile(
+                leading: const Icon(Icons.star),
+                title: const Text(StringManager.rateUs),
+                onTap: () {},
+              ),
+              ListTile(
+                leading: const Icon(Icons.share),
+                title: const Text(StringManager.shareMoScore),
+                onTap: () {
+                  Navigator.pushNamed(context, Routes.matches);
+                },
+              ),
+            ],
           ),
-          ListTile(
-            leading: const Icon(
-              Icons.live_tv_outlined,
-            ),
-            title: const Text(StringManager.live),
-            onTap: () {},
-          ),
-          separator(
-            horizontalPadding: AppPadding.p0,
-            verticalPadding: AppPadding.p0,
-          ),
-          ListTile(
-            leading: const Icon(Icons.settings),
-            title: const Text(StringManager.settings),
-            onTap: () {},
-          ),
-          ListTile(
-            leading: const Icon(Icons.star),
-            title: const Text(StringManager.rateUs),
-            onTap: () {},
-          ),
-          ListTile(
-            leading: const Icon(Icons.share),
-            title: const Text(StringManager.shareMoScore),
-            onTap: () {
-              Navigator.pushNamed(context, Routes.matches);
-            },
-          ),
-        ],
-      ),
+        );
+      },
     );
   }
 }
 
 class DrawerHeaderComponent extends StatelessWidget {
-  const DrawerHeaderComponent({super.key, required this.appCubit});
+  const DrawerHeaderComponent({super.key, required this.profileCubit});
 
-  final ProfileCubit appCubit;
+  final ProfileCubit profileCubit;
 
   @override
   Widget build(BuildContext context) {
@@ -128,74 +119,58 @@ class DrawerHeaderComponent extends StatelessWidget {
           ],
         ),
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          ClipRRect(
-            borderRadius: BorderRadius.circular(AppSize.s30),
-            child: CachedNetworkImage(
-              imageUrl: appCubit.usersModel!.image,
-              placeholder: (context, url) => Shimmer(
-                gradient: LinearGradient(
-                  colors: [
-                    ColorManager.primary,
-                    ColorManager.lightPrimary,
-                    ColorManager.white,
-                  ],
-                ),
-                child: const CircleAvatar(radius: AppSize.s30),
-              ),
-              height: AppSize.s60,
-              width: AppSize.s60,
-            ),
-          ),
-          const SizedBox(height: AppSize.s10),
-          Text(
-            appCubit.usersModel!.name,
-            style: Theme.of(context)
-                .textTheme
-                .bodyMedium!
-                .copyWith(fontSize: FontsSize.s18),
-          ),
-          const SizedBox(height: AppSize.s10),
-          InkWell(
-            onTap: () {
-              Navigator.pushNamed(context, Routes.profile);
-            },
-            child: Row(
+      child: profileCubit.usersModel != null
+          ? Column(
               crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                Text(
-                  StringManager.profile,
-                  style: Theme.of(context).textTheme.bodyMedium,
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(AppSize.s30),
+                  child: CachedNetworkImage(
+                    imageUrl: profileCubit.usersModel!.image,
+                    placeholder: (context, url) => Shimmer(
+                      gradient: LinearGradient(
+                        colors: [
+                          ColorManager.primary,
+                          ColorManager.lightPrimary,
+                          ColorManager.white,
+                        ],
+                      ),
+                      child: const CircleAvatar(radius: AppSize.s30),
+                    ),
+                    height: AppSize.s60,
+                    width: AppSize.s60,
+                  ),
                 ),
-                const Icon(Icons.keyboard_arrow_right_rounded)
+                const SizedBox(height: AppSize.s10),
+                Text(
+                  profileCubit.usersModel!.name,
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodyMedium!
+                      .copyWith(fontSize: FontsSize.s18),
+                ),
+                const SizedBox(height: AppSize.s10),
+                InkWell(
+                  onTap: () {
+                    Navigator.pushNamed(context, Routes.profile);
+                  },
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        StringManager.profile,
+                        style: Theme.of(context).textTheme.bodyMedium,
+                      ),
+                      const Icon(Icons.keyboard_arrow_right_rounded)
+                    ],
+                  ),
+                )
               ],
-            ),
-          )
-        ],
-      ),
+            )
+          : AdaptiveCircleIndicator(),
     );
   }
 }
 
-class Body extends StatelessWidget {
-  const Body({super.key, required this.appCubit});
-
-  final ProfileCubit appCubit;
-
-  @override
-  Widget build(BuildContext context) {
-    return SafeArea(
-      child: Column(
-        children: [
-          Center(
-            child: Text(appCubit.usersModel!.name),
-          ),
-        ],
-      ),
-    );
-  }
-}

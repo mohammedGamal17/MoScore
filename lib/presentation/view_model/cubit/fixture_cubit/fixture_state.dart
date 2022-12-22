@@ -7,20 +7,20 @@ class FixtureInitial extends FixtureState {}
 class GetLiveFixtureLoading extends FixtureState {}
 
 class GetLiveFixtureSuccess extends FixtureState {
-  final List<FixtureResponse> result;
+  final List<FixtureResponse> liveFixture;
 
   GetLiveFixtureSuccess({
-    required this.result,
+    required this.liveFixture,
   });
 }
 
 class GetLiveFixtureFail extends FixtureState {
-  final List<FixtureResponse> result;
+  final List<FixtureResponse> liveFixture;
 
   final String message;
 
   GetLiveFixtureFail({
     required this.message,
-    this.result = const [],
+    this.liveFixture = const [],
   });
 }

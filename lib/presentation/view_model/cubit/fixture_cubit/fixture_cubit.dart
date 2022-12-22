@@ -4,7 +4,6 @@ import 'package:quickalert/models/quickalert_type.dart';
 
 import '../../../../app/no_input.dart';
 import '../../../../data/network/remote/info/network_info.dart';
-import '../../../../domain/entities/entities.dart';
 import '../../../../domain/use_cases/live_fixture_use_case.dart';
 import '../../../resources/colors/color_manager.dart';
 import '../../../resources/string/string_manager.dart';
@@ -19,19 +18,14 @@ class FixtureCubit extends Cubit<FixtureState> {
   final NetworkInfo _networkInfo;
   final LiveFixtureUseCase _liveFixtureUseCase;
 
-  List<FixtureResponse> liveFixture = [];
-
-  void getLiveFixture(context) async {
+  Future<void> getLiveFixture(context) async {
     if (await _networkInfo.isConnected) {
       emit(GetLiveFixtureLoading());
       final result = await _liveFixtureUseCase.call(const NoInput());
       result.fold(
         (l) => emit(GetLiveFixtureFail(message: l.message)),
         (r) => {
-          r.forEach((element) {
-            liveFixture.add(element);
-          }),
-          emit(GetLiveFixtureSuccess(result: r)),
+          emit(GetLiveFixtureSuccess(liveFixture: r)),
         },
       );
     } else {
@@ -42,5 +36,9 @@ class FixtureCubit extends Cubit<FixtureState> {
         textColor: ColorManager.error,
       );
     }
+  }
+
+  Future<void> reload(context) async {
+    getLiveFixture(context);
   }
 }

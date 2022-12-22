@@ -81,7 +81,7 @@ ThemeData getLightModeThemeData() {
       displayLarge: getTextRegularStyle(
         //login and register font style
         color: ColorManager.formFieldText,
-        fontSize: FontsSize.s14,
+        fontSize: FontsSize.s16,
       ),
       displayMedium: getTextRegularStyle(
         color: ColorManager.formFieldText,

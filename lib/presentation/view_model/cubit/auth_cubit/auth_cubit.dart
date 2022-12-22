@@ -12,6 +12,7 @@ import 'package:moscore/data/models/user/users_model.dart';
 import 'package:moscore/data/network/remote/info/network_info.dart';
 import 'package:quickalert/models/quickalert_type.dart';
 
+import '../../../resources/assets/assets.dart';
 import '../../../resources/colors/color_manager.dart';
 import '../../../resources/components/components.dart';
 import '../../../resources/routes/routes_manager.dart';
@@ -42,8 +43,7 @@ class AuthCubit extends Cubit<AuthState> {
     UsersModel usersModel = UsersModel(
       name: displayName,
       email: email,
-      image: photoURL ??
-          'https://i.pinimg.com/564x/b5/58/89/b5588903c3aa0d3c0940fca614b399f9.jpg',
+      image: photoURL ?? AssetsResources.logoURL,
       uId: uId,
     );
     CollectionReference users = FirebaseFirestore.instance.collection('users');

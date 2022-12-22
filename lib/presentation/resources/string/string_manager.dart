@@ -74,6 +74,11 @@ class StringManager {
   static const String settings = 'Settings';
   static const String rateUs = 'Rate us';
   static const String shareMoScore = 'Share MoScore';
+  static const String noLive = 'There are no live events at the moment';
+  static const String checkAgainLater = 'Please check again later.';
+  static const String home = 'Home';
+  static const String away = 'Away';
+  static const String round = 'Round';
 
   // Profile Screen
   static const String updated = 'Updated';
@@ -88,6 +93,8 @@ class StringManager {
   static const String update = 'Update';
   static const String updateImage = 'Update Image';
   static const String imageUploaded = 'Image Uploaded';
+
+
 
   static String anonymouslyUser({required String firstThreeIndex}) =>
       'User$firstThreeIndex';

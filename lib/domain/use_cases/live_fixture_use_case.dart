@@ -1,7 +1,6 @@
 import 'package:dartz/dartz.dart';
 
-import 'package:moscore/app/failure/Failure.dart';
-
+import '../../app/failure/Failure.dart';
 import '../../app/no_input.dart';
 import '../entities/entities.dart';
 import '../repositories/repositories.dart';

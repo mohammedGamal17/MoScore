@@ -24,3 +24,24 @@ class GetLiveFixtureFail extends FixtureState {
     this.liveFixture = const [],
   });
 }
+
+class GetFixtureByIdLoading extends FixtureState {}
+
+class GetFixtureByIdSuccess extends FixtureState {
+  final List<FixtureResponse> liveFixture;
+
+  GetFixtureByIdSuccess({
+    required this.liveFixture,
+  });
+}
+
+class GetFixtureByIdFail extends FixtureState {
+  final List<FixtureResponse> liveFixture;
+
+  final String message;
+
+  GetFixtureByIdFail({
+    required this.message,
+    this.liveFixture = const [],
+  });
+}

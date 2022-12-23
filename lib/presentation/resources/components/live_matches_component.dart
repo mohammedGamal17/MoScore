@@ -11,8 +11,8 @@ import '../colors/color_manager.dart';
 import '../string/string_manager.dart';
 import '../values/values_manager.dart';
 import 'components.dart';
-import 'match_summary.dart';
-import 'no_live_matches.dart';
+import 'match_summary_component.dart';
+import 'no_live_matches_component.dart';
 
 class LiveMatches extends StatelessWidget {
   const LiveMatches({super.key});
@@ -86,7 +86,8 @@ class LiveMatch extends StatelessWidget {
                             itemBuilder: (context, index) {
                               FixtureResponse liveMatch =
                                   state.liveFixture[index];
-                              return MatchBody(liveMatch: liveMatch);
+                              return MatchBody(
+                                  liveMatch: liveMatch, index: index);
                             },
                           ),
                         )
@@ -100,9 +101,10 @@ class LiveMatch extends StatelessWidget {
 }
 
 class MatchBody extends StatelessWidget {
-  const MatchBody({super.key, required this.liveMatch});
+  const MatchBody({super.key, required this.liveMatch, required this.index});
 
   final FixtureResponse liveMatch;
+  final int index;
 
   @override
   Widget build(BuildContext context) {
@@ -140,7 +142,7 @@ class MatchBody extends StatelessWidget {
                   // League Logo
                   LeagueLogo(liveMatch: liveMatch),
                   // Content class
-                  MatchSummaryComponents(id: liveMatch.fixture.id),
+                  MatchSummaryComponents(index: index),
                 ],
               ),
             ),

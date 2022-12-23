@@ -12,9 +12,9 @@ import '../values/values_manager.dart';
 import 'components.dart';
 
 class MatchSummaryComponents extends StatelessWidget {
-  const MatchSummaryComponents({super.key, required this.id});
+  const MatchSummaryComponents({super.key, required this.index});
 
-  final int id;
+  final int index;
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +23,7 @@ class MatchSummaryComponents extends StatelessWidget {
       builder: (context, state) {
         return state is GetLiveFixtureSuccess
             ? Builder(builder: (context) {
-                FixtureResponse liveMatch = state.liveFixture.elementAt(id);
+                FixtureResponse liveMatch = state.liveFixture.elementAt(index);
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [

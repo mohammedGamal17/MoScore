@@ -12,7 +12,7 @@ import 'package:shimmer/shimmer.dart';
 import '../../../app/dependency_injection/dependency_injection.dart';
 import '../../../app/shared_preferences/shared_preferences.dart';
 import '../../resources/components/components.dart';
-import '../../resources/components/sign_in_anonymously.dart';
+import '../../resources/components/sign_in_anonymously_component.dart';
 import '../../resources/routes/routes_manager.dart';
 import '../../view_model/cubit/profile_cubit/profile_cubit.dart';
 import '../../view_model/cubit/profile_cubit/profile_state.dart';

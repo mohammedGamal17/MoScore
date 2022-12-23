@@ -6,7 +6,7 @@ import 'package:shimmer/shimmer.dart';
 import '../../resources/assets/assets.dart';
 import '../../resources/colors/color_manager.dart';
 import '../../resources/components/components.dart';
-import '../../resources/components/live_matches.dart';
+import '../../resources/components/live_matches_component.dart';
 import '../../resources/fonts/fonts_manager.dart';
 import '../../resources/routes/routes_manager.dart';
 import '../../resources/string/string_manager.dart';

@@ -1,5 +1,6 @@
 import 'package:get_it/get_it.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
+import 'package:moscore/domain/use_cases/fixture_by_id_use_case.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../data/network/remote/info/network_info.dart';
@@ -20,28 +21,59 @@ class Di {
     final prefs = await SharedPreferences.getInstance();
     // shared pref instance
     getIt.registerLazySingleton<SharedPreferences>(() => prefs);
-    getIt.registerLazySingleton<AppPreferences>(() => AppPreferences(getIt()));
+    getIt.registerLazySingleton<AppPreferences>(
+      () => AppPreferences(
+        getIt(),
+      ),
+    );
 
     // Network Info
     getIt.registerLazySingleton<NetworkInfo>(
-        () => NetworkInfoImplement(InternetConnectionChecker()));
+      () => NetworkInfoImplement(
+        InternetConnectionChecker(),
+      ),
+    );
 
     // Remote Data Source
     getIt.registerLazySingleton<BaseRemoteDataSource>(
-        () => RemoteDataSourceImplement());
+      () => RemoteDataSourceImplement(),
+    );
 
     // Repositories
     getIt.registerLazySingleton<Repositories>(
-        () => RepositoriesImplementation(getIt<BaseRemoteDataSource>()));
+      () => RepositoriesImplementation(
+        getIt<BaseRemoteDataSource>(),
+      ),
+    );
     // UseCases
     getIt.registerLazySingleton<LiveFixtureUseCase>(
-        () => LiveFixtureUseCase(getIt<Repositories>()));
+      () => LiveFixtureUseCase(
+        getIt<Repositories>(),
+      ),
+    );
+    getIt.registerLazySingleton<FixtureByIdUseCase>(
+      () => FixtureByIdUseCase(
+        getIt<Repositories>(),
+      ),
+    );
 
     // Cubit
-    getIt.registerFactory<AuthCubit>(() => AuthCubit(getIt<NetworkInfo>()));
+    getIt.registerFactory<AuthCubit>(
+      () => AuthCubit(
+        getIt<NetworkInfo>(),
+      ),
+    );
     getIt.registerFactory<ProfileCubit>(
-        () => ProfileCubit(getIt<NetworkInfo>()));
+      () => ProfileCubit(
+        getIt<NetworkInfo>(),
+      ),
+    );
     getIt.registerFactory<FixtureCubit>(
-        () => FixtureCubit(getIt<NetworkInfo>(),getIt<LiveFixtureUseCase>()));
+      () => FixtureCubit(
+        getIt<NetworkInfo>(),
+        getIt<LiveFixtureUseCase>(),
+        getIt<FixtureByIdUseCase>(),
+      ),
+    );
   }
 }

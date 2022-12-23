@@ -56,7 +56,7 @@ class MatchesDetailsView extends StatelessWidget {
                               alignment: Alignment.center,
                               children: [
                                 // League Logo
-                                LeagueLogo(liveMatch: liveMatch),
+                                LeagueLogoMatchDetails(liveMatch: liveMatch),
                                 // Content class
                                 MatchHeaderSummery(liveMatch: liveMatch),
                               ],
@@ -64,7 +64,18 @@ class MatchesDetailsView extends StatelessWidget {
                           ),
                         ),
                       ),
-                      body: [],
+                      body: [
+                        ListView.builder(
+                          physics: const NeverScrollableScrollPhysics(),
+                          shrinkWrap: true,
+                          reverse: true,
+                          itemBuilder: (context, index) {
+                            Events event = liveMatch.events[index];
+                            return Text('${event.type}: ${event.time.elapsed}\' ${event.player.name}');
+                          },
+                          itemCount: liveMatch.events.length,
+                        ),
+                      ],
                       floatingActionButton: FloatingActionButton(
                         elevation: 20.0,
                         onPressed: () =>

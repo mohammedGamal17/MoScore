@@ -6,8 +6,46 @@ import '../../../domain/entities/entities.dart';
 import '../assets/assets.dart';
 import '../colors/color_manager.dart';
 
-class LeagueLogo extends StatelessWidget {
-  const LeagueLogo({super.key, required this.liveMatch});
+class LeagueLogoHome extends StatelessWidget {
+  const LeagueLogoHome({super.key, required this.liveMatch});
+
+  final FixtureLiveResponse liveMatch;
+
+  @override
+  Widget build(BuildContext context) {
+    return CachedNetworkImage(
+      imageUrl: liveMatch.league.logo,
+      color: Colors.white.withOpacity(0.1),
+      fit: BoxFit.cover,
+      placeholder: (context, url) => Shimmer(
+        gradient: LinearGradient(
+          colors: [
+            ColorManager.darkPrimary,
+            ColorManager.primary,
+            ColorManager.lightPrimary,
+          ],
+        ),
+        child: Container(),
+      ),
+      errorWidget: (context, url, error) => Shimmer(
+        gradient: LinearGradient(
+          colors: [
+            ColorManager.darkPrimary,
+            ColorManager.primary,
+            ColorManager.lightPrimary,
+          ],
+        ),
+        child: const Image(
+          image: AssetImage(AssetsResources.logo),
+          fit: BoxFit.cover,
+        ),
+      ),
+    );
+  }
+}
+
+class LeagueLogoMatchDetails extends StatelessWidget {
+  const LeagueLogoMatchDetails({super.key, required this.liveMatch});
 
   final FixtureResponse liveMatch;
 

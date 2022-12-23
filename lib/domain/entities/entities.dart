@@ -24,8 +24,45 @@ class FixtureResponse extends Equatable {
   final Goals goals;
   final Score score;
   final List<Events> events;
+  final List<Lineups> lineups;
+  final List<Statistics> statistics;
+  final List<Players> players;
 
   const FixtureResponse({
+    required this.fixture,
+    required this.league,
+    required this.teams,
+    required this.goals,
+    required this.score,
+    required this.events,
+    required this.lineups,
+    required this.statistics,
+    required this.players,
+  });
+
+  @override
+  List<Object?> get props => [
+    fixture,
+    league,
+    teams,
+    goals,
+    score,
+    events,
+    lineups,
+    statistics,
+    players,
+  ];
+}
+
+class FixtureLiveResponse extends Equatable {
+  final Fixture fixture;
+  final League league;
+  final Teams teams;
+  final Goals goals;
+  final Score score;
+  final List<Events> events;
+
+  const FixtureLiveResponse({
     required this.fixture,
     required this.league,
     required this.teams,
@@ -212,7 +249,7 @@ class HalfTime extends Equatable {
 
 class FullTime extends Equatable {
   final int? home;
-  final int ?away;
+  final int? away;
 
   const FullTime({
     required this.home,
@@ -225,7 +262,7 @@ class FullTime extends Equatable {
 
 class ExtraTime extends Equatable {
   final int? home;
-  final int ?away;
+  final int? away;
 
   const ExtraTime({
     required this.home,
@@ -332,4 +369,110 @@ class Assist extends Equatable {
 
   @override
   List<Object?> get props => [id, name];
+}
+
+class Lineups extends Equatable {
+  final Team team;
+  final Coach coach;
+  final String formation;
+  final List<StartXI> startXI;
+  final List<Substitutes> substitutes;
+
+  const Lineups({
+    required this.team,
+    required this.coach,
+    required this.formation,
+    required this.startXI,
+    required this.substitutes,
+  });
+
+  @override
+  List<Object> get props => [team, coach, formation, startXI, substitutes];
+}
+
+class Coach extends Equatable {
+  final int id;
+  final String name;
+  final String photo;
+
+  const Coach({
+    required this.id,
+    required this.name,
+    required this.photo,
+  });
+
+  @override
+  List<Object> get props => [id, name, photo];
+}
+
+class StartXI extends Equatable {
+  final Player player;
+
+  const StartXI({
+    required this.player,
+  });
+
+  @override
+  List<Object> get props => [player];
+}
+
+class Substitutes extends Equatable {
+  final Player player;
+
+  const Substitutes({
+    required this.player,
+  });
+
+  @override
+  List<Object> get props => [player];
+}
+
+class Statistics extends Equatable {
+  final Team team;
+  final List<Statisticss> statistics;
+
+  const Statistics({
+    required this.team,
+    required this.statistics,
+  });
+
+  @override
+  List<Object> get props => [team, statistics];
+}
+
+class Statisticss extends Equatable {
+  final String type;
+  final dynamic value;
+
+  const Statisticss({
+    required this.type,
+    required this.value,
+  });
+
+  @override
+  List<Object?> get props => [type, value];
+}
+
+class Players extends Equatable {
+  final Team team;
+  final List<Playerss> playerss;
+
+  const Players({
+    required this.team,
+    required this.playerss,
+  });
+
+  @override
+  List<Object> get props => [team, playerss];
+}
+
+class Playerss extends Equatable {
+  final Player player;
+
+  const Playerss({
+    required this.player,
+  });
+
+  @override
+  List<Object> get props => [player];
 }

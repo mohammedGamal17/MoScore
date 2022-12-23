@@ -12,7 +12,7 @@ class RepositoriesImplementation implements Repositories {
   final BaseRemoteDataSource _baseRemoteDataSource;
 
   @override
-  Future<Either<Failure, List<FixtureResponse>>> getLiveFixture() async {
+  Future<Either<Failure, List<FixtureLiveResponse>>> getLiveFixture() async {
     final response = await _baseRemoteDataSource.getLiveFixture();
     try {
       return Right(response);

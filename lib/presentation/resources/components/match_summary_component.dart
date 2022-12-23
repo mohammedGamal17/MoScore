@@ -23,7 +23,7 @@ class MatchSummaryComponents extends StatelessWidget {
       builder: (context, state) {
         return state is GetLiveFixtureSuccess
             ? Builder(builder: (context) {
-                FixtureResponse liveMatch = state.liveFixture.elementAt(index);
+                FixtureLiveResponse liveMatch = state.liveFixture.elementAt(index);
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [

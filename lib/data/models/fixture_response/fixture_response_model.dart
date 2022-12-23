@@ -9,10 +9,46 @@ class FixtureResponseModel extends FixtureResponse {
     required super.goals,
     required super.score,
     required super.events,
+    required super.lineups,
+    required super.statistics,
+    required super.players,
   });
 
   factory FixtureResponseModel.fromJson(Map<String, dynamic> json) {
     return FixtureResponseModel(
+      fixture: FixtureModel.fromJson(json['fixture']),
+      league: LeagueModel.fromJson(json['league']),
+      teams: TeamsModel.fromJson(json['teams']),
+      goals: GoalsModel.fromJson(json['goals']),
+      score: ScoreModel.fromJson(json['score']),
+      events: List.from(json['events'])
+          .map((e) => EventsModel.fromJson(e))
+          .toList(),
+      lineups: List.from(json['lineups'])
+          .map((e) => LineupsModel.fromJson(e))
+          .toList(),
+      statistics: List.from(json['statistics'])
+          .map((e) => StatisticsModel.fromJson(e))
+          .toList(),
+      players: List.from(json['players'])
+          .map((e) => PlayersModel.fromJson(e))
+          .toList(),
+    );
+  }
+}
+
+class FixtureLiveResponseModel extends FixtureLiveResponse {
+  const FixtureLiveResponseModel({
+    required super.fixture,
+    required super.league,
+    required super.teams,
+    required super.goals,
+    required super.score,
+    required super.events,
+  });
+
+  factory FixtureLiveResponseModel.fromJson(Map<String, dynamic> json) {
+    return FixtureLiveResponseModel(
       fixture: FixtureModel.fromJson(json['fixture']),
       league: LeagueModel.fromJson(json['league']),
       teams: TeamsModel.fromJson(json['teams']),
@@ -317,6 +353,128 @@ class AssistModel extends Assist {
     return AssistModel(
       id: json['id'] ?? -70,
       name: json['name'] ?? StringManager.unKnown,
+    );
+  }
+}
+
+class LineupsModel extends Lineups {
+  const LineupsModel({
+    required super.team,
+    required super.coach,
+    required super.formation,
+    required super.startXI,
+    required super.substitutes,
+  });
+
+  factory LineupsModel.fromJson(Map<String, dynamic> json) {
+    return LineupsModel(
+      team: TeamModel.fromJson(json['team']),
+      coach: CoachModel.fromJson(json['coach']),
+      formation: json['formation'],
+      startXI: List.from(json['startXI'])
+          .map((e) => StartXIModel.fromJson(e))
+          .toList(),
+      substitutes: List.from(json['substitutes'])
+          .map((e) => SubstitutesModel.fromJson(e))
+          .toList(),
+    );
+  }
+}
+
+class CoachModel extends Coach {
+  const CoachModel({
+    required super.id,
+    required super.name,
+    required super.photo,
+  });
+
+  factory CoachModel.fromJson(Map<String, dynamic> json) {
+    return CoachModel(
+      id: json['id'],
+      name: json['name'],
+      photo: json['photo'],
+    );
+  }
+}
+
+class StartXIModel extends StartXI {
+  const StartXIModel({
+    required super.player,
+  });
+
+  factory StartXIModel.fromJson(Map<String, dynamic> json) {
+    return StartXIModel(
+      player: json['player'],
+    );
+  }
+}
+
+class SubstitutesModel extends Substitutes {
+  const SubstitutesModel({
+    required super.player,
+  });
+
+  factory SubstitutesModel.fromJson(Map<String, dynamic> json) {
+    return SubstitutesModel(
+      player: json['player'],
+    );
+  }
+}
+
+class StatisticsModel extends Statistics {
+  const StatisticsModel({
+    required super.team,
+    required super.statistics,
+  });
+
+  factory StatisticsModel.fromJson(Map<String, dynamic> json) {
+    return StatisticsModel(
+      team: TeamModel.fromJson(json['team']),
+      statistics: List.from(json['statistics'])
+          .map((e) => StatisticssModel.fromJson(e))
+          .toList(),
+    );
+  }
+}
+
+class StatisticssModel extends Statisticss {
+  const StatisticssModel({
+    required super.type,
+    required super.value,
+  });
+
+  factory StatisticssModel.fromJson(Map<String, dynamic> json) {
+    return StatisticssModel(
+      type: json['type'],
+      value: json['value'] ?? 0,
+    );
+  }
+}
+
+class PlayersModel extends Players {
+  const PlayersModel({
+    required super.team,
+    required super.playerss,
+  });
+
+  factory PlayersModel.fromJson(Map<String, dynamic> json) {
+    return PlayersModel(
+      team: TeamModel.fromJson(json['team']),
+      playerss: List.from(json['players'])
+          .map((e) => PlayerssModel.fromJson(e))
+          .toList(),
+    );
+  }
+}
+
+class PlayerssModel extends Playerss {
+  const PlayerssModel({
+    required super.player,
+  });
+
+  factory PlayerssModel.fromJson(Map<String, dynamic> json) {
+    return PlayerssModel(
+      player: PlayerModel.fromJson(json['player']),
     );
   }
 }

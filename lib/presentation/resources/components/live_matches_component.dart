@@ -84,7 +84,7 @@ class LiveMatch extends StatelessWidget {
                             scrollDirection: Axis.horizontal,
                             controller: _horizontal,
                             itemBuilder: (context, index) {
-                              FixtureResponse liveMatch =
+                              FixtureLiveResponse liveMatch =
                                   state.liveFixture[index];
                               return MatchBody(
                                   liveMatch: liveMatch, index: index);
@@ -103,7 +103,7 @@ class LiveMatch extends StatelessWidget {
 class MatchBody extends StatelessWidget {
   const MatchBody({super.key, required this.liveMatch, required this.index});
 
-  final FixtureResponse liveMatch;
+  final FixtureLiveResponse liveMatch;
   final int index;
 
   @override
@@ -140,7 +140,7 @@ class MatchBody extends StatelessWidget {
                 alignment: Alignment.center,
                 children: [
                   // League Logo
-                  LeagueLogo(liveMatch: liveMatch),
+                  LeagueLogoHome(liveMatch: liveMatch),
                   // Content class
                   MatchSummaryComponents(index: index),
                 ],

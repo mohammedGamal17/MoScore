@@ -7,7 +7,7 @@ import '../api_url/api_constants.dart';
 import '../remote_error/remote_error.dart';
 
 abstract class BaseRemoteDataSource {
-  Future<List<FixtureResponseModel>> getLiveFixture();
+  Future<List<FixtureLiveResponseModel>> getLiveFixture();
 
   Future<List<FixtureResponseModel>> getFixtureBuId(FixtureByIdInputs inputs);
 }
@@ -16,14 +16,14 @@ class RemoteDataSourceImplement extends BaseRemoteDataSource {
   RemoteDataSourceImplement();
 
   @override
-  Future<List<FixtureResponseModel>> getLiveFixture() async {
+  Future<List<FixtureLiveResponseModel>> getLiveFixture() async {
     final response = await Dio(
       BaseOptions(headers: APIConstants.header),
     ).get(APIConstants.fixturesLive);
     if (response.statusCode == 200) {
-      return List<FixtureResponseModel>.from(
+      return List<FixtureLiveResponseModel>.from(
         (response.data['response'] as List).map(
-          (e) => FixtureResponseModel.fromJson(e),
+          (e) => FixtureLiveResponseModel.fromJson(e),
         ),
       );
     } else {

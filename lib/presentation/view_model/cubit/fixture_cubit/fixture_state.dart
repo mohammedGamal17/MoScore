@@ -7,7 +7,7 @@ class FixtureInitial extends FixtureState {}
 class GetLiveFixtureLoading extends FixtureState {}
 
 class GetLiveFixtureSuccess extends FixtureState {
-  final List<FixtureResponse> liveFixture;
+  final List<FixtureLiveResponse> liveFixture;
 
   GetLiveFixtureSuccess({
     required this.liveFixture,
@@ -15,7 +15,7 @@ class GetLiveFixtureSuccess extends FixtureState {
 }
 
 class GetLiveFixtureFail extends FixtureState {
-  final List<FixtureResponse> liveFixture;
+  final List<FixtureLiveResponse> liveFixture;
 
   final String message;
 

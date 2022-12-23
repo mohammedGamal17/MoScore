@@ -7,9 +7,7 @@ import 'base_use_case.dart';
 
 class FixtureByIdUseCase
     extends BaseUseCase<List<FixtureResponse>, FixtureByIdInputs> {
-
   final Repositories _repositories;
-
 
   FixtureByIdUseCase(this._repositories);
 

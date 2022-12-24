@@ -331,14 +331,18 @@ class TeamModel extends Team {
 
 class PlayerModel extends Player {
   const PlayerModel({
+    super.id,
     required super.name,
-    required super.id,
+    super.number,
+    super.pos,
   });
 
   factory PlayerModel.fromJson(Map<String, dynamic> json) {
     return PlayerModel(
       id: json['id'] ?? -60,
       name: json['name'] ?? StringManager.unKnown,
+      number: json['number'] ?? 0,
+      pos: json['pos'],
     );
   }
 }
@@ -404,7 +408,7 @@ class StartXIModel extends StartXI {
 
   factory StartXIModel.fromJson(Map<String, dynamic> json) {
     return StartXIModel(
-      player: json['player'],
+      player: PlayerModel.fromJson(json['player']),
     );
   }
 }
@@ -416,7 +420,7 @@ class SubstitutesModel extends Substitutes {
 
   factory SubstitutesModel.fromJson(Map<String, dynamic> json) {
     return SubstitutesModel(
-      player: json['player'],
+      player:  PlayerModel.fromJson(json['player']),
     );
   }
 }

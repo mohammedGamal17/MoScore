@@ -42,16 +42,16 @@ class FixtureResponse extends Equatable {
 
   @override
   List<Object?> get props => [
-    fixture,
-    league,
-    teams,
-    goals,
-    score,
-    events,
-    lineups,
-    statistics,
-    players,
-  ];
+        fixture,
+        league,
+        teams,
+        goals,
+        score,
+        events,
+        lineups,
+        statistics,
+        players,
+      ];
 }
 
 class FixtureLiveResponse extends Equatable {
@@ -348,14 +348,18 @@ class Team extends Equatable {
 class Player extends Equatable {
   final int? id;
   final String name;
+  final int? number;
+  final String? pos;
 
   const Player({
     this.id,
     required this.name,
+     this.number,
+     this.pos,
   });
 
   @override
-  List<Object?> get props => [id, name];
+  List<Object?> get props => [id, name, number, pos];
 }
 
 class Assist extends Equatable {

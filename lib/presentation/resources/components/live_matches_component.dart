@@ -8,6 +8,7 @@ import '../../view/matches/matches_details_view.dart';
 import '../../view_model/cubit/fixture_cubit/fixture_cubit.dart';
 import '../../view_model/cubit/fixture_cubit/fixture_state.dart';
 import '../colors/color_manager.dart';
+import '../fonts/fonts_manager.dart';
 import '../string/string_manager.dart';
 import '../values/values_manager.dart';
 import 'components.dart';
@@ -71,7 +72,10 @@ class LiveMatch extends StatelessWidget {
                 children: [
                   Text(
                     StringManager.liveMatch,
-                    style: Theme.of(context).textTheme.titleLarge,
+                    style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                          color: ColorManager.primary,
+                      fontSize: FontsSize.s20
+                        ),
                   ),
                   const SizedBox(height: AppSize.s20),
                   state.liveFixture.isNotEmpty
@@ -94,7 +98,10 @@ class LiveMatch extends StatelessWidget {
                       : const NoLiveMatches()
                 ],
               )
-            : AdaptiveCircleIndicator();
+            : SizedBox(
+                height: 260.0,
+                child: AdaptiveCircleIndicator(),
+              );
       },
     );
   }

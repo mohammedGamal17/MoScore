@@ -6,6 +6,7 @@ import '../../../app/dependency_injection/dependency_injection.dart';
 import '../../../domain/entities/entities.dart';
 import '../../resources/colors/color_manager.dart';
 import '../../resources/components/components.dart';
+import '../../resources/components/no_live_matches_component.dart';
 import '../../resources/fonts/fonts_manager.dart';
 import '../../resources/string/string_manager.dart';
 import '../../resources/values/values_manager.dart';
@@ -33,13 +34,12 @@ class MatchesDetailsView extends StatelessWidget {
             length: 3,
             child: Scaffold(
               body: state is GetFixtureByIdSuccess
-                  ? RefreshIndicator(
-                      onRefresh: () => fixtureCubit.reloadFixture(context,id: id),
-                      backgroundColor: ColorManager.primary,
-                      color: ColorManager.white,
-                      child: Body(state: state),
-                    )
+                  ? Body(state: state)
                   : AdaptiveCircleIndicator(),
+              floatingActionButton: FloatingActionButton(
+                onPressed: () {fixtureCubit.reloadFixture(context,id: id);},
+                child: const Icon(Icons.refresh),
+              ),
             ),
           );
         },
@@ -65,6 +65,8 @@ class Body extends StatelessWidget {
           SliverAppBar(
             pinned: true,
             floating: true,
+            snap: true,
+            scrolledUnderElevation: AppSize.s20,
             expandedHeight: 300.0,
             flexibleSpace: FlexibleSpaceBar(
               background: SafeArea(
@@ -243,26 +245,30 @@ class Body extends StatelessWidget {
                 ),
               ),
               tabs: const [
-                Tab(child: Text('Flight')),
-                Tab(child: Text('Train')),
-                Tab(child: Text('Car')),
+                Tab(child: Text(StringManager.summary)),
+                Tab(child: Text(StringManager.lineUp)),
+                Tab(child: Text(StringManager.statistics)),
               ],
             ),
             shape: const RoundedRectangleBorder(
-              borderRadius: BorderRadius.horizontal(
-                right: Radius.circular(AppSize.s50),
-                left: Radius.circular(AppSize.s50),
+              borderRadius: BorderRadius.only(
+                bottomRight: Radius.circular(AppSize.s50),
+                bottomLeft: Radius.circular(AppSize.s50),
               ),
             ),
           ),
         ];
       },
-      body: const TabBarView(
-        children: <Widget>[
-          Icon(Icons.flight, size: 350),
-          Icon(Icons.directions_transit, size: 350),
-          Icon(Icons.directions_car, size: 350),
-        ],
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: AppPadding.p20),
+        child: TabBarView(
+          physics: const BouncingScrollPhysics(),
+          children: <Widget>[
+            MatchSummary(liveMatch: liveMatch),
+            MatchLineUp(liveMatch: liveMatch),
+            MatchStatistics(liveMatch: liveMatch),
+          ],
+        ),
       ),
     );
   }
@@ -439,17 +445,6 @@ class MatchHeader extends StatelessWidget {
   }
 }
 
-class MatchBody extends StatelessWidget {
-  const MatchBody({super.key, required this.liveMatch});
-
-  final FixtureResponse liveMatch;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container();
-  }
-}
-
 class MatchSummary extends StatelessWidget {
   const MatchSummary({super.key, required this.liveMatch});
 
@@ -457,17 +452,82 @@ class MatchSummary extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      physics: const NeverScrollableScrollPhysics(),
-      shrinkWrap: true,
-      reverse: true,
-      itemBuilder: (context, index) {
-        Events event = liveMatch.events[index];
-        return Text(
-          '${event.detail == 'Penalty' ? 'Goal Penalty' : event.detail}: ${event.time.elapsed}\' ${event.player.name}',
+    return BlocConsumer<FixtureCubit, FixtureState>(
+      listener: (context, state) {},
+      builder: (context, state) {
+        FixtureCubit fixtureCubit = FixtureCubit.get(context);
+        return Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Expanded(
+              child: ListView.builder(
+                itemBuilder: (context, index) {
+                  Events home = fixtureCubit.homeEvents[index];
+                  return Text(home.type);
+                },
+                itemCount: fixtureCubit.homeEvents.length,
+              ),
+            ),
+            Expanded(
+              child: ListView.builder(
+                itemBuilder: (context, index) {
+                  Events away = fixtureCubit.awayEvents[index];
+                  return Text(away.type);
+                },
+                itemCount: fixtureCubit.awayEvents.length,
+              ),
+            ),
+          ],
         );
       },
-      itemCount: liveMatch.events.length,
     );
+  }
+}
+
+class MatchLineUp extends StatelessWidget {
+  const MatchLineUp({super.key, required this.liveMatch});
+
+  final FixtureResponse liveMatch;
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocConsumer<FixtureCubit, FixtureState>(
+      listener: (context, state) {},
+      builder: (context, state) {
+        FixtureCubit fixtureCubit = FixtureCubit.get(context);
+        return fixtureCubit.lineups.isNotEmpty
+            ? ListView.builder(
+                itemBuilder: (context, index) {
+                  Lineups lineup = fixtureCubit.lineups[index];
+                  return Column(
+                    children: [Text(lineup.formation)],
+                  );
+                },
+                itemCount: fixtureCubit.lineups.length,
+              )
+            : const NoAvailableData();
+      },
+    );
+  }
+}
+
+class MatchStatistics extends StatelessWidget {
+  const MatchStatistics({super.key, required this.liveMatch});
+
+  final FixtureResponse liveMatch;
+
+  @override
+  Widget build(BuildContext context) {
+    return liveMatch.statistics.isNotEmpty
+        ? ListView.builder(
+            itemBuilder: (context, index) {
+              Statistics statistics = liveMatch.statistics[index];
+              return Column(
+                children: [Text(statistics.statistics.toString())],
+              );
+            },
+            itemCount: liveMatch.statistics.length,
+          )
+        : const NoAvailableData();
   }
 }

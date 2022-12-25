@@ -13,4 +13,5 @@ class JsonResources {
   static const String lineUp = '$jsonPath/lineup.json';
   static const String player = '$jsonPath/player.json';
   static const String signIn = '$jsonPath/signIn.json';
+  static const String ball = '$jsonPath/ball.json';
 }

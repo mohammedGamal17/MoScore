@@ -45,3 +45,24 @@ class GetFixtureByIdFail extends FixtureState {
     this.liveFixture = const [],
   });
 }
+
+class GetTodayMatchesLoading extends FixtureState {}
+
+class GetTodayMatchesSuccess extends FixtureState {
+  final List<FixtureTodayResponse> fixtureToday;
+
+  GetTodayMatchesSuccess({
+    required this.fixtureToday,
+  });
+}
+
+class GetTodayMatchesFail extends FixtureState {
+  final List<FixtureTodayResponse> fixtureToday;
+
+  final String message;
+
+  GetTodayMatchesFail({
+    required this.message,
+    this.fixtureToday = const [],
+  });
+}

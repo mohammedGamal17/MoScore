@@ -1,4 +1,6 @@
 class StringManager {
+  static const String appName = "MoScore";
+
   static const String noRouteFined = "No Route Fined";
 
   static const String onBoardModelTitle1 = "SEE THE BEST FOOTBALL APP #1";
@@ -76,10 +78,18 @@ class StringManager {
   static const String shareMoScore = 'Share MoScore';
   static const String noLive = 'There are no live events at the moment';
   static const String checkAgainLater = 'Please check again later.';
-  static const String stadium ='Stadium';
+  static const String stadium = 'Stadium';
   static const String home = 'Home';
   static const String away = 'Away';
   static const String round = 'Round';
+  static const String todayMatches = 'Today Matches';
+  static const String seeAll = 'See all';
+
+  // Match Details Screen
+  static const String statistics = 'Statistics';
+  static const String summary = 'Summary';
+  static const String lineUp = 'Lines-up';
+  static const String noAvailableData = 'Sorry!.. No available data';
 
   // Profile Screen
   static const String updated = 'Updated';
@@ -94,10 +104,6 @@ class StringManager {
   static const String update = 'Update';
   static const String updateImage = 'Update Image';
   static const String imageUploaded = 'Image Uploaded';
-
-
-
-
 
   static String anonymouslyUser({required String firstThreeIndex}) =>
       'User$firstThreeIndex';

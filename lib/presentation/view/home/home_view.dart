@@ -7,6 +7,7 @@ import '../../resources/assets/assets.dart';
 import '../../resources/colors/color_manager.dart';
 import '../../resources/components/components.dart';
 import '../../resources/components/live_matches_component.dart';
+import '../../resources/components/today_matches_component.dart';
 import '../../resources/fonts/fonts_manager.dart';
 import '../../resources/routes/routes_manager.dart';
 import '../../resources/string/string_manager.dart';
@@ -21,14 +22,37 @@ class HomeView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).backgroundColor,
-      appBar: AppBar(),
+      appBar: AppBar(
+        title: Text(
+          StringManager.appName,
+          style: TextStyle(
+            color: ColorManager.white,
+            fontSize: FontsSize.s26,
+            fontWeight: FontsWight.semiBold,
+          ),
+        ),
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+            bottomRight: Radius.circular(AppSize.s24),
+            bottomLeft: Radius.circular(AppSize.s24),
+          ),
+        ),
+      ),
       drawer: const DrawerComponent(),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: AppPadding.p20),
-        child: Column(
-          children: const [
-            LiveMatches(),
-          ],
+      body: SingleChildScrollView(
+        physics:
+            const NeverScrollableScrollPhysics(parent: BouncingScrollPhysics()),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: AppPadding.p20),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const LiveMatches(),
+              separator(horizontalPadding: AppPadding.p0),
+              const TodayMatches()
+            ],
+          ),
         ),
       ),
     );
@@ -173,4 +197,3 @@ class DrawerHeaderComponent extends StatelessWidget {
     );
   }
 }
-

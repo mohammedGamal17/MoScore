@@ -9,4 +9,6 @@ abstract class Repositories {
 
   Future<Either<Failure, List<FixtureResponse>>> getFixtureById(
       FixtureByIdInputs inputs);
+
+  Future<Either<Failure, List<FixtureTodayResponse>>> getTodayMatches();
 }

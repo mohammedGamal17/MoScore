@@ -75,6 +75,25 @@ class FixtureLiveResponse extends Equatable {
   List<Object> get props => [fixture, league, teams, goals, score, events];
 }
 
+class FixtureTodayResponse extends Equatable {
+  final Fixture fixture;
+  final League league;
+  final Teams teams;
+  final Goals goals;
+  final Score score;
+
+  const FixtureTodayResponse({
+    required this.fixture,
+    required this.league,
+    required this.teams,
+    required this.goals,
+    required this.score,
+  });
+
+  @override
+  List<Object> get props => [fixture, league, teams, goals, score];
+}
+
 class Fixture extends Equatable {
   final int id;
   final String date;

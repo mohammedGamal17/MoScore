@@ -10,6 +10,8 @@ abstract class BaseRemoteDataSource {
   Future<List<FixtureLiveResponseModel>> getLiveFixture();
 
   Future<List<FixtureResponseModel>> getFixtureBuId(FixtureByIdInputs inputs);
+
+  Future<List<FixtureTodayResponseModel>> getTodayMatches();
 }
 
 class RemoteDataSourceImplement extends BaseRemoteDataSource {
@@ -44,6 +46,24 @@ class RemoteDataSourceImplement extends BaseRemoteDataSource {
       return List<FixtureResponseModel>.from(
         (response.data['response'] as List).map(
           (e) => FixtureResponseModel.fromJson(e),
+        ),
+      );
+    } else {
+      throw RemoteErrorHandlerException(RemoteError.fromJson(response.data));
+    }
+  }
+
+  @override
+  Future<List<FixtureTodayResponseModel>> getTodayMatches() async {
+    final response = await Dio(
+      BaseOptions(
+        headers: APIConstants.header,
+      ),
+    ).get(APIConstants.getTodayMatch);
+    if (response.statusCode == 200) {
+      return List<FixtureTodayResponseModel>.from(
+        (response.data['response'] as List).map(
+          (e) => FixtureTodayResponseModel.fromJson(e),
         ),
       );
     } else {

@@ -61,6 +61,26 @@ class FixtureLiveResponseModel extends FixtureLiveResponse {
   }
 }
 
+class FixtureTodayResponseModel extends FixtureTodayResponse {
+  const FixtureTodayResponseModel({
+    required super.fixture,
+    required super.league,
+    required super.teams,
+    required super.goals,
+    required super.score,
+  });
+
+  factory FixtureTodayResponseModel.fromJson(Map<String, dynamic> json) {
+    return FixtureTodayResponseModel(
+      fixture: FixtureModel.fromJson(json['fixture']),
+      league: LeagueModel.fromJson(json['league']),
+      teams: TeamsModel.fromJson(json['teams']),
+      goals: GoalsModel.fromJson(json['goals']),
+      score: ScoreModel.fromJson(json['score']),
+    );
+  }
+}
+
 class FixtureModel extends Fixture {
   const FixtureModel({
     required super.id,
@@ -110,7 +130,7 @@ class StatusModel extends Status {
     return StatusModel(
       long: json['long'],
       short: json['short'],
-      elapsed: json['elapsed'],
+      elapsed: json['elapsed'] ?? 0,
     );
   }
 }
@@ -420,7 +440,7 @@ class SubstitutesModel extends Substitutes {
 
   factory SubstitutesModel.fromJson(Map<String, dynamic> json) {
     return SubstitutesModel(
-      player:  PlayerModel.fromJson(json['player']),
+      player: PlayerModel.fromJson(json['player']),
     );
   }
 }

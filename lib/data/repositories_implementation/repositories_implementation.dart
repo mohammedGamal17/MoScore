@@ -41,4 +41,19 @@ class RepositoriesImplementation implements Repositories {
       );
     }
   }
+
+  @override
+  Future<Either<Failure, List<FixtureTodayResponse>>> getTodayMatches() async {
+    final response = await _baseRemoteDataSource.getTodayMatches();
+    try {
+      return Right(response);
+    } on RemoteErrorHandlerException catch (e) {
+      return Left(
+        RemoteErrorImplement(
+          e.remoteError.statusCode,
+          e.remoteError.statusMessage,
+        ),
+      );
+    }
+  }
 }

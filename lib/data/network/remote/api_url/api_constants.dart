@@ -1,3 +1,8 @@
+import 'package:intl/intl.dart';
+
+DateTime _now = DateTime.now();
+String formattedDate = DateFormat('yyyy-MM-dd').format(_now);
+
 class APIConstants {
   static const String _token =
       '19a76979eemshb0337f0256d5a90p1f164bjsn9593cf47fa11';
@@ -9,4 +14,6 @@ class APIConstants {
 
   static String getFixturesByID({required int id}) =>
       '$baseUrl/fixtures?id=$id';
+
+  static String getTodayMatch = '$baseUrl/fixtures?date=$formattedDate';
 }

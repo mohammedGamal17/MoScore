@@ -8,6 +8,7 @@ import '../../data/network/remote/remote_data_source/remote_data_source.dart';
 import '../../data/repositories_implementation/repositories_implementation.dart';
 import '../../domain/repositories/repositories.dart';
 import '../../domain/use_cases/live_fixture_use_case.dart';
+import '../../domain/use_cases/today_matches_use_case.dart';
 import '../../presentation/view_model/cubit/fixture_cubit/fixture_cubit.dart';
 import '../../presentation/view_model/cubit/profile_cubit/profile_cubit.dart';
 import '../../presentation/view_model/cubit/auth_cubit/auth_cubit.dart';
@@ -56,6 +57,11 @@ class Di {
         getIt<Repositories>(),
       ),
     );
+    getIt.registerLazySingleton<TodayMatchesUseCase>(
+          () => TodayMatchesUseCase(
+        getIt<Repositories>(),
+      ),
+    );
 
     // Cubit
     getIt.registerFactory<AuthCubit>(
@@ -73,6 +79,7 @@ class Di {
         getIt<NetworkInfo>(),
         getIt<LiveFixtureUseCase>(),
         getIt<FixtureByIdUseCase>(),
+        getIt<TodayMatchesUseCase>(),
       ),
     );
   }

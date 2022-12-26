@@ -25,29 +25,18 @@ class LiveMatches extends StatelessWidget {
       child: BlocConsumer<FixtureCubit, FixtureState>(
         listener: (context, state) {},
         builder: (context, state) {
-          FixtureCubit fixtureCubit = FixtureCubit.get(context);
-          return RefreshIndicator(
-            onRefresh: () => fixtureCubit.reloadHome(context),
-            backgroundColor: ColorManager.primary,
-            color: ColorManager.white,
-            child: SingleChildScrollView(
-              physics: const AlwaysScrollableScrollPhysics(
-                parent: BouncingScrollPhysics(),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.only(top: AppPadding.p10),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    state is GetLiveFixtureSuccess
-                        ? LiveMatch()
-                        : SizedBox(
-                            height: 260.0,
-                            child: AdaptiveCircleIndicator(),
-                          ),
-                  ],
-                ),
-              ),
+          return Padding(
+            padding: const EdgeInsets.only(top: AppPadding.p10),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                state is GetLiveFixtureSuccess
+                    ? LiveMatch()
+                    : SizedBox(
+                        height: 260.0,
+                        child: AdaptiveCircleIndicator(),
+                      ),
+              ],
             ),
           );
         },

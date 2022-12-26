@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shimmer/shimmer.dart';
 
+import '../../../app/dependency_injection/dependency_injection.dart';
 import '../../resources/assets/assets.dart';
 import '../../resources/colors/color_manager.dart';
 import '../../resources/components/components.dart';
@@ -12,6 +13,8 @@ import '../../resources/fonts/fonts_manager.dart';
 import '../../resources/routes/routes_manager.dart';
 import '../../resources/string/string_manager.dart';
 import '../../resources/values/values_manager.dart';
+import '../../view_model/cubit/fixture_cubit/fixture_cubit.dart';
+import '../../view_model/cubit/fixture_cubit/fixture_state.dart';
 import '../../view_model/cubit/profile_cubit/profile_cubit.dart';
 import '../../view_model/cubit/profile_cubit/profile_state.dart';
 
@@ -39,20 +42,36 @@ class HomeView extends StatelessWidget {
         ),
       ),
       drawer: const DrawerComponent(),
-      body: SingleChildScrollView(
-        physics:
-            const NeverScrollableScrollPhysics(parent: BouncingScrollPhysics()),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: AppPadding.p20),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const LiveMatches(),
-              separator(horizontalPadding: AppPadding.p0),
-              const TodayMatches()
-            ],
-          ),
+      body: BlocProvider(
+        create: (context) => getIt<FixtureCubit>(),
+        child: BlocConsumer<FixtureCubit, FixtureState>(
+          listener: (context, state) {},
+          builder: (context, state) {
+            FixtureCubit fixtureCubit = FixtureCubit.get(context);
+            return RefreshIndicator(
+              onRefresh: () => fixtureCubit.reloadHome(context),
+              backgroundColor: ColorManager.primary,
+              color: ColorManager.white,
+              child: SingleChildScrollView(
+                physics: const AlwaysScrollableScrollPhysics(
+                  parent: BouncingScrollPhysics(),
+                ),
+                child: Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: AppPadding.p20),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const LiveMatches(),
+                      separator(horizontalPadding: AppPadding.p0),
+                      const TodayMatches()
+                    ],
+                  ),
+                ),
+              ),
+            );
+          },
         ),
       ),
     );

@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:quickalert/models/quickalert_type.dart';
 
 import '../../../../app/no_input.dart';
@@ -116,5 +117,22 @@ class FixtureCubit extends Cubit<FixtureState> {
 
   Future<void> reloadHome(context) async {
     getLiveFixture(context);
+    getTodayMatches(context);
+  }
+
+  String convertTimeStamp({
+    required int timeStamp,
+  }) {
+    DateTime date = DateTime.fromMillisecondsSinceEpoch(timeStamp * 1000);
+
+    String formattedTime = DateFormat('hh:mm a').format(date.toLocal());
+
+    return formattedTime;
+  }
+
+  String convertData() {
+    DateTime date = DateTime.now();
+    String formattedDate = DateFormat('MMM dd').format(date);
+    return formattedDate;
   }
 }

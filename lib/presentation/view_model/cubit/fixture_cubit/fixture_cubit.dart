@@ -63,6 +63,8 @@ class FixtureCubit extends Cubit<FixtureState> {
       result.fold(
         (l) => emit(GetFixtureByIdFail(message: l.message)),
         (r) => {
+          homeEvents = [],
+          awayEvents = [],
           emit(GetFixtureByIdSuccess(liveFixture: r)),
           r.forEach(
             (element) {

@@ -118,6 +118,27 @@ Widget separator({
   );
 }
 
+Widget separatorHorizontal({
+  double width = AppSize.s4,
+  double height = AppSize.s20,
+}) {
+  return Container(
+    width: width,
+    height: height,
+    decoration: BoxDecoration(
+      color: ColorManager.primary,
+      gradient: LinearGradient(
+        begin: AlignmentDirectional.topStart,
+        end: AlignmentDirectional.bottomEnd,
+        colors: [
+          ColorManager.primary,
+          ColorManager.selectedItem,
+        ],
+      ),
+    ),
+  );
+}
+
 Widget decorationButton(
   context, {
   required Widget widget,

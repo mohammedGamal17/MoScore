@@ -37,7 +37,9 @@ class MatchesDetailsView extends StatelessWidget {
                   ? Body(state: state)
                   : AdaptiveCircleIndicator(),
               floatingActionButton: FloatingActionButton(
-                onPressed: () {fixtureCubit.reloadFixture(context,id: id);},
+                onPressed: () {
+                  fixtureCubit.reloadFixture(context, id: id);
+                },
                 child: const Icon(Icons.refresh),
               ),
             ),
@@ -63,9 +65,9 @@ class Body extends StatelessWidget {
       ) {
         return [
           SliverAppBar(
-            pinned: true,
+            pinned: false,
             floating: true,
-            snap: true,
+            snap: false,
             scrolledUnderElevation: AppSize.s20,
             expandedHeight: 300.0,
             flexibleSpace: FlexibleSpaceBar(
@@ -260,7 +262,11 @@ class Body extends StatelessWidget {
         ];
       },
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: AppPadding.p20),
+        padding: const EdgeInsets.only(
+          right: AppPadding.p20,
+          left: AppPadding.p20,
+          bottom: AppPadding.p70,
+        ),
         child: TabBarView(
           physics: const BouncingScrollPhysics(),
           children: <Widget>[
@@ -456,28 +462,75 @@ class MatchSummary extends StatelessWidget {
       listener: (context, state) {},
       builder: (context, state) {
         FixtureCubit fixtureCubit = FixtureCubit.get(context);
-        return Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Expanded(
-              child: ListView.builder(
-                itemBuilder: (context, index) {
-                  Events home = fixtureCubit.homeEvents[index];
-                  return Text(home.type);
-                },
-                itemCount: fixtureCubit.homeEvents.length,
-              ),
-            ),
-            Expanded(
-              child: ListView.builder(
-                itemBuilder: (context, index) {
-                  Events away = fixtureCubit.awayEvents[index];
-                  return Text(away.type);
-                },
-                itemCount: fixtureCubit.awayEvents.length,
-              ),
-            ),
-          ],
+
+        return ListView.separated(
+          shrinkWrap: true,
+          itemBuilder: (context, index) {
+            Events events = liveMatch.events[index];
+            return fixtureCubit.homeEvents[0].team.id ==
+                    events.team.id // Check Home Or Away
+                ? Padding(
+                    padding: const EdgeInsets.all(6),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        Text(events.detail),
+                        const SizedBox(width: AppSize.s4),
+                        Text('${events.time.elapsed.toString()}\''),
+                        const SizedBox(width: AppSize.s6),
+                        separatorHorizontal(width: AppSize.s2),
+                        const SizedBox(width: AppSize.s6),
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(events.player.name),
+                            Text(
+                              events.assist.name ?? '',
+                              style: const TextStyle(
+                                color: Colors.grey,
+                                fontSize: FontsSize.s14,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  )
+                : Padding(
+                    padding: const EdgeInsets.all(6),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(events.player.name),
+                            Text(
+                              events.assist.name ?? '',
+                              style: const TextStyle(
+                                  color: Colors.grey, fontSize: FontsSize.s14),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(width: AppSize.s6),
+                        separatorHorizontal(width: AppSize.s2),
+                        const SizedBox(width: AppSize.s6),
+                        Text('${events.time.elapsed.toString()}\''),
+                        const SizedBox(width: AppSize.s4),
+                        Text(events.detail),
+                      ],
+                    ),
+                  );
+          },
+          itemCount: liveMatch.events.length,
+          separatorBuilder: (BuildContext context, int index) {
+            return separator(
+              verticalPadding: AppPadding.p6,
+              horizontalPadding: AppPadding.p60,
+            );
+          },
         );
       },
     );

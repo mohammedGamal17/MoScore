@@ -101,3 +101,6 @@ flutter:
     - family: TitilliumWeb-SemiBold
       fonts:
         - asset: assets/fonts/TitilliumWeb-SemiBold.ttf
+    - family: soccer_icons
+      fonts:
+        - asset: assets/fonts/soccer_icons.otf

@@ -376,7 +376,7 @@ class AssistModel extends Assist {
   factory AssistModel.fromJson(Map<String, dynamic> json) {
     return AssistModel(
       id: json['id'] ?? -70,
-      name: json['name'] ?? StringManager.unKnown,
+      name: json['name'] ?? '',
     );
   }
 }

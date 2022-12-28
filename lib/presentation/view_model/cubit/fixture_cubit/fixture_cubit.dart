@@ -28,8 +28,11 @@ class FixtureCubit extends Cubit<FixtureState> {
   final FixtureByIdUseCase _fixtureByIdUseCase;
   final TodayMatchesUseCase _todayMatchesUseCase;
 
-  final List statistics = [];
-  final List<Lineups> lineups = [];
+  List<FixtureLiveResponse> liveFixture = [];
+  List<FixtureTodayResponse> fixtureToday = [];
+  List <Statistics> homeStatistics = [];
+  List <Statistics> awayStatistics = [];
+  List<Lineups> lineups = [];
   List<Events> homeEvents = [];
   List<Events> awayEvents = [];
 
@@ -40,7 +43,13 @@ class FixtureCubit extends Cubit<FixtureState> {
       result.fold(
         (l) => emit(GetLiveFixtureFail(message: l.message)),
         (r) => {
+          liveFixture = [],
           emit(GetLiveFixtureSuccess(liveFixture: r)),
+          r.forEach(
+            (element) {
+              liveFixture.add(element);
+            },
+          ),
         },
       );
     } else {
@@ -65,6 +74,9 @@ class FixtureCubit extends Cubit<FixtureState> {
         (r) => {
           homeEvents = [],
           awayEvents = [],
+          lineups = [],
+          homeStatistics = [],
+          awayStatistics = [],
           emit(GetFixtureByIdSuccess(liveFixture: r)),
           r.forEach(
             (element) {
@@ -79,7 +91,11 @@ class FixtureCubit extends Cubit<FixtureState> {
                 lineups.add(lineup);
               }
               for (Statistics statistic in element.statistics) {
-                statistics.add(statistic);
+                if (element.teams.home.id == statistic.team.id) {
+                  homeStatistics.add(statistic);
+                } else {
+                  awayStatistics.add(statistic);
+                }
               }
             },
           ),
@@ -101,7 +117,11 @@ class FixtureCubit extends Cubit<FixtureState> {
       final response = await _todayMatchesUseCase.call(const NoInput());
       response.fold(
         (l) => emit(GetTodayMatchesFail(message: l.message)),
-        (r) => emit(GetTodayMatchesSuccess(fixtureToday: r)),
+        (r) => {
+          fixtureToday=[],
+          emit(GetTodayMatchesSuccess(fixtureToday: r)),
+          r.forEach((element) {fixtureToday.add(element);},),
+        },
       );
     } else {
       alert(

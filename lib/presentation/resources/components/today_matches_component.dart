@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shimmer/shimmer.dart';
 
-import '../../../app/dependency_injection/dependency_injection.dart';
 import '../../../domain/entities/entities.dart';
 import '../../view/matches/matches_details_view.dart';
 import '../../view_model/cubit/fixture_cubit/fixture_cubit.dart';
@@ -12,69 +11,60 @@ import '../colors/color_manager.dart';
 import '../fonts/fonts_manager.dart';
 import '../string/string_manager.dart';
 import '../values/values_manager.dart';
-import 'components.dart';
 
 class TodayMatches extends StatelessWidget {
   const TodayMatches({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => getIt<FixtureCubit>()..getTodayMatches(context),
-      child: BlocConsumer<FixtureCubit, FixtureState>(
-        listener: (context, state) {},
-        builder: (context, state) {
-          FixtureCubit fixtureCubit = FixtureCubit.get(context);
-
-          return state is GetTodayMatchesSuccess
-              ? Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        Text(
-                          StringManager.todayMatches,
-                          style:
-                              Theme.of(context).textTheme.titleLarge!.copyWith(
-                                    color: ColorManager.primary,
-                                    fontSize: FontsSize.s20,
-                                  ),
-                        ),
-                        const Spacer(),
-                        InkWell(
-                          onTap: () {
-                            // TODO NAVIGATE TO PAGE OF TODAY MATCHES
-                          },
-                          child: Text(
-                            StringManager.seeAll,
-                            style: Theme.of(context)
-                                .textTheme
-                                .displaySmall!
-                                .copyWith(fontSize: FontsSize.s16),
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: AppSize.s14),
-                    ListView.builder(
-                      shrinkWrap: true,
-                      controller: ScrollController(),
-                      itemBuilder: (context, index) {
-                        FixtureTodayResponse matches =
-                            state.fixtureToday[index];
-                        return MatchBuilder(
-                          fixtureCubit: fixtureCubit,
-                          matches: matches,
-                        );
-                      },
-                      itemCount: state.fixtureToday.length,
-                    ),
-                  ],
-                )
-              : AdaptiveCircleIndicator();
-        },
-      ),
+    return BlocConsumer<FixtureCubit, FixtureState>(
+      listener: (context, state) {},
+      builder: (context, state) {
+        FixtureCubit fixtureCubit = FixtureCubit.get(context);
+        return Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Text(
+                  StringManager.todayMatches,
+                  style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                        color: ColorManager.primary,
+                        fontSize: FontsSize.s20,
+                      ),
+                ),
+                const Spacer(),
+                InkWell(
+                  onTap: () {
+                    // TODO NAVIGATE TO PAGE OF TODAY MATCHES
+                  },
+                  child: Text(
+                    StringManager.seeAll,
+                    style: Theme.of(context)
+                        .textTheme
+                        .displaySmall!
+                        .copyWith(fontSize: FontsSize.s16),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: AppSize.s14),
+            ListView.builder(
+              shrinkWrap: true,
+              controller: ScrollController(),
+              itemBuilder: (context, index) {
+                FixtureTodayResponse matches = fixtureCubit.fixtureToday[index];
+                return MatchBuilder(
+                  fixtureCubit: fixtureCubit,
+                  matches: matches,
+                );
+              },
+              itemCount: fixtureCubit.fixtureToday.length,
+            ),
+          ],
+        );
+      },
     );
   }
 }

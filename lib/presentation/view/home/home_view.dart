@@ -43,34 +43,39 @@ class HomeView extends StatelessWidget {
       ),
       drawer: const DrawerComponent(),
       body: BlocProvider(
-        create: (context) => getIt<FixtureCubit>(),
+        create: (context) => getIt<FixtureCubit>()
+          ..getLiveFixture(context)
+          ..getTodayMatches(context),
         child: BlocConsumer<FixtureCubit, FixtureState>(
           listener: (context, state) {},
           builder: (context, state) {
             FixtureCubit fixtureCubit = FixtureCubit.get(context);
-            return RefreshIndicator(
-              onRefresh: () => fixtureCubit.reloadHome(context),
-              backgroundColor: ColorManager.primary,
-              color: ColorManager.white,
-              child: SingleChildScrollView(
-                physics: const AlwaysScrollableScrollPhysics(
-                  parent: BouncingScrollPhysics(),
-                ),
-                child: Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: AppPadding.p20),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const LiveMatches(),
-                      separator(horizontalPadding: AppPadding.p0),
-                      const TodayMatches()
-                    ],
-                  ),
-                ),
-              ),
-            );
+            return state is GetLiveFixtureSuccess ||
+                    state is GetTodayMatchesSuccess
+                ? RefreshIndicator(
+                    onRefresh: () => fixtureCubit.reloadHome(context),
+                    backgroundColor: ColorManager.primary,
+                    color: ColorManager.white,
+                    child: SingleChildScrollView(
+                      physics: const AlwaysScrollableScrollPhysics(
+                        parent: BouncingScrollPhysics(),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: AppPadding.p20),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            LiveMatches(),
+                            separator(horizontalPadding: AppPadding.p0),
+                            const TodayMatches()
+                          ],
+                        ),
+                      ),
+                    ),
+                  )
+                : AdaptiveCircleIndicator();
           },
         ),
       ),

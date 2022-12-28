@@ -571,16 +571,24 @@ class MatchStatistics extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return liveMatch.statistics.isNotEmpty
-        ? ListView.builder(
-            itemBuilder: (context, index) {
-              Statistics statistics = liveMatch.statistics[index];
-              return Column(
-                children: [Text(statistics.statistics.toString())],
-              );
-            },
-            itemCount: liveMatch.statistics.length,
-          )
-        : const NoAvailableData();
+    return BlocConsumer<FixtureCubit, FixtureState>(
+      listener: (context, state) {},
+      builder: (context, state) {
+        FixtureCubit fixtureCubit = FixtureCubit.get(context);
+
+        return liveMatch.statistics.isNotEmpty
+            ? ListView.builder(
+                itemBuilder: (context, index) {
+                  Statistics statistics = liveMatch.statistics[index];
+                  return fixtureCubit.homeStatistics[0].team.id ==
+                          statistics.team.id
+                      ? const Text('home')
+                      : const Text('away',textAlign: TextAlign.end);
+                },
+                itemCount: liveMatch.statistics.length,
+              )
+            : const NoAvailableData();
+      },
+    );
   }
 }

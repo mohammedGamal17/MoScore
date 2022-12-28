@@ -14,10 +14,7 @@ import '../../view_model/cubit/fixture_cubit/fixture_cubit.dart';
 import '../../view_model/cubit/fixture_cubit/fixture_state.dart';
 
 class MatchesDetailsView extends StatelessWidget {
-  const MatchesDetailsView({
-    super.key,
-    required this.id,
-  });
+  const MatchesDetailsView({super.key, required this.id});
 
   final int id;
 
@@ -463,75 +460,79 @@ class MatchSummary extends StatelessWidget {
       builder: (context, state) {
         FixtureCubit fixtureCubit = FixtureCubit.get(context);
 
-        return ListView.separated(
-          shrinkWrap: true,
-          itemBuilder: (context, index) {
-            Events events = liveMatch.events[index];
-            return fixtureCubit.homeEvents[0].team.id ==
-                    events.team.id // Check Home Or Away
-                ? Padding(
-                    padding: const EdgeInsets.all(6),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      mainAxisSize: MainAxisSize.max,
-                      children: [
-                        Text(events.detail),
-                        const SizedBox(width: AppSize.s4),
-                        Text('${events.time.elapsed.toString()}\''),
-                        const SizedBox(width: AppSize.s6),
-                        separatorHorizontal(width: AppSize.s2),
-                        const SizedBox(width: AppSize.s6),
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(events.player.name),
-                            Text(
-                              events.assist.name ?? '',
-                              style: const TextStyle(
-                                color: Colors.grey,
-                                fontSize: FontsSize.s14,
+        return fixtureCubit.event.isNotEmpty &&
+                fixtureCubit.homeEvents.isNotEmpty
+            ? ListView.separated(
+                shrinkWrap: true,
+                itemBuilder: (context, index) {
+                  Events events = liveMatch.events[index];
+                  return fixtureCubit.homeEvents[0].team.id ==
+                          events.team.id // Check Home Or Away
+                      ? Padding(
+                          padding: const EdgeInsets.all(6),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            mainAxisSize: MainAxisSize.max,
+                            children: [
+                              Text(events.detail),
+                              const SizedBox(width: AppSize.s4),
+                              Text('${events.time.elapsed.toString()}\''),
+                              const SizedBox(width: AppSize.s6),
+                              separatorHorizontal(width: AppSize.s2),
+                              const SizedBox(width: AppSize.s6),
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(events.player.name),
+                                  Text(
+                                    events.assist.name ?? '',
+                                    style: const TextStyle(
+                                      color: Colors.grey,
+                                      fontSize: FontsSize.s14,
+                                    ),
+                                  ),
+                                ],
                               ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  )
-                : Padding(
-                    padding: const EdgeInsets.all(6),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      mainAxisSize: MainAxisSize.max,
-                      children: [
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(events.player.name),
-                            Text(
-                              events.assist.name ?? '',
-                              style: const TextStyle(
-                                  color: Colors.grey, fontSize: FontsSize.s14),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(width: AppSize.s6),
-                        separatorHorizontal(width: AppSize.s2),
-                        const SizedBox(width: AppSize.s6),
-                        Text('${events.time.elapsed.toString()}\''),
-                        const SizedBox(width: AppSize.s4),
-                        Text(events.detail),
-                      ],
-                    ),
+                            ],
+                          ),
+                        )
+                      : Padding(
+                          padding: const EdgeInsets.all(6),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            mainAxisSize: MainAxisSize.max,
+                            children: [
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(events.player.name),
+                                  Text(
+                                    events.assist.name ?? '',
+                                    style: const TextStyle(
+                                        color: Colors.grey,
+                                        fontSize: FontsSize.s14),
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(width: AppSize.s6),
+                              separatorHorizontal(width: AppSize.s2),
+                              const SizedBox(width: AppSize.s6),
+                              Text('${events.time.elapsed.toString()}\''),
+                              const SizedBox(width: AppSize.s4),
+                              Text(events.detail),
+                            ],
+                          ),
+                        );
+                },
+                itemCount: liveMatch.events.length,
+                separatorBuilder: (BuildContext context, int index) {
+                  return separator(
+                    verticalPadding: AppPadding.p6,
+                    horizontalPadding: AppPadding.p60,
                   );
-          },
-          itemCount: liveMatch.events.length,
-          separatorBuilder: (BuildContext context, int index) {
-            return separator(
-              verticalPadding: AppPadding.p6,
-              horizontalPadding: AppPadding.p60,
-            );
-          },
-        );
+                },
+              )
+            : const NoAvailableData();
       },
     );
   }
@@ -579,13 +580,44 @@ class MatchStatistics extends StatelessWidget {
         return liveMatch.statistics.isNotEmpty
             ? ListView.builder(
                 itemBuilder: (context, index) {
-                  Statistics statistics = liveMatch.statistics[index];
-                  return fixtureCubit.homeStatistics[0].team.id ==
-                          statistics.team.id
-                      ? const Text('home')
-                      : const Text('away',textAlign: TextAlign.end);
+                  Statisticss statistics = fixtureCubit.homeStatistics[index];
+                  Statisticss statisticss = fixtureCubit.awayStatistics[index];
+
+                  double maxValue = statistics.value.toDouble() +
+                      statisticss.value.toDouble();
+                  return Column(
+                    children: [
+                      Text(statistics.type),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(statistics.value.toString()),
+                          Text(statisticss.value.toString()),
+                        ],
+                      ),
+                      SliderTheme(
+                        data: SliderTheme.of(context).copyWith(
+                          trackHeight: AppSize.s30,
+                          thumbColor: Colors.transparent,
+                          thumbShape: const RoundSliderThumbShape(
+                            enabledThumbRadius: 0.0,
+                          ),
+                        ),
+                        child: Slider(
+                          value: statistics.value.toDouble(),
+                          onChanged: (double value) {},
+                          min: 0,
+                          max: maxValue,
+                          activeColor: ColorManager.selectedItem,
+                          inactiveColor: ColorManager.primary,
+                          thumbColor: Colors.transparent,
+                        ),
+                      ),
+                      separator(),
+                    ],
+                  );
                 },
-                itemCount: liveMatch.statistics.length,
+                itemCount: 9,
               )
             : const NoAvailableData();
       },

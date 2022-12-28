@@ -30,9 +30,10 @@ class FixtureCubit extends Cubit<FixtureState> {
 
   List<FixtureLiveResponse> liveFixture = [];
   List<FixtureTodayResponse> fixtureToday = [];
-  List <Statistics> homeStatistics = [];
-  List <Statistics> awayStatistics = [];
+  List <Statisticss> homeStatistics = [];
+  List <Statisticss> awayStatistics = [];
   List<Lineups> lineups = [];
+  List<Events> event = [];
   List<Events> homeEvents = [];
   List<Events> awayEvents = [];
 
@@ -72,6 +73,7 @@ class FixtureCubit extends Cubit<FixtureState> {
       result.fold(
         (l) => emit(GetFixtureByIdFail(message: l.message)),
         (r) => {
+          event=[],
           homeEvents = [],
           awayEvents = [],
           lineups = [],
@@ -81,6 +83,7 @@ class FixtureCubit extends Cubit<FixtureState> {
           r.forEach(
             (element) {
               for (Events events in element.events) {
+                event.add(events);
                 if (element.teams.home.id == events.team.id) {
                   homeEvents.add(events);
                 } else {
@@ -92,9 +95,13 @@ class FixtureCubit extends Cubit<FixtureState> {
               }
               for (Statistics statistic in element.statistics) {
                 if (element.teams.home.id == statistic.team.id) {
-                  homeStatistics.add(statistic);
+                  for (var e in statistic.statistics) {
+                    homeStatistics.add(e);
+                  }
                 } else {
-                  awayStatistics.add(statistic);
+                  for (var e in statistic.statistics) {
+                    awayStatistics.add(e);
+                  }
                 }
               }
             },

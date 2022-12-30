@@ -90,6 +90,7 @@ class StringManager {
   static const String summary = 'Summary';
   static const String lineUp = 'Lines-up';
   static const String noAvailableData = 'Sorry!.. No available data';
+  static const String coach = 'Coach';
 
   // Profile Screen
   static const String updated = 'Updated';

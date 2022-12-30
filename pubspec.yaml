@@ -74,6 +74,8 @@ flutter:
 
   assets:
     - assets/images/
+    - assets/images/away_board.png
+    - assets/images/home_board.png
     - assets/images/loginBackground.svg
     - assets/images/logo.png
     - assets/json/ball.json

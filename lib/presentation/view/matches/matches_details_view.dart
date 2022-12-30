@@ -550,14 +550,29 @@ class MatchLineUp extends StatelessWidget {
       builder: (context, state) {
         FixtureCubit fixtureCubit = FixtureCubit.get(context);
         return fixtureCubit.lineups.isNotEmpty
-            ? ListView.builder(
-                itemBuilder: (context, index) {
-                  Lineups lineup = fixtureCubit.lineups[index];
-                  return Column(
-                    children: [Text(lineup.formation)],
-                  );
-                },
-                itemCount: fixtureCubit.lineups.length,
+            ? Column(
+                children: [
+                  // HOME LINES-UP
+                  Expanded(
+                    child: ListView.builder(
+                      itemBuilder: (context, index) {
+                        StartXI lineup = fixtureCubit.lineups[0].startXI[index];
+                        return Text(lineup.player.name);
+                      },
+                      itemCount: fixtureCubit.lineups[0].startXI.length,
+                    ),
+                  ),
+                  //AWAY LINES-UP
+                  Expanded(
+                    child: ListView.builder(
+                      itemBuilder: (context, index) {
+                        StartXI lineup = fixtureCubit.lineups[1].startXI[index];
+                        return Text(lineup.player.name);
+                      },
+                      itemCount: fixtureCubit.lineups[1].startXI.length,
+                    ),
+                  ),
+                ],
               )
             : const NoAvailableData();
       },

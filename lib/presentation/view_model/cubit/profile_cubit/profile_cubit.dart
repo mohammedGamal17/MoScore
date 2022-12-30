@@ -93,11 +93,8 @@ class ProfileCubit extends Cubit<ProfileState> {
   }
 
   Future pickImage() async {
-    final XFile? image = await _picker
-        .pickImage(
-      source: ImageSource.gallery,
-      imageQuality: 100,
-    )
+    await _picker
+        .pickImage(source: ImageSource.gallery, imageQuality: 100)
         .then((value) {
       if (value!.path.isNotEmpty) {
         imagePath = File(value.path);

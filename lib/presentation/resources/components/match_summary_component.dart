@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shimmer/shimmer.dart';
 
 import '../../../domain/entities/entities.dart';
 import '../../view_model/cubit/fixture_cubit/fixture_cubit.dart';
@@ -22,7 +23,7 @@ class MatchSummaryComponents extends StatelessWidget {
       builder: (context, state) {
         FixtureCubit fixtureCubit = FixtureCubit.get(context);
         FixtureLiveResponse liveMatch =
-        fixtureCubit.liveFixture.elementAt(index);
+            fixtureCubit.liveFixture.elementAt(index);
         return Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
@@ -67,12 +68,22 @@ class MatchSummaryComponents extends StatelessWidget {
                             imageUrl: liveMatch.teams.home.logo,
                             fit: BoxFit.cover,
                             height: AppSize.s100,
+                            placeholder: (context, url) =>
+                                Shimmer(
+                              gradient: LinearGradient(
+                                colors: [
+                                  ColorManager.darkPrimary,
+                                  ColorManager.primary,
+                                  ColorManager.lightPrimary
+                                ],
+                              ),
+                              child: const SizedBox(height: AppSize.s100),
+                            ),
                           ),
                           const SizedBox(height: AppSize.s4),
                           Text(
                             liveMatch.teams.home.name,
-                            style:
-                            Theme.of(context).textTheme.headlineLarge,
+                            style: Theme.of(context).textTheme.headlineLarge,
                             textAlign: TextAlign.center,
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis,
@@ -107,9 +118,8 @@ class MatchSummaryComponents extends StatelessWidget {
                               ),
                               Text(
                                 ':',
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .headlineLarge,
+                                style:
+                                    Theme.of(context).textTheme.headlineLarge,
                               ),
                               Text(
                                 liveMatch.goals.away.toString(),
@@ -122,8 +132,7 @@ class MatchSummaryComponents extends StatelessWidget {
                           ),
                           const SizedBox(height: AppSize.s4),
                           ClipRRect(
-                            borderRadius:
-                            BorderRadius.circular(AppSize.s10),
+                            borderRadius: BorderRadius.circular(AppSize.s10),
                             child: Stack(
                               alignment: Alignment.center,
                               children: [
@@ -138,14 +147,13 @@ class MatchSummaryComponents extends StatelessWidget {
                                   decoration: BoxDecoration(
                                     color: ColorManager.darkPrimary,
                                     borderRadius:
-                                    BorderRadius.circular(AppSize.s10),
+                                        BorderRadius.circular(AppSize.s10),
                                   ),
                                   alignment: Alignment.center,
                                   child: Text(
                                     '${liveMatch.fixture.status.elapsed.toString()}\'',
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .labelLarge,
+                                    style:
+                                        Theme.of(context).textTheme.labelLarge,
                                   ),
                                 ),
                               ],
@@ -164,12 +172,22 @@ class MatchSummaryComponents extends StatelessWidget {
                             imageUrl: liveMatch.teams.away.logo,
                             fit: BoxFit.cover,
                             height: AppSize.s100,
+                            placeholder: (context, url) =>
+                                Shimmer(
+                                  gradient: LinearGradient(
+                                    colors: [
+                                      ColorManager.darkPrimary,
+                                      ColorManager.primary,
+                                      ColorManager.lightPrimary
+                                    ],
+                                  ),
+                                  child: const SizedBox(height: AppSize.s100),
+                                ),
                           ),
                           const SizedBox(height: AppSize.s4),
                           Text(
                             liveMatch.teams.away.name,
-                            style:
-                            Theme.of(context).textTheme.headlineLarge,
+                            style: Theme.of(context).textTheme.headlineLarge,
                             textAlign: TextAlign.center,
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis,

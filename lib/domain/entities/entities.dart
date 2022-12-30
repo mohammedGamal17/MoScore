@@ -369,12 +369,14 @@ class Player extends Equatable {
   final String name;
   final int? number;
   final String? pos;
+  final String? grid;
 
   const Player({
     this.id,
     required this.name,
      this.number,
      this.pos,
+    this.grid,
   });
 
   @override

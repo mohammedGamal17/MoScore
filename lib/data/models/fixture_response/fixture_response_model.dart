@@ -355,6 +355,7 @@ class PlayerModel extends Player {
     required super.name,
     super.number,
     super.pos,
+    super.grid,
   });
 
   factory PlayerModel.fromJson(Map<String, dynamic> json) {
@@ -362,7 +363,8 @@ class PlayerModel extends Player {
       id: json['id'] ?? -60,
       name: json['name'] ?? StringManager.unKnown,
       number: json['number'] ?? 0,
-      pos: json['pos'],
+      pos: json['pos'] ?? '',
+      grid: json['grid'] ?? '',
     );
   }
 }

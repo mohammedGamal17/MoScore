@@ -75,7 +75,7 @@ class HomeView extends StatelessWidget {
                       ),
                     ),
                   )
-                : AdaptiveCircleIndicator();
+                : const HomeLoadingSimmer();
           },
         ),
       ),
@@ -220,4 +220,62 @@ class DrawerHeaderComponent extends StatelessWidget {
           : AdaptiveCircleIndicator(),
     );
   }
+}
+
+class HomeLoadingSimmer extends StatelessWidget{
+  const HomeLoadingSimmer({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(
+          horizontal: AppPadding.p20),
+      child: Shimmer(
+        gradient: LinearGradient(
+          colors: [
+            ColorManager.darkPrimary,
+            ColorManager.primary,
+            ColorManager.lightPrimary,
+          ],
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              StringManager.liveMatch,
+              style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                  color: ColorManager.primary, fontSize: FontsSize.s20),
+            ),
+            const SizedBox(height: AppSize.s20),
+            const SizedBox(
+              height: AppSize.s250,
+              width: double.infinity,
+            ),
+            ListView.builder(
+              shrinkWrap: true,
+              itemBuilder: (context, index) {
+                return Card(
+                  shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(AppSize.s12),
+                    ),
+                  ),
+                  color: ColorManager.primary,
+                  elevation: AppSize.s6,
+                  shadowColor: ColorManager.lightPrimary,
+                  child: const SizedBox(
+                    width: double.infinity,
+                    height: AppSize.s100,
+                  ),
+                );
+              },
+              itemCount: 20,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
 }

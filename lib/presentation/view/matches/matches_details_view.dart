@@ -1,11 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shimmer/shimmer.dart';
 
 import '../../../app/dependency_injection/dependency_injection.dart';
 import '../../../domain/entities/entities.dart';
-import '../../resources/assets/assets.dart';
 import '../../resources/colors/color_manager.dart';
 import '../../resources/components/components.dart';
 import '../../resources/components/no_live_matches_component.dart';
@@ -62,6 +60,7 @@ class Body extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     FixtureResponse liveMatch = state.liveFixture.elementAt(0);
+    print(liveMatch.league.id);
     return NestedScrollView(
       headerSliverBuilder: (
         BuildContext context,
@@ -555,58 +554,49 @@ class MatchLineUp extends StatelessWidget {
     Lineups homeTeam = fixtureCubit.lineups[0];
     Lineups awayTeam = fixtureCubit.lineups[1];
     return fixtureCubit.lineups.isNotEmpty
-        ? Column(
+        ? Row(
             children: [
               // HOME LINES-UP
-              TeamLinesUpHeader(team: homeTeam),
               Expanded(
-                child: Stack(
+                child: Column(
                   children: [
-                    const Image(
-                      image: AssetImage(AssetsResources.homeBoard),
-                      fit: BoxFit.cover,
-                      width: double.infinity,
-                      height: double.infinity,
-                    ),
-                    ListView.builder(
-                      itemBuilder: (context, index) {
-                        StartXI lineup = homeTeam.startXI[index];
-                        print(homeTeam.formation.length);
-                        return PlayerBuilder(
-                          teamLogo: homeTeam.team.logo,
-                          playerName: lineup.player.name,
-                        );
-                      },
-                      itemCount: fixtureCubit.lineups[0].startXI.length,
+                    TeamLinesUpHeader(team: homeTeam),
+                    Expanded(
+                      child: ListView.builder(
+                        itemBuilder: (context, index) {
+                          StartXI lineup = homeTeam.startXI[index];
+                          return PlayerBuilder(
+                            teamLogo: homeTeam.team.logo,
+                            player: lineup.player,
+                          );
+                        },
+                        itemCount: fixtureCubit.lineups[0].startXI.length,
+                      ),
                     ),
                   ],
                 ),
               ),
+              separatorHorizontal(height: double.infinity),
               // AWAY LINES-UP
               Expanded(
-                child: Stack(
+                child: Column(
                   children: [
-                    const Image(
-                      image: AssetImage(AssetsResources.awayBoard),
-                      fit: BoxFit.cover,
-                      width: double.infinity,
-                      height: double.infinity,
-                    ),
-                    ListView.builder(
-                      reverse: true,
-                      itemBuilder: (context, index) {
-                        StartXI lineup = awayTeam.startXI[index];
-                        return PlayerBuilder(
-                          teamLogo: awayTeam.team.logo,
-                          playerName: lineup.player.name,
-                        );
-                      },
-                      itemCount: fixtureCubit.lineups[0].startXI.length,
+                    TeamLinesUpHeader(team: awayTeam),
+                    Expanded(
+                      child: ListView.builder(
+                        itemBuilder: (context, index) {
+                          StartXI lineup = awayTeam.startXI[index];
+                          return PlayerBuilder(
+                            teamLogo: awayTeam.team.logo,
+                            player: lineup.player,
+                          );
+                        },
+                        itemCount: fixtureCubit.lineups[0].startXI.length,
+                      ),
                     ),
                   ],
                 ),
               ),
-              TeamLinesUpHeader(team: awayTeam),
             ],
           )
         : const NoAvailableData();
@@ -679,7 +669,7 @@ class TeamLinesUpHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: AppSize.s60,
+      height: AppSize.s80,
       width: double.infinity,
       color: ColorManager.content.withOpacity(0.4),
       child: Padding(
@@ -688,20 +678,16 @@ class TeamLinesUpHeader extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            Row(
-              children: [
-                Text('${StringManager.team}: ${team.team.name}'),
-                const Spacer(),
-                Text(team.formation),
-              ],
-            ),
             Text(
               '${StringManager.coach}: ${team.coach.name}',
               style: TextStyle(
                 fontSize: 14.0,
                 color: ColorManager.lightPrimary,
               ),
+              maxLines: 2,
             ),
+            const Spacer(),
+            Text('${StringManager.formation}: ${team.formation}'),
           ],
         ),
       ),
@@ -721,19 +707,14 @@ class TeamLinesUpBody extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              Row(
-                children: [
-                  Text('${StringManager.team}: ${team.team.name}'),
-                  const Spacer(),
-                  Text(team.formation),
-                ],
-              ),
-              Text(
-                '${StringManager.coach}: ${team.coach.name}',
-                style: TextStyle(
-                  fontSize: 14.0,
-                  color: ColorManager.lightPrimary,
+              GridView.builder(
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 4,
                 ),
+                itemBuilder: (context, index) {
+                  return Text(index.toString());
+                },
+                itemCount: 4,
               ),
             ],
           )
@@ -764,37 +745,37 @@ class PlayerBuilder extends StatelessWidget {
   const PlayerBuilder({
     super.key,
     required this.teamLogo,
-    required this.playerName,
+    required this.player,
   });
 
   final String teamLogo;
-  final String playerName;
+  final Player player;
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisSize: MainAxisSize.min,
       children: [
         CircleAvatar(
           radius: AppSize.s20,
-          child: CachedNetworkImage(
-            imageUrl: teamLogo,
-            fit: BoxFit.fill,
-            placeholder: (context, url) => Shimmer(
-              gradient: LinearGradient(
-                colors: [
-                  ColorManager.darkPrimary,
-                  ColorManager.primary,
-                  ColorManager.lightPrimary,
-                ],
+          backgroundImage: CachedNetworkImageProvider(teamLogo),
+        ),
+        const SizedBox(width: AppSize.s6),
+        Expanded(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                player.name,
+                style: Theme.of(context).textTheme.displaySmall,
               ),
-              child: const CircleAvatar(radius: AppSize.s20),
-            ),
+              Text(player.pos ?? ''),
+            ],
           ),
         ),
-        Text(playerName),
       ],
     );
   }

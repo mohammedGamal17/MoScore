@@ -91,6 +91,7 @@ class StringManager {
   static const String lineUp = 'Lines-up';
   static const String noAvailableData = 'Sorry!.. No available data';
   static const String coach = 'Coach';
+  static const String formation = 'Formation';
 
   // Profile Screen
   static const String updated = 'Updated';

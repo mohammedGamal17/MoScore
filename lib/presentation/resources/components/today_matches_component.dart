@@ -191,9 +191,9 @@ class TeamAway extends StatelessWidget {
             placeholder: (context, url) => Shimmer(
               gradient: LinearGradient(
                 colors: [
-                  ColorManager.darkPrimary,
-                  ColorManager.primary,
-                  ColorManager.lightPrimary,
+                  ColorManager.headLine,
+                  ColorManager.listTitle,
+                  ColorManager.backGround,
                 ],
               ),
               child: Container(),

@@ -1,6 +1,6 @@
-
-
 import 'package:equatable/equatable.dart';
+
+import '../../../../domain/entities/entities.dart';
 
 abstract class LeaguesState extends Equatable {
   const LeaguesState();
@@ -17,11 +17,20 @@ class GetLeaguesLoading extends LeaguesState {
 }
 
 class GetLeaguesSuccess extends LeaguesState {
+  final List<LeagueResponse> allLeagues;
+
+  const GetLeaguesSuccess({required this.allLeagues});
+
   @override
-  List<Object> get props => [];
+  List<Object> get props => [allLeagues];
 }
 
 class GetLeaguesFail extends LeaguesState {
+  final String message;
+
+
+  const GetLeaguesFail(this.message);
+
   @override
-  List<Object> get props => [];
+  List<Object> get props => [message];
 }

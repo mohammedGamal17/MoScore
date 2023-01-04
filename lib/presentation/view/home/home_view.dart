@@ -75,7 +75,7 @@ class HomeView extends StatelessWidget {
                       ),
                     ),
                   )
-                : const HomeLoadingSimmer();
+                : AdaptiveCircleIndicator();
           },
         ),
       ),
@@ -112,6 +112,13 @@ class DrawerComponent extends StatelessWidget {
                 ),
                 title: const Text(StringManager.live),
                 onTap: () {},
+              ),
+              ListTile(
+                leading: const Icon(Icons.sports_soccer_sharp),
+                title: const Text(StringManager.league),
+                onTap: () {
+                  Navigator.pushNamed(context, Routes.leagues);
+                },
               ),
               separator(
                 horizontalPadding: AppPadding.p0,
@@ -222,14 +229,13 @@ class DrawerHeaderComponent extends StatelessWidget {
   }
 }
 
-class HomeLoadingSimmer extends StatelessWidget{
+class HomeLoadingSimmer extends StatelessWidget {
   const HomeLoadingSimmer({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(
-          horizontal: AppPadding.p20),
+      padding: const EdgeInsets.symmetric(horizontal: AppPadding.p20),
       child: Shimmer(
         gradient: LinearGradient(
           colors: [
@@ -277,5 +283,4 @@ class HomeLoadingSimmer extends StatelessWidget{
       ),
     );
   }
-
 }

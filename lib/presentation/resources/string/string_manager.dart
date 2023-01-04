@@ -107,6 +107,12 @@ class StringManager {
   static const String updateImage = 'Update Image';
   static const String imageUploaded = 'Image Uploaded';
 
+  // Player Position
+  static const String goalKeeper = 'Goalkeeper';
+  static const String defender = 'Defender';
+  static const String middle = 'Middle';
+  static const String forward = 'Forward';
+
   static String anonymouslyUser({required String firstThreeIndex}) =>
       'User$firstThreeIndex';
 

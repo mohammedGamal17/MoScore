@@ -56,4 +56,19 @@ class RepositoriesImplementation implements Repositories {
       );
     }
   }
+
+  @override
+  Future<Either<Failure, List<LeagueResponse>>> getAllLeague() async {
+    final response = await _baseRemoteDataSource.getAllLeague();
+    try {
+      return Right(response);
+    } on RemoteErrorHandlerException catch (e) {
+      return Left(
+        RemoteErrorImplement(
+          e.remoteError.statusCode,
+          e.remoteError.statusMessage,
+        ),
+      );
+    }
+  }
 }

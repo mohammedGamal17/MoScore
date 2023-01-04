@@ -150,11 +150,11 @@ class LeagueModel extends League {
     return LeagueModel(
       id: json['id'] ?? -20,
       name: json['name'],
-      country: json['country'],
-      logo: json['logo'],
+      country: json['country']?? StringManager.unKnown,
+      logo: json['logo']?? StringManager.unKnown,
       flag: json['flag'] ?? StringManager.unKnown,
-      season: json['season'],
-      round: json['round'],
+      season: json['season'] ?? -1900,
+      round: json['round']?? StringManager.unKnown,
     );
   }
 }

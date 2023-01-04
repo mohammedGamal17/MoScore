@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shimmer/shimmer.dart';
 
 import '../../../app/dependency_injection/dependency_injection.dart';
 import '../../../domain/entities/entities.dart';
@@ -60,7 +61,6 @@ class Body extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     FixtureResponse liveMatch = state.liveFixture.elementAt(0);
-    print(liveMatch.league.id);
     return NestedScrollView(
       headerSliverBuilder: (
         BuildContext context,
@@ -554,50 +554,57 @@ class MatchLineUp extends StatelessWidget {
     Lineups homeTeam = fixtureCubit.lineups[0];
     Lineups awayTeam = fixtureCubit.lineups[1];
     return fixtureCubit.lineups.isNotEmpty
-        ? Row(
-            children: [
-              // HOME LINES-UP
-              Expanded(
-                child: Column(
-                  children: [
-                    TeamLinesUpHeader(team: homeTeam),
-                    Expanded(
-                      child: ListView.builder(
-                        itemBuilder: (context, index) {
-                          StartXI lineup = homeTeam.startXI[index];
-                          return PlayerBuilder(
-                            teamLogo: homeTeam.team.logo,
-                            player: lineup.player,
-                          );
-                        },
-                        itemCount: fixtureCubit.lineups[0].startXI.length,
+        ? Padding(
+            padding: const EdgeInsets.only(top: AppPadding.p6),
+            child: Row(
+              children: [
+                // HOME LINES-UP
+                Expanded(
+                  child: Column(
+                    children: [
+                      TeamLinesUpHeader(team: homeTeam),
+                      Expanded(
+                        child: ListView.separated(
+                          itemBuilder: (context, index) {
+                            StartXI lineup = homeTeam.startXI[index];
+                            return PlayerBuilder(
+                              teamLogo: homeTeam.team.logo,
+                              player: lineup.player,
+                            );
+                          },
+                          itemCount: fixtureCubit.lineups[0].startXI.length,
+                          separatorBuilder: (BuildContext context, int index) =>
+                              const SizedBox(height: AppSize.s6),
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-              separatorHorizontal(height: double.infinity),
-              // AWAY LINES-UP
-              Expanded(
-                child: Column(
-                  children: [
-                    TeamLinesUpHeader(team: awayTeam),
-                    Expanded(
-                      child: ListView.builder(
-                        itemBuilder: (context, index) {
-                          StartXI lineup = awayTeam.startXI[index];
-                          return PlayerBuilder(
-                            teamLogo: awayTeam.team.logo,
-                            player: lineup.player,
-                          );
-                        },
-                        itemCount: fixtureCubit.lineups[0].startXI.length,
+                separatorHorizontal(height: double.infinity),
+                // AWAY LINES-UP
+                Expanded(
+                  child: Column(
+                    children: [
+                      TeamLinesUpHeader(team: awayTeam),
+                      Expanded(
+                        child: ListView.separated(
+                          itemBuilder: (context, index) {
+                            StartXI lineup = awayTeam.startXI[index];
+                            return PlayerBuilder(
+                              teamLogo: awayTeam.team.logo,
+                              player: lineup.player,
+                            );
+                          },
+                          itemCount: fixtureCubit.lineups[0].startXI.length,
+                          separatorBuilder: (BuildContext context, int index) =>
+                              const SizedBox(height: AppSize.s6),
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           )
         : const NoAvailableData();
   }
@@ -758,9 +765,24 @@ class PlayerBuilder extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisSize: MainAxisSize.min,
       children: [
-        CircleAvatar(
-          radius: AppSize.s20,
-          backgroundImage: CachedNetworkImageProvider(teamLogo),
+        CachedNetworkImage(
+          imageUrl: teamLogo,
+          width: AppSize.s30,
+          height: AppSize.s30,
+          placeholder: (context, url) {
+            return Shimmer(
+              gradient: RadialGradient(
+                colors: [
+                  ColorManager.darkPrimary,
+                  ColorManager.primary,
+                  ColorManager.lightPrimary
+                ],
+              ),
+              child: const CircleAvatar(
+                radius: AppSize.s30,
+              ),
+            );
+          },
         ),
         const SizedBox(width: AppSize.s6),
         Expanded(
@@ -770,9 +792,60 @@ class PlayerBuilder extends StatelessWidget {
             children: [
               Text(
                 player.name,
-                style: Theme.of(context).textTheme.displaySmall,
+                style: Theme.of(context).textTheme.bodyMedium,
               ),
-              Text(player.pos ?? ''),
+              Row(
+                children: [
+                  Text(
+                    player.number.toString() ?? '',
+                    style: Theme.of(context).textTheme.displaySmall!.copyWith(
+                          fontSize: FontsSize.s14,
+                        ),
+                  ),
+                  const SizedBox(width: AppSize.s6),
+                  if (player.pos == 'G') ...[
+                    Expanded(
+                      child: Text(
+                        StringManager.goalKeeper,
+                        style: Theme.of(context).textTheme.displaySmall,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                  ] else if (player.pos == 'D') ...[
+                    Expanded(
+                      child: Text(
+                        StringManager.defender,
+                        style: Theme.of(context).textTheme.displaySmall,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                  ] else if (player.pos == 'M') ...[
+                    Expanded(
+                      child: Text(
+                        StringManager.middle,
+                        style: Theme.of(context).textTheme.displaySmall,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                  ] else if (player.pos == 'F') ...[
+                    Expanded(
+                      child: Text(
+                        StringManager.forward,
+                        style: Theme.of(context).textTheme.displaySmall,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                  ] else ...[
+                    Expanded(
+                      child: Text(
+                        StringManager.unKnown,
+                        style: Theme.of(context).textTheme.displaySmall,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                  ]
+                ],
+              ),
             ],
           ),
         ),

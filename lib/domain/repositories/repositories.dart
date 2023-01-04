@@ -11,4 +11,6 @@ abstract class Repositories {
       FixtureByIdInputs inputs);
 
   Future<Either<Failure, List<FixtureTodayResponse>>> getTodayMatches();
+
+  Future<Either<Failure, List<LeagueResponse>>> getAllLeague();
 }

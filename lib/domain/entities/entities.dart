@@ -1,3 +1,4 @@
+
 import 'package:equatable/equatable.dart';
 
 class Users extends Equatable {
@@ -374,8 +375,8 @@ class Player extends Equatable {
   const Player({
     this.id,
     required this.name,
-     this.number,
-     this.pos,
+    this.number,
+    this.pos,
     this.grid,
   });
 
@@ -500,4 +501,49 @@ class Playerss extends Equatable {
 
   @override
   List<Object> get props => [player];
+}
+
+class LeagueResponse extends Equatable {
+  final League league;
+  final Country country;
+  final List<Seasons> seasons;
+
+  const LeagueResponse({
+    required this.league,
+    required this.country,
+    required this.seasons,
+  });
+
+  @override
+  List<Object> get props => [league, country, seasons];
+}
+
+class Country extends Equatable {
+  final String name;
+  final String flag;
+
+  const Country({
+    required this.name,
+    required this.flag,
+  });
+
+  @override
+  List<Object> get props => [name, flag];
+}
+
+class Seasons extends Equatable {
+  final int year;
+  final String start;
+  final String end;
+  final bool current;
+
+  const Seasons({
+    required this.year,
+    required this.start,
+    required this.end,
+    required this.current,
+  });
+
+  @override
+  List<Object> get props => [year, start, end, current];
 }

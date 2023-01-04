@@ -7,9 +7,11 @@ import '../../data/network/remote/info/network_info.dart';
 import '../../data/network/remote/remote_data_source/remote_data_source.dart';
 import '../../data/repositories_implementation/repositories_implementation.dart';
 import '../../domain/repositories/repositories.dart';
+import '../../domain/use_cases/all_leagues_use_case.dart';
 import '../../domain/use_cases/live_fixture_use_case.dart';
 import '../../domain/use_cases/today_matches_use_case.dart';
 import '../../presentation/view_model/cubit/fixture_cubit/fixture_cubit.dart';
+import '../../presentation/view_model/cubit/leagues_cubit/leagues_cubit.dart';
 import '../../presentation/view_model/cubit/profile_cubit/profile_cubit.dart';
 import '../../presentation/view_model/cubit/auth_cubit/auth_cubit.dart';
 import '../shared_preferences/shared_preferences.dart';
@@ -63,6 +65,12 @@ class Di {
       ),
     );
 
+    getIt.registerLazySingleton<AllLeaguesUseCase>(
+          () => AllLeaguesUseCase(
+        getIt<Repositories>(),
+      ),
+    );
+
     // Cubit
     getIt.registerFactory<AuthCubit>(
       () => AuthCubit(
@@ -80,6 +88,13 @@ class Di {
         getIt<LiveFixtureUseCase>(),
         getIt<FixtureByIdUseCase>(),
         getIt<TodayMatchesUseCase>(),
+      ),
+    );
+
+    getIt.registerFactory<LeaguesCubit>(
+          () => LeaguesCubit(
+        getIt<NetworkInfo>(),
+        getIt<AllLeaguesUseCase>(),
       ),
     );
   }

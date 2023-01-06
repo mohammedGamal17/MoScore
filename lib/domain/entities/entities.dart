@@ -1,4 +1,3 @@
-
 import 'package:equatable/equatable.dart';
 
 class Users extends Equatable {
@@ -174,7 +173,49 @@ class League extends Equatable {
   });
 
   @override
-  List<Object> get props => [id, name, country, logo, flag, season, round];
+  List<Object?> get props => [
+        id,
+        name,
+        country,
+        logo,
+        flag,
+        season,
+        round,
+      ];
+}
+
+class LeagueStanding extends Equatable {
+  final int id;
+  final String name;
+  final String country;
+  final String logo;
+  final String flag;
+  final int season;
+  final String round;
+  // final List<Standing> standings;
+
+  const LeagueStanding({
+    required this.id,
+    required this.name,
+    required this.country,
+    required this.logo,
+    required this.flag,
+    required this.season,
+    required this.round,
+    // required this.standings,
+  });
+
+  @override
+  List<Object> get props => [
+    id,
+    name,
+    country,
+    logo,
+    flag,
+    season,
+    round,
+    // standings,
+  ];
 }
 
 class Teams extends Equatable {
@@ -546,4 +587,64 @@ class Seasons extends Equatable {
 
   @override
   List<Object> get props => [year, start, end, current];
+}
+
+class Standing extends Equatable {
+  final int rank;
+  final Team team;
+  final All all;
+  final String description;
+  final int points;
+  final int goalsDiff;
+  final String group;
+
+  const Standing({
+    required this.rank,
+    required this.team,
+    required this.all,
+    required this.description,
+    required this.points,
+    required this.goalsDiff,
+    required this.group,
+  });
+
+  @override
+  List<Object> get props => [
+        rank,
+        team,
+        all,
+        description,
+        points,
+        goalsDiff,
+        group,
+      ];
+}
+
+class All extends Equatable {
+  final int draw;
+  final GoalsForStanding goals;
+  final int lose;
+  final int played;
+  final int win;
+
+  const All({
+    required this.draw,
+    required this.goals,
+    required this.lose,
+    required this.played,
+    required this.win,
+  });
+
+  @override
+  List<Object> get props => [draw, goals, lose, played, win];
+}
+
+class GoalsForStanding extends Equatable {
+  final int forTeam;
+  final int against;
+
+  const GoalsForStanding({required this.against, required this.forTeam});
+
+  @override
+  List<Object> get props => [forTeam, against];
 }

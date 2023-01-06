@@ -1,6 +1,8 @@
 import 'package:dartz/dartz.dart';
+import 'package:moscore/data/models/leagues_response/leagues_response_model.dart';
 import 'package:moscore/data/network/remote/remote_data_source/remote_data_source.dart';
 import 'package:moscore/domain/use_cases/fixture_by_id_use_case.dart';
+import 'package:moscore/domain/use_cases/get_standing_use_case.dart';
 
 import '../../app/failure/Failure.dart';
 import '../../domain/entities/entities.dart';
@@ -60,6 +62,23 @@ class RepositoriesImplementation implements Repositories {
   @override
   Future<Either<Failure, List<LeagueResponse>>> getAllLeague() async {
     final response = await _baseRemoteDataSource.getAllLeague();
+    try {
+      return Right(response);
+    } on RemoteErrorHandlerException catch (e) {
+      return Left(
+        RemoteErrorImplement(
+          e.remoteError.statusCode,
+          e.remoteError.statusMessage,
+        ),
+      );
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<LeagueStandingModel>>> getStanding(
+      GetLeagueStandingInputs inputs) async {
+    final response = await _baseRemoteDataSource.getStanding(inputs);
+
     try {
       return Right(response);
     } on RemoteErrorHandlerException catch (e) {

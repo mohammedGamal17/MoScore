@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 
 import '../../../../app/failure/Failure.dart';
 import '../../../../domain/use_cases/fixture_by_id_use_case.dart';
+import '../../../../domain/use_cases/get_standing_use_case.dart';
 import '../../../models/fixture_response/fixture_response_model.dart';
 import '../../../models/leagues_response/leagues_response_model.dart';
 import '../api_url/api_constants.dart';
@@ -15,6 +16,8 @@ abstract class BaseRemoteDataSource {
   Future<List<FixtureTodayResponseModel>> getTodayMatches();
 
   Future<List<LeagueResponseModel>> getAllLeague();
+
+  Future<List<LeagueStandingModel>> getStanding(GetLeagueStandingInputs inputs);
 }
 
 class RemoteDataSourceImplement extends BaseRemoteDataSource {
@@ -85,6 +88,29 @@ class RemoteDataSourceImplement extends BaseRemoteDataSource {
       return List<LeagueResponseModel>.from(
         (response.data['response'] as List).map(
           (e) => LeagueResponseModel.fromJson(e),
+        ),
+      );
+    } else {
+      throw RemoteErrorHandlerException(RemoteError.fromJson(response.data));
+    }
+  }
+
+  @override
+  Future<List<LeagueStandingModel>> getStanding(
+      GetLeagueStandingInputs inputs) async {
+    final response = await Dio(
+      BaseOptions(headers: APIConstants.header),
+    ).get(
+      APIConstants.getLeagueByIdAndSeason(
+        season: inputs.year,
+        leagueId: inputs.id,
+      ),
+    );
+
+    if (response.statusCode == 200) {
+      return List<LeagueStandingModel>.from(
+        (response.data['response'] as List).map(
+          (e) => LeagueStandingModel.fromJson(e),
         ),
       );
     } else {

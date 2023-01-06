@@ -8,6 +8,7 @@ import '../../data/network/remote/remote_data_source/remote_data_source.dart';
 import '../../data/repositories_implementation/repositories_implementation.dart';
 import '../../domain/repositories/repositories.dart';
 import '../../domain/use_cases/all_leagues_use_case.dart';
+import '../../domain/use_cases/get_standing_use_case.dart';
 import '../../domain/use_cases/live_fixture_use_case.dart';
 import '../../domain/use_cases/today_matches_use_case.dart';
 import '../../presentation/view_model/cubit/fixture_cubit/fixture_cubit.dart';
@@ -60,13 +61,19 @@ class Di {
       ),
     );
     getIt.registerLazySingleton<TodayMatchesUseCase>(
-          () => TodayMatchesUseCase(
+      () => TodayMatchesUseCase(
         getIt<Repositories>(),
       ),
     );
 
     getIt.registerLazySingleton<AllLeaguesUseCase>(
-          () => AllLeaguesUseCase(
+      () => AllLeaguesUseCase(
+        getIt<Repositories>(),
+      ),
+    );
+
+    getIt.registerLazySingleton<GetStandingUseCase>(
+      () => GetStandingUseCase(
         getIt<Repositories>(),
       ),
     );
@@ -92,9 +99,10 @@ class Di {
     );
 
     getIt.registerFactory<LeaguesCubit>(
-          () => LeaguesCubit(
+      () => LeaguesCubit(
         getIt<NetworkInfo>(),
         getIt<AllLeaguesUseCase>(),
+        getIt<GetStandingUseCase>(),
       ),
     );
   }

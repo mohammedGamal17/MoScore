@@ -10,6 +10,7 @@ import '../../resources/string/string_manager.dart';
 import '../../resources/values/values_manager.dart';
 import '../../view_model/cubit/leagues_cubit/leagues_cubit.dart';
 import '../../view_model/cubit/leagues_cubit/leagues_state.dart';
+import 'league_over_view.dart';
 
 class LeaguesView extends StatelessWidget {
   LeaguesView({super.key});
@@ -23,12 +24,13 @@ class LeaguesView extends StatelessWidget {
       child: BlocConsumer<LeaguesCubit, LeaguesState>(
         listener: (context, state) {},
         builder: (context, state) {
+          LeaguesCubit leaguesCubit = LeaguesCubit.get(context);
           return Scaffold(
             appBar: AppBar(
               centerTitle: true,
               title: const Text(StringManager.league),
             ),
-            body: state is GetLeaguesSuccess
+            body: leaguesCubit.leagues.isNotEmpty
                 ? Column(
                     children: [
                       Expanded(
@@ -43,11 +45,12 @@ class LeaguesView extends StatelessWidget {
                               Search(
                                 searchTextEditController:
                                     searchTextEditController,
-                                getLeaguesSuccess: state,
+                                leaguesCubit: leaguesCubit,
                               ),
                               const SizedBox(height: AppSize.s20),
-                              Leagues(
-                                getLeaguesSuccess: state,
+                              Body(
+                                allLeagues: leaguesCubit.leagues,
+                                leaguesCubit: leaguesCubit,
                               ),
                             ],
                           ),
@@ -72,11 +75,11 @@ class Search extends StatelessWidget {
   const Search({
     super.key,
     required this.searchTextEditController,
-    required this.getLeaguesSuccess,
+    required this.leaguesCubit,
   });
 
   final TextEditingController searchTextEditController;
-  final GetLeaguesSuccess getLeaguesSuccess;
+  final LeaguesCubit leaguesCubit;
 
   @override
   Widget build(BuildContext context) {
@@ -91,19 +94,37 @@ class Search extends StatelessWidget {
         hintText: 'World Cup',
       ),
       onChanged: (value) {
-        // TODO SEARCH ON LIST OF LEAGUES
+        leaguesCubit.onSearchTextChanged(value);
       },
     );
   }
 }
 
-class Leagues extends StatelessWidget {
-  const Leagues({
+class Body extends StatelessWidget {
+  const Body({
     super.key,
-    required this.getLeaguesSuccess,
+    required this.allLeagues,
+    required this.leaguesCubit,
   });
 
-  final GetLeaguesSuccess getLeaguesSuccess;
+  final List<LeagueResponse> allLeagues;
+  final LeaguesCubit leaguesCubit;
+
+  @override
+  Widget build(BuildContext context) {
+    return leaguesCubit.searchResult.isNotEmpty
+        ? SearchedLeagues(leaguesCubit: leaguesCubit)
+        : AllLeagues(allLeagues: allLeagues);
+  }
+}
+
+class SearchedLeagues extends StatelessWidget {
+  const SearchedLeagues({
+    super.key,
+    required this.leaguesCubit,
+  });
+
+  final LeaguesCubit leaguesCubit;
 
   @override
   Widget build(BuildContext context) {
@@ -112,10 +133,36 @@ class Leagues extends StatelessWidget {
         physics: const BouncingScrollPhysics(),
         itemBuilder: (context, index) {
           return LeagueItem(
-            leagueResponse: getLeaguesSuccess.allLeagues[index],
+            leagueResponse: leaguesCubit.searchResult[index],
           );
         },
-        itemCount: getLeaguesSuccess.allLeagues.length,
+        itemCount: leaguesCubit.searchResult.length,
+        separatorBuilder: (BuildContext context, int index) =>
+            const SizedBox(height: AppSize.s10),
+      ),
+    );
+  }
+}
+
+class AllLeagues extends StatelessWidget {
+  const AllLeagues({
+    super.key,
+    required this.allLeagues,
+  });
+
+  final List<LeagueResponse> allLeagues;
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: ListView.separated(
+        physics: const BouncingScrollPhysics(),
+        itemBuilder: (context, index) {
+          return LeagueItem(
+            leagueResponse: allLeagues[index],
+          );
+        },
+        itemCount: allLeagues.length,
         separatorBuilder: (BuildContext context, int index) =>
             const SizedBox(height: AppSize.s10),
       ),
@@ -133,36 +180,64 @@ class LeagueItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(AppSize.s24),
-      child: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [
-              ColorManager.darkPrimary,
-              ColorManager.primary,
-              ColorManager.lightPrimary,
-            ],
-          ),
+    return InkWell(
+      onTap: () => Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) {
+            return LeagueOverView(
+              leagueResponse: leagueResponse,
+              season: 2022,
+            );
+          },
         ),
-        height: AppSize.s120,
-        child: Row(
-          children: [
-             CachedNetworkImage(
-              imageUrl: leagueResponse.league.logo,
-               fit: BoxFit.cover,
-               height: AppSize.s120,
-               width: AppSize.s120,
+      ),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(AppSize.s24),
+        child: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                ColorManager.darkPrimary,
+                ColorManager.primary,
+                ColorManager.lightPrimary,
+              ],
             ),
-            const SizedBox(width: AppSize.s14),
-            Expanded(
-              child: Text(
-                leagueResponse.league.name,
-                style: Theme.of(context).textTheme.headlineLarge,
-                overflow: TextOverflow.ellipsis,
-              ),
+          ),
+          height: AppSize.s100,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: AppPadding.p10),
+            child: Row(
+              children: [
+                CachedNetworkImage(
+                  imageUrl: leagueResponse.league.logo,
+                  fit: BoxFit.fill,
+                  height: AppSize.s100,
+                  width: AppSize.s100,
+                ),
+                const SizedBox(width: AppSize.s14),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        leagueResponse.league.name,
+                        style: Theme.of(context).textTheme.headlineLarge,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      const SizedBox(height: AppSize.s10),
+                      Text(
+                        leagueResponse.country.name,
+                        style: Theme.of(context).textTheme.displayMedium,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ],
+                  ),
+                ),
+              ],
             ),
-          ],
+          ),
         ),
       ),
     );

@@ -1,36 +1,41 @@
-import 'package:equatable/equatable.dart';
+
 
 import '../../../../domain/entities/entities.dart';
 
-abstract class LeaguesState extends Equatable {
-  const LeaguesState();
-}
+abstract class LeaguesState {}
 
-class LeaguesInitial extends LeaguesState {
-  @override
-  List<Object> get props => [];
-}
+class LeaguesInitial extends LeaguesState {}
 
-class GetLeaguesLoading extends LeaguesState {
-  @override
-  List<Object> get props => [];
-}
+class GetLeaguesLoading extends LeaguesState {}
 
 class GetLeaguesSuccess extends LeaguesState {
   final List<LeagueResponse> allLeagues;
 
-  const GetLeaguesSuccess({required this.allLeagues});
-
-  @override
-  List<Object> get props => [allLeagues];
+  GetLeaguesSuccess({required this.allLeagues});
 }
 
 class GetLeaguesFail extends LeaguesState {
   final String message;
 
+  GetLeaguesFail(this.message);
+}
 
-  const GetLeaguesFail(this.message);
+class LeaguesSearch extends LeaguesState {}
 
-  @override
-  List<Object> get props => [message];
+class LeaguesSearchEmpty extends LeaguesState {}
+
+class DropDownYearChanged extends LeaguesState {}
+
+class GetStandingLeagueLoading extends LeaguesState {}
+
+class GetStandingLeagueSuccess extends LeaguesState {
+  final List<LeagueStanding> league;
+
+  GetStandingLeagueSuccess({required this.league});
+}
+
+class GetStandingLeagueFail extends LeaguesState {
+  final String message;
+
+  GetStandingLeagueFail(this.message);
 }

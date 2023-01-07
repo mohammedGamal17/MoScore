@@ -125,30 +125,32 @@ class Head extends StatelessWidget {
                     ],
                   ),
                 ),
-                DropdownButton<int>(
-                  items: leagueResponse.seasons.map(
-                    (season) {
-                      return DropdownMenuItem<int>(
-                        value: season.year,
-                        child: Text(
-                          season.year.toString(),
-                        ),
-                      );
-                    },
-                  ).toList(),
-                  value: leaguesCubit.year,
-                  onChanged: (int? value) {
-                    leaguesCubit.changeYear(value!);
-                    leaguesCubit.getStandingLeague(
-                      context,
-                      leagueId: leagueResponse.league.id,
-                      year: value,
-                    );
-                  },
-                  iconSize: AppSize.s26,
-                  iconEnabledColor: ColorManager.primary,
-                  style: Theme.of(context).textTheme.bodyMedium,
-                ),
+                // leagueResponse.seasons.isEmpty
+                //     ? const SizedBox()
+                //     : DropdownButton<int>(
+                //         items: leagueResponse.seasons.map(
+                //           (season) {
+                //             return DropdownMenuItem<int>(
+                //               value: season.year,
+                //               child: Text(
+                //                 season.year.toString(),
+                //               ),
+                //             );
+                //           },
+                //         ).toList(),
+                //         value: leaguesCubit.year,
+                //         onChanged: (int? value) {
+                //           leaguesCubit.changeYear(value!);
+                //           leaguesCubit.getStandingLeague(
+                //             context,
+                //             leagueId: leagueResponse.league.id,
+                //             year: value,
+                //           );
+                //         },
+                //         iconSize: AppSize.s26,
+                //         iconEnabledColor: ColorManager.primary,
+                //         style: Theme.of(context).textTheme.bodyMedium,
+                //       ),
               ],
             ),
           ),
@@ -170,21 +172,48 @@ class StandingTable extends StatelessWidget {
 
         return leaguesCubit.standing.isNotEmpty
             ? Expanded(
-                child: ListView.separated(
-                  physics: const BouncingScrollPhysics(),
-                  itemBuilder: (context, index) {
-                    Standing team = leaguesCubit.standing[index];
-                    return TeamBuilder(
-                      leaguesCubit: leaguesCubit,
-                      index: index,
-                      team: team,
-                    );
-                  },
-                  separatorBuilder: (context, index) {
-                    return const SizedBox(height: AppSize.s10);
-                  },
-                  itemCount: leaguesCubit.standing.length,
-                ),
+                // Check if League Or Champions League
+                child: leaguesCubit.standing.length > 1
+                    ? ListView.separated(
+                        physics: const BouncingScrollPhysics(),
+                        itemBuilder: (context, index) {
+                          List<Standing?> group = leaguesCubit.standing[index];
+                          return ListView.separated(
+                            shrinkWrap: true,
+                            itemBuilder: (context, index) {
+                              Standing? team = group[index];
+                              return TeamBuilder(
+                                leaguesCubit: leaguesCubit,
+                                index: index,
+                                team: team!,
+                              );
+                            },
+                            separatorBuilder: (context, index) {
+                              return const SizedBox(height: AppSize.s8);
+                            },
+                            itemCount: group.length,
+                          );
+                        },
+                        separatorBuilder: (context, index) {
+                          return const SizedBox(height: AppSize.s16);
+                        },
+                        itemCount: leaguesCubit.standing.length,
+                      )
+                    : ListView.separated(
+                        physics: const BouncingScrollPhysics(),
+                        itemBuilder: (context, index) {
+                          Standing? team = leaguesCubit.standing.first[index];
+                          return TeamBuilder(
+                            leaguesCubit: leaguesCubit,
+                            index: index,
+                            team: team!,
+                          );
+                        },
+                        separatorBuilder: (context, index) {
+                          return const SizedBox(height: AppSize.s10);
+                        },
+                        itemCount: leaguesCubit.standing.length,
+                      ),
               )
             : AdaptiveCircleIndicator();
       },

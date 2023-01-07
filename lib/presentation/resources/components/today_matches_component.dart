@@ -11,6 +11,7 @@ import '../colors/color_manager.dart';
 import '../fonts/fonts_manager.dart';
 import '../string/string_manager.dart';
 import '../values/values_manager.dart';
+import 'components.dart';
 
 class TodayMatches extends StatelessWidget {
   const TodayMatches({super.key});
@@ -50,18 +51,21 @@ class TodayMatches extends StatelessWidget {
               ],
             ),
             const SizedBox(height: AppSize.s14),
-            ListView.builder(
-              shrinkWrap: true,
-              controller: ScrollController(),
-              itemBuilder: (context, index) {
-                FixtureTodayResponse matches = fixtureCubit.fixtureToday[index];
-                return MatchBuilder(
-                  fixtureCubit: fixtureCubit,
-                  matches: matches,
-                );
-              },
-              itemCount: fixtureCubit.fixtureToday.length,
-            ),
+            state is GetTodayMatchesSuccess
+                ? ListView.builder(
+                    shrinkWrap: true,
+                    controller: ScrollController(),
+                    itemBuilder: (context, index) {
+                      FixtureTodayResponse matches =
+                          fixtureCubit.fixtureToday[index];
+                      return MatchBuilder(
+                        fixtureCubit: fixtureCubit,
+                        matches: matches,
+                      );
+                    },
+                    itemCount: fixtureCubit.fixtureToday.length,
+                  )
+                : AdaptiveCircleIndicator(),
           ],
         );
       },

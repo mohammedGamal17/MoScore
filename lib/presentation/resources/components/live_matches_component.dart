@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:moscore/presentation/resources/components/league_logo.dart';
 
 import '../../../domain/entities/entities.dart';
 import '../../view/matches/matches_details_view.dart';
@@ -10,6 +9,7 @@ import '../colors/color_manager.dart';
 import '../fonts/fonts_manager.dart';
 import '../string/string_manager.dart';
 import '../values/values_manager.dart';
+import 'league_logo.dart';
 import 'match_summary_component.dart';
 import 'no_live_matches_component.dart';
 
@@ -44,8 +44,11 @@ class LiveMatches extends StatelessWidget {
                       controller: _horizontal,
                       itemBuilder: (context, index) {
                         FixtureLiveResponse liveMatch =
-                        fixtureCubit.liveFixture[index];
-                        return MatchBody(liveMatch: liveMatch, index: index);
+                            fixtureCubit.liveFixture[index];
+                        return MatchBody(
+                          liveMatch: liveMatch,
+                          index: index,
+                        );
                       },
                     ),
                   )

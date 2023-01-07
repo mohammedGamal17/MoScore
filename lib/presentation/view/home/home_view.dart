@@ -50,32 +50,29 @@ class HomeView extends StatelessWidget {
           listener: (context, state) {},
           builder: (context, state) {
             FixtureCubit fixtureCubit = FixtureCubit.get(context);
-            return state is GetLiveFixtureSuccess ||
-                    state is GetTodayMatchesSuccess
-                ? RefreshIndicator(
-                    onRefresh: () => fixtureCubit.reloadHome(context),
-                    backgroundColor: ColorManager.primary,
-                    color: ColorManager.white,
-                    child: SingleChildScrollView(
-                      physics: const AlwaysScrollableScrollPhysics(
-                        parent: BouncingScrollPhysics(),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: AppPadding.p20),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            LiveMatches(),
-                            separator(horizontalPadding: AppPadding.p0),
-                            const TodayMatches()
-                          ],
-                        ),
-                      ),
-                    ),
-                  )
-                : AdaptiveCircleIndicator();
+            return RefreshIndicator(
+              onRefresh: () => fixtureCubit.reloadHome(context),
+              backgroundColor: ColorManager.primary,
+              color: ColorManager.white,
+              child: SingleChildScrollView(
+                physics: const AlwaysScrollableScrollPhysics(
+                  parent: BouncingScrollPhysics(),
+                ),
+                child: Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: AppPadding.p20),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      LiveMatches(),
+                      separator(horizontalPadding: AppPadding.p0),
+                      const TodayMatches()
+                    ],
+                  ),
+                ),
+              ),
+            );
           },
         ),
       ),

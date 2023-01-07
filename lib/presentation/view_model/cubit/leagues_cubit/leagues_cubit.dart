@@ -76,7 +76,7 @@ class LeaguesCubit extends Cubit<LeaguesState> {
     return leagueRes;
   }
 
-  List<Standing> standing = [];
+  List<List<Standing?>> standing = [];
 
   getStandingLeague(context, {required int leagueId, required int year}) async {
     if (await _networkInfo.isConnected) {
@@ -94,9 +94,17 @@ class LeaguesCubit extends Cubit<LeaguesState> {
 
           standing = [],
           r.forEach((element) {
-            for (Standing? e in element.league.standings!.first!) {
-              standing.add(e!);
+            if (element.league.standings!.length>1) {
+              for (List<Standing?>? e in element.league.standings!) {
+                standing.add(e!);
+              }
             }
+            // else {
+            //   for (Standing? e in element.league.standings!.first!) {
+            //     standing.add(e!);
+            //   }
+            // }
+
             year = element.league.season!;
           }),
         },

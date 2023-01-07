@@ -10,6 +10,7 @@ import '../colors/color_manager.dart';
 import '../fonts/fonts_manager.dart';
 import '../string/string_manager.dart';
 import '../values/values_manager.dart';
+import 'components.dart';
 
 class MatchSummaryComponents extends StatelessWidget {
   const MatchSummaryComponents({super.key, required this.index});
@@ -24,137 +25,185 @@ class MatchSummaryComponents extends StatelessWidget {
         FixtureCubit fixtureCubit = FixtureCubit.get(context);
         FixtureLiveResponse liveMatch =
             fixtureCubit.liveFixture.elementAt(index);
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Text(
-              liveMatch.league.name,
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-            const SizedBox(height: AppSize.s4),
-            Text(
-              '${StringManager.stadium}: ${liveMatch.fixture.venue.name}',
-              style: Theme.of(context)
-                  .textTheme
-                  .labelMedium!
-                  .copyWith(color: ColorManager.content),
-              overflow: TextOverflow.ellipsis,
-              maxLines: 1,
-            ),
-            const SizedBox(height: AppSize.s4),
-            Text(
-              liveMatch.league.round,
-              style: Theme.of(context)
-                  .textTheme
-                  .labelMedium!
-                  .copyWith(color: ColorManager.content),
-            ),
-            const SizedBox(height: AppSize.s4),
-            Expanded(
-              child: SizedBox(
-                width: double.infinity,
-                height: double.infinity,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    // Home
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.start,
+        return fixtureCubit.liveFixture.isNotEmpty
+            ? Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(
+                    liveMatch.league.name,
+                    style: Theme.of(context).textTheme.headlineMedium,
+                  ),
+                  const SizedBox(height: AppSize.s4),
+                  Text(
+                    '${StringManager.stadium}: ${liveMatch.fixture.venue.name}',
+                    style: Theme.of(context)
+                        .textTheme
+                        .labelMedium!
+                        .copyWith(color: ColorManager.content),
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 1,
+                  ),
+                  const SizedBox(height: AppSize.s4),
+                  Text(
+                    liveMatch.league.round,
+                    style: Theme.of(context)
+                        .textTheme
+                        .labelMedium!
+                        .copyWith(color: ColorManager.content),
+                  ),
+                  const SizedBox(height: AppSize.s4),
+                  Expanded(
+                    child: SizedBox(
+                      width: double.infinity,
+                      height: double.infinity,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
-                          CachedNetworkImage(
-                            imageUrl: liveMatch.teams.home.logo,
-                            fit: BoxFit.cover,
-                            height: AppSize.s100,
-                            placeholder: (context, url) =>
-                                Shimmer(
-                              gradient: LinearGradient(
-                                colors: [
-                                  ColorManager.darkPrimary,
-                                  ColorManager.primary,
-                                  ColorManager.lightPrimary
-                                ],
-                              ),
-                              child: const SizedBox(height: AppSize.s100),
+                          // Home
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                CachedNetworkImage(
+                                  imageUrl: liveMatch.teams.home.logo,
+                                  fit: BoxFit.cover,
+                                  height: AppSize.s100,
+                                  placeholder: (context, url) => Shimmer(
+                                    gradient: LinearGradient(
+                                      colors: [
+                                        ColorManager.darkPrimary,
+                                        ColorManager.primary,
+                                        ColorManager.lightPrimary
+                                      ],
+                                    ),
+                                    child: const SizedBox(height: AppSize.s100),
+                                  ),
+                                ),
+                                const SizedBox(height: AppSize.s4),
+                                Text(
+                                  liveMatch.teams.home.name,
+                                  style:
+                                      Theme.of(context).textTheme.headlineLarge,
+                                  textAlign: TextAlign.center,
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                                const SizedBox(height: AppSize.s4),
+                                Text(
+                                  StringManager.home,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .labelMedium!
+                                      .copyWith(color: ColorManager.content),
+                                ),
+                              ],
                             ),
                           ),
-                          const SizedBox(height: AppSize.s4),
-                          Text(
-                            liveMatch.teams.home.name,
-                            style: Theme.of(context).textTheme.headlineLarge,
-                            textAlign: TextAlign.center,
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                          const SizedBox(height: AppSize.s4),
-                          Text(
-                            StringManager.home,
-                            style: Theme.of(context)
-                                .textTheme
-                                .labelMedium!
-                                .copyWith(color: ColorManager.content),
-                          ),
-                        ],
-                      ),
-                    ),
-                    // Time and Score
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                liveMatch.goals.home.toString(),
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .headlineLarge!
-                                    .copyWith(fontSize: FontsSize.s24),
-                              ),
-                              Text(
-                                ':',
-                                style:
-                                    Theme.of(context).textTheme.headlineLarge,
-                              ),
-                              Text(
-                                liveMatch.goals.away.toString(),
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .headlineLarge!
-                                    .copyWith(fontSize: FontsSize.s24),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(height: AppSize.s4),
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(AppSize.s10),
-                            child: Stack(
-                              alignment: Alignment.center,
+                          // Time and Score
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Container(
-                                  height: AppSize.s26,
-                                  width: AppSize.s40,
-                                  color: ColorManager.selectedItem,
+                                Row(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      liveMatch.goals.home.toString(),
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .headlineLarge!
+                                          .copyWith(fontSize: FontsSize.s24),
+                                    ),
+                                    Text(
+                                      ':',
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .headlineLarge,
+                                    ),
+                                    Text(
+                                      liveMatch.goals.away.toString(),
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .headlineLarge!
+                                          .copyWith(fontSize: FontsSize.s24),
+                                    ),
+                                  ],
                                 ),
-                                Container(
-                                  height: AppSize.s24,
-                                  width: AppSize.s38,
-                                  decoration: BoxDecoration(
-                                    color: ColorManager.darkPrimary,
-                                    borderRadius:
-                                        BorderRadius.circular(AppSize.s10),
+                                const SizedBox(height: AppSize.s4),
+                                ClipRRect(
+                                  borderRadius:
+                                      BorderRadius.circular(AppSize.s10),
+                                  child: Stack(
+                                    alignment: Alignment.center,
+                                    children: [
+                                      Container(
+                                        height: AppSize.s26,
+                                        width: AppSize.s40,
+                                        color: ColorManager.selectedItem,
+                                      ),
+                                      Container(
+                                        height: AppSize.s24,
+                                        width: AppSize.s38,
+                                        decoration: BoxDecoration(
+                                          color: ColorManager.darkPrimary,
+                                          borderRadius: BorderRadius.circular(
+                                              AppSize.s10),
+                                        ),
+                                        alignment: Alignment.center,
+                                        child: Text(
+                                          '${liveMatch.fixture.status.elapsed.toString()}\'',
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .labelLarge,
+                                        ),
+                                      ),
+                                    ],
                                   ),
-                                  alignment: Alignment.center,
-                                  child: Text(
-                                    '${liveMatch.fixture.status.elapsed.toString()}\'',
-                                    style:
-                                        Theme.of(context).textTheme.labelLarge,
+                                ),
+                              ],
+                            ),
+                          ),
+                          // Away
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                CachedNetworkImage(
+                                  imageUrl: liveMatch.teams.away.logo,
+                                  fit: BoxFit.cover,
+                                  height: AppSize.s100,
+                                  placeholder: (context, url) => Shimmer(
+                                    gradient: LinearGradient(
+                                      colors: [
+                                        ColorManager.darkPrimary,
+                                        ColorManager.primary,
+                                        ColorManager.lightPrimary
+                                      ],
+                                    ),
+                                    child: const SizedBox(height: AppSize.s100),
                                   ),
+                                ),
+                                const SizedBox(height: AppSize.s4),
+                                Text(
+                                  liveMatch.teams.away.name,
+                                  style:
+                                      Theme.of(context).textTheme.headlineLarge,
+                                  textAlign: TextAlign.center,
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                                const SizedBox(height: AppSize.s4),
+                                Text(
+                                  StringManager.away,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .labelMedium!
+                                      .copyWith(color: ColorManager.content),
                                 ),
                               ],
                             ),
@@ -162,53 +211,10 @@ class MatchSummaryComponents extends StatelessWidget {
                         ],
                       ),
                     ),
-                    // Away
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          CachedNetworkImage(
-                            imageUrl: liveMatch.teams.away.logo,
-                            fit: BoxFit.cover,
-                            height: AppSize.s100,
-                            placeholder: (context, url) =>
-                                Shimmer(
-                                  gradient: LinearGradient(
-                                    colors: [
-                                      ColorManager.darkPrimary,
-                                      ColorManager.primary,
-                                      ColorManager.lightPrimary
-                                    ],
-                                  ),
-                                  child: const SizedBox(height: AppSize.s100),
-                                ),
-                          ),
-                          const SizedBox(height: AppSize.s4),
-                          Text(
-                            liveMatch.teams.away.name,
-                            style: Theme.of(context).textTheme.headlineLarge,
-                            textAlign: TextAlign.center,
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                          const SizedBox(height: AppSize.s4),
-                          Text(
-                            StringManager.away,
-                            style: Theme.of(context)
-                                .textTheme
-                                .labelMedium!
-                                .copyWith(color: ColorManager.content),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ],
-        );
+                  ),
+                ],
+              )
+            : AdaptiveCircleIndicator();
       },
     );
   }

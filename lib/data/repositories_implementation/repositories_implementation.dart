@@ -1,12 +1,12 @@
 import 'package:dartz/dartz.dart';
-import 'package:moscore/data/models/leagues_response/leagues_response_model.dart';
-import 'package:moscore/data/network/remote/remote_data_source/remote_data_source.dart';
-import 'package:moscore/domain/use_cases/fixture_by_id_use_case.dart';
-import 'package:moscore/domain/use_cases/get_standing_use_case.dart';
 
 import '../../app/failure/Failure.dart';
 import '../../domain/entities/entities.dart';
 import '../../domain/repositories/repositories.dart';
+import '../../domain/use_cases/fixture_by_id_use_case.dart';
+import '../../domain/use_cases/get_standing_use_case.dart';
+import '../models/leagues_response/league_standing_model.dart';
+import '../network/remote/remote_data_source/remote_data_source.dart';
 
 class RepositoriesImplementation implements Repositories {
   RepositoriesImplementation(this._baseRemoteDataSource);
@@ -75,7 +75,7 @@ class RepositoriesImplementation implements Repositories {
   }
 
   @override
-  Future<Either<Failure, List<LeagueStandingModel>>> getStanding(
+  Future<Either<Failure, List<LeagueStandingResponseModel>>> getStanding(
       GetLeagueStandingInputs inputs) async {
     final response = await _baseRemoteDataSource.getStanding(inputs);
 

@@ -66,17 +66,3 @@ class GetTodayMatchesFail extends FixtureState {
     this.fixtureToday = const [],
   });
 }
-
-class GetStandingLeagueLoading extends FixtureState {}
-
-class GetStandingLeagueSuccess extends FixtureState {
-  final List<LeagueStandingResponse> league;
-
-  GetStandingLeagueSuccess({required this.league});
-}
-
-class GetStandingLeagueFail extends FixtureState {
-  final String message;
-
-  GetStandingLeagueFail(this.message);
-}

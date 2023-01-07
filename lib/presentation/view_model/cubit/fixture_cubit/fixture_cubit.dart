@@ -6,7 +6,6 @@ import '../../../../app/no_input.dart';
 import '../../../../data/network/remote/info/network_info.dart';
 import '../../../../domain/entities/entities.dart';
 import '../../../../domain/use_cases/fixture_by_id_use_case.dart';
-import '../../../../domain/use_cases/get_standing_use_case.dart';
 import '../../../../domain/use_cases/live_fixture_use_case.dart';
 import '../../../../domain/use_cases/today_matches_use_case.dart';
 import '../../../resources/colors/color_manager.dart';
@@ -20,7 +19,6 @@ class FixtureCubit extends Cubit<FixtureState> {
     this._liveFixtureUseCase,
     this._fixtureByIdUseCase,
     this._todayMatchesUseCase,
-    this._getStandingUseCase,
   ) : super(FixtureInitial());
 
   static FixtureCubit get(context) => BlocProvider.of(context);
@@ -29,7 +27,6 @@ class FixtureCubit extends Cubit<FixtureState> {
   final LiveFixtureUseCase _liveFixtureUseCase;
   final FixtureByIdUseCase _fixtureByIdUseCase;
   final TodayMatchesUseCase _todayMatchesUseCase;
-  final GetStandingUseCase _getStandingUseCase;
 
   List<FixtureLiveResponse> liveFixture = [];
   List<FixtureTodayResponse> fixtureToday = [];
@@ -191,37 +188,4 @@ class FixtureCubit extends Cubit<FixtureState> {
     return formattedDate;
   }
 
-  List<Standing> standing = [];
-
-  getStandingLeague(context, {required int leagueId, required int year}) async {
-    if (await _networkInfo.isConnected) {
-      emit(GetStandingLeagueLoading());
-      final response = await _getStandingUseCase.call(
-        GetLeagueStandingInputs(id: leagueId, year: year),
-      );
-
-      response.fold(
-        (l) => {
-          emit(GetStandingLeagueFail(l.message)),
-        },
-        (r) => {
-          emit(GetStandingLeagueSuccess(league: r)),
-          r.forEach((element) {
-            standing = [];
-            for (Standing? e in element.league.standings!.first!) {
-              standing.add(e!);
-            }
-            year = element.league.season!;
-          }),
-        },
-      );
-    } else {
-      alert(
-        context,
-        quickAlertType: QuickAlertType.error,
-        text: StringManager.noInternetError,
-        textColor: ColorManager.error,
-      );
-    }
-  }
 }

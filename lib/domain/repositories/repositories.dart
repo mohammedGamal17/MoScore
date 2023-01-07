@@ -15,6 +15,6 @@ abstract class Repositories {
 
   Future<Either<Failure, List<LeagueResponse>>> getAllLeague();
 
-  Future<Either<Failure, List<LeagueStanding>>> getStanding(
+  Future<Either<Failure, List<LeagueStandingResponse>>> getStanding(
       GetLeagueStandingInputs inputs);
 }

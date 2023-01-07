@@ -6,13 +6,13 @@ import '../repositories/repositories.dart';
 import 'base_use_case.dart';
 
 class GetStandingUseCase
-    extends BaseUseCase<List<LeagueStanding>, GetLeagueStandingInputs> {
+    extends BaseUseCase<List<LeagueStandingResponse>, GetLeagueStandingInputs> {
   final Repositories _repositories;
 
   GetStandingUseCase(this._repositories);
 
   @override
-  Future<Either<Failure, List<LeagueStanding>>> call(
+  Future<Either<Failure, List<LeagueStandingResponse>>> call(
     GetLeagueStandingInputs inputs,
   ) async {
     return await _repositories.getStanding(inputs);

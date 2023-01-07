@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shimmer/shimmer.dart';
 
 import '../../../app/dependency_injection/dependency_injection.dart';
 import '../../../domain/entities/entities.dart';
@@ -186,8 +187,8 @@ class LeagueItem extends StatelessWidget {
         MaterialPageRoute(
           builder: (context) {
             return LeagueOverView(
+              season: leagueResponse.seasons.last.year,
               leagueResponse: leagueResponse,
-              season: 2022,
             );
           },
         ),
@@ -214,6 +215,20 @@ class LeagueItem extends StatelessWidget {
                   fit: BoxFit.fill,
                   height: AppSize.s100,
                   width: AppSize.s100,
+                  placeholder: (context, url) => Shimmer(
+                    gradient: LinearGradient(
+                      colors: [
+                        ColorManager.darkPrimary,
+                        ColorManager.primary,
+                        ColorManager.lightPrimary,
+                        ColorManager.backGround,
+                      ],
+                    ),
+                    child: const SizedBox(
+                      height: AppSize.s100,
+                      width: AppSize.s100,
+                    ),
+                  ),
                 ),
                 const SizedBox(width: AppSize.s14),
                 Expanded(

@@ -29,7 +29,7 @@ class DropDownYearChanged extends LeaguesState {}
 class GetStandingLeagueLoading extends LeaguesState {}
 
 class GetStandingLeagueSuccess extends LeaguesState {
-  final List<LeagueStanding> league;
+  final List<LeagueStandingResponse> league;
 
   GetStandingLeagueSuccess({required this.league});
 }

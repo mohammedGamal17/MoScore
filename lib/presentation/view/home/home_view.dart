@@ -137,9 +137,7 @@ class DrawerComponent extends StatelessWidget {
               ListTile(
                 leading: const Icon(Icons.share),
                 title: const Text(StringManager.shareMoScore),
-                onTap: () {
-                  Navigator.pushNamed(context, Routes.matches);
-                },
+                onTap: () {},
               ),
             ],
           ),

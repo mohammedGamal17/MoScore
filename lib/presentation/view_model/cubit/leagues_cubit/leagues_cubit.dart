@@ -67,12 +67,16 @@ class LeaguesCubit extends Cubit<LeaguesState> {
     }
   }
 
-  int? year;
+  int year = 2022;
 
-  changeYear(int value) {
-    year = value;
-    emit(DropDownYearChanged());
+  LeagueResponse? leagueResponse;
+
+  LeagueResponse setLeague(LeagueResponse leagueRes) {
+    leagueResponse = leagueRes;
+    return leagueRes;
   }
+
+  List<Standing> standing = [];
 
   getStandingLeague(context, {required int leagueId, required int year}) async {
     if (await _networkInfo.isConnected) {
@@ -87,8 +91,14 @@ class LeaguesCubit extends Cubit<LeaguesState> {
         },
         (r) => {
           emit(GetStandingLeagueSuccess(league: r)),
-          print('success!!!!!!!!!!!!!!'),
-          print(r),
+
+          standing = [],
+          r.forEach((element) {
+            for (Standing? e in element.league.standings!.first!) {
+              standing.add(e!);
+            }
+            year = element.league.season!;
+          }),
         },
       );
     } else {
@@ -99,5 +109,10 @@ class LeaguesCubit extends Cubit<LeaguesState> {
         textColor: ColorManager.error,
       );
     }
+  }
+
+  changeYear(int value) {
+    year = value;
+    emit(DropDownYearChanged());
   }
 }

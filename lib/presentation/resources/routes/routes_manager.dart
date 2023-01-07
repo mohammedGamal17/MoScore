@@ -3,7 +3,6 @@ import '../../view/authentication/login_view.dart';
 import '../../view/authentication/register_view.dart';
 import '../../view/home/home_view.dart';
 import '../../view/league/leagues_view.dart';
-import '../../view/matches/matches_view.dart';
 import '../../view/on_boarding/on_boarding_view.dart';
 import '../../view/profile/profile_update.dart';
 import '../../view/profile/profile_view.dart';
@@ -17,7 +16,6 @@ class Routes {
   static const String register = '/register';
   static const String home = '/home';
   static const String leagues = '/leagues';
-  static const String matches = '/matches';
   static const String matchesDetails = '/matchesDetails';
   static const String profile = '/profile';
   static const String profileUpdate = '/profile/profileUpdate';
@@ -38,8 +36,6 @@ class RoutesGenerator {
         return MaterialPageRoute(builder: (context) => const HomeView());
       case Routes.leagues:
         return MaterialPageRoute(builder: (context) => LeaguesView());
-      case Routes.matches:
-        return MaterialPageRoute(builder: (context) => const MatchesView());
       case Routes.profile:
         return MaterialPageRoute(builder: (context) => const ProfileView());
       case Routes.profileUpdate:

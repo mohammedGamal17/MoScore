@@ -95,6 +95,7 @@ class Di {
         getIt<LiveFixtureUseCase>(),
         getIt<FixtureByIdUseCase>(),
         getIt<TodayMatchesUseCase>(),
+        getIt<GetStandingUseCase>(),
       ),
     );
 

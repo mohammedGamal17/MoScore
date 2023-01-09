@@ -1,12 +1,14 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:moscore/presentation/view/team/team_over_view.dart';
 import 'package:shimmer/shimmer.dart';
 
 import '../../../app/dependency_injection/dependency_injection.dart';
 import '../../../domain/entities/entities.dart';
 import '../../resources/colors/color_manager.dart';
 import '../../resources/components/components.dart';
+import '../../resources/string/string_manager.dart';
 import '../../resources/values/values_manager.dart';
 import '../../view_model/cubit/leagues_cubit/leagues_cubit.dart';
 import '../../view_model/cubit/leagues_cubit/leagues_state.dart';
@@ -59,19 +61,19 @@ class Body extends StatelessWidget {
           const SizedBox(height: AppSize.s10),
           Row(
             children: const [
-              Text('#'),
+              Text(StringManager.dash),
               SizedBox(width: AppSize.s14),
-              Text('Team'),
+              Text(StringManager.team),
               Spacer(),
-              Text('Pts'),
+              Text(StringManager.points),
               SizedBox(width: AppSize.s10),
-              Text('P'),
+              Text(StringManager.play),
               SizedBox(width: AppSize.s10),
-              Text('W'),
+              Text(StringManager.win),
               SizedBox(width: AppSize.s10),
-              Text('D'),
+              Text(StringManager.draw),
               SizedBox(width: AppSize.s10),
-              Text('L'),
+              Text(StringManager.lose),
               SizedBox(width: AppSize.s8),
             ],
           ),
@@ -276,49 +278,42 @@ class TeamBuilder extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        if (index == 0) ...[
-          SizedBox(
-            width: AppSize.s24,
-            child: Text(
-              team.rank.toString(),
-              style: TextStyle(color: ColorManager.green),
-            ),
-          ),
-        ] else if (index >= leaguesCubit.standingForOneGroup.length - 3) ...[
-          SizedBox(
-            width: AppSize.s24,
-            child: Text(
-              team.rank.toString(),
-              style: TextStyle(color: ColorManager.red),
-            ),
-          ),
-        ] else ...[
-          SizedBox(
-            width: AppSize.s24,
-            child: Text(team.rank.toString()),
-          ),
-        ],
+        SizedBox(
+          width: AppSize.s24,
+          child: Text(team.rank.toString()),
+        ),
         const SizedBox(width: AppSize.s10),
-        CachedNetworkImage(
-          imageUrl: team.team.logo,
-          height: AppSize.s40,
-          width: AppSize.s40,
-          placeholder: (context, url) => Shimmer(
-            gradient: LinearGradient(
-              colors: [
-                ColorManager.darkPrimary,
-                ColorManager.primary,
-                ColorManager.lightPrimary,
-                ColorManager.backGround,
-              ],
+        InkWell(
+          onTap: () {
+            print(team.team.name);
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => TeamOverView(id:team.team.id),
+              ),
+            );
+          },
+          child: CachedNetworkImage(
+            imageUrl: team.team.logo,
+            height: AppSize.s40,
+            width: AppSize.s40,
+            placeholder: (context, url) => Shimmer(
+              gradient: LinearGradient(
+                colors: [
+                  ColorManager.darkPrimary,
+                  ColorManager.primary,
+                  ColorManager.lightPrimary,
+                  ColorManager.backGround,
+                ],
+              ),
+              child: const SizedBox(
+                height: AppSize.s40,
+                width: AppSize.s40,
+              ),
             ),
-            child: const SizedBox(
-              height: AppSize.s40,
-              width: AppSize.s40,
+            errorWidget: (context, url, error) => const Icon(
+              Icons.sports_soccer_sharp,
             ),
-          ),
-          errorWidget: (context, url, error) => const Icon(
-            Icons.sports_soccer_sharp,
           ),
         ),
         const SizedBox(width: AppSize.s4),

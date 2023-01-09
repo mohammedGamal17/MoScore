@@ -361,15 +361,21 @@ class Team extends Equatable {
   final int id;
   final String name;
   final String logo;
+  final String? country;
+  final int? founded;
+  final bool? national;
 
   const Team({
     required this.id,
     required this.name,
     required this.logo,
+    required this.country,
+    required this.founded,
+    required this.national,
   });
 
   @override
-  List<Object> get props => [id, name, logo];
+  List<Object?> get props => [id, name, logo, country, founded, national];
 }
 
 class Player extends Equatable {
@@ -655,4 +661,140 @@ class GoalsForStanding extends Equatable {
 
   @override
   List<Object> get props => [goalsFor, against];
+}
+
+// Team Statistics
+
+class TeamStatistics extends Equatable {
+  const TeamStatistics({
+    required this.league,
+    required this.team,
+    required this.form,
+    required this.fixtures,
+    required this.goals,
+    required this.cleanSheet,
+    required this.penalty,
+    required this.cards,
+  });
+
+  final League league;
+  final Team team;
+  final String form;
+  final Fixtures fixtures;
+  final ResponseGoals goals;
+  final CleanSheet cleanSheet;
+  final PenaltyStatistics penalty;
+  final Cards cards;
+
+  @override
+  List<Object> get props => [
+        league,
+        team,
+        form,
+        fixtures,
+        goals,
+        cleanSheet,
+        penalty,
+        cards,
+      ];
+}
+
+
+
+/// ANY THING HAVE HOME, AWAY & TOTAL TO AVOID REDUNDANCIES
+class CleanSheet extends Equatable {
+  const CleanSheet({
+    required this.home,
+    required this.away,
+    required this.total,
+  });
+
+  final int home;
+  final int away;
+  final int total;
+
+  @override
+  List<Object> get props => [home, away, total];
+}
+/// ScoredOrMissed TO AVOID REDUNDANCIES
+class ScoredOrMissed extends Equatable {
+  const ScoredOrMissed({
+    required this.total,
+    required this.percentage,
+  });
+
+  final int total;
+  final String percentage;
+
+  @override
+  List<Object> get props => [total, percentage];
+}
+
+class Fixtures extends Equatable {
+  const Fixtures({
+    required this.played,
+    required this.wins,
+    required this.draws,
+    required this.loses,
+  });
+
+  final CleanSheet played;
+  final CleanSheet wins;
+  final CleanSheet draws;
+  final CleanSheet loses;
+
+  @override
+  List<Object> get props => [played, wins, draws, loses];
+}
+
+class ResponseGoals extends Equatable {
+  const ResponseGoals({
+    required this.goalsFor,
+    required this.against,
+  });
+
+  final GoalsStatistics goalsFor;
+  final GoalsStatistics against;
+
+  @override
+  List<Object> get props => [goalsFor, against];
+}
+
+class GoalsStatistics extends Equatable {
+  const GoalsStatistics({
+    required this.total,
+  });
+
+  final CleanSheet total;
+
+  @override
+  List<Object> get props => [total];
+}
+
+class PenaltyStatistics extends Equatable {
+  const PenaltyStatistics({
+    required this.scored,
+    required this.missed,
+    required this.total,
+  });
+
+  final ScoredOrMissed scored;
+  final ScoredOrMissed missed;
+  final int total;
+
+  @override
+  List<Object> get props => [scored, missed, total];
+}
+
+class Cards extends Equatable {
+  const Cards({
+    required this.yellow,
+    required this.red,
+  });
+
+  final Map<String, ScoredOrMissed> yellow;
+  final Map<String, ScoredOrMissed> red;
+
+  @override
+  List<Object> get props => [yellow, red];
 }

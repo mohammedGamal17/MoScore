@@ -338,6 +338,9 @@ class TeamModel extends Team {
     required super.id,
     required super.name,
     required super.logo,
+    required super.country,
+    required super.founded,
+    required super.national,
   });
 
   factory TeamModel.fromJson(Map<String, dynamic> json) {
@@ -345,6 +348,9 @@ class TeamModel extends Team {
       id: json['id'] ?? -50,
       name: json['name'],
       logo: json['logo'] ?? '',
+      country: json['country'] ?? '',
+      founded: json['founded'] ?? -20,
+      national: json['national'] ?? '',
     );
   }
 }

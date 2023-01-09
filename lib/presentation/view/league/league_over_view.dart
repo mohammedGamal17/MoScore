@@ -72,6 +72,7 @@ class Body extends StatelessWidget {
               Text('D'),
               SizedBox(width: AppSize.s10),
               Text('L'),
+              SizedBox(width: AppSize.s8),
             ],
           ),
           const SizedBox(height: AppSize.s10),
@@ -125,32 +126,32 @@ class Head extends StatelessWidget {
                     ],
                   ),
                 ),
-                // leagueResponse.seasons.isEmpty
-                //     ? const SizedBox()
-                //     : DropdownButton<int>(
-                //         items: leagueResponse.seasons.map(
-                //           (season) {
-                //             return DropdownMenuItem<int>(
-                //               value: season.year,
-                //               child: Text(
-                //                 season.year.toString(),
-                //               ),
-                //             );
-                //           },
-                //         ).toList(),
-                //         value: leaguesCubit.year,
-                //         onChanged: (int? value) {
-                //           leaguesCubit.changeYear(value!);
-                //           leaguesCubit.getStandingLeague(
-                //             context,
-                //             leagueId: leagueResponse.league.id,
-                //             year: value,
-                //           );
-                //         },
-                //         iconSize: AppSize.s26,
-                //         iconEnabledColor: ColorManager.primary,
-                //         style: Theme.of(context).textTheme.bodyMedium,
-                //       ),
+                leaguesCubit.standingForOneGroup.isEmpty
+                    ? const SizedBox()
+                    : DropdownButton<int>(
+                        items: leagueResponse.seasons.map(
+                          (season) {
+                            return DropdownMenuItem<int>(
+                              value: season.year,
+                              child: Text(
+                                season.year.toString(),
+                              ),
+                            );
+                          },
+                        ).toList(),
+                        value: leaguesCubit.year,
+                        onChanged: (int? value) {
+                          leaguesCubit.changeYear(value!);
+                          leaguesCubit.getStandingLeague(
+                            context,
+                            leagueId: leagueResponse.league.id,
+                            year: value,
+                          );
+                        },
+                        iconSize: AppSize.s26,
+                        iconEnabledColor: ColorManager.primary,
+                        style: Theme.of(context).textTheme.bodyMedium,
+                      ),
               ],
             ),
           ),
@@ -170,53 +171,91 @@ class StandingTable extends StatelessWidget {
       builder: (context, state) {
         LeaguesCubit leaguesCubit = LeaguesCubit.get(context);
 
-        return leaguesCubit.standing.isNotEmpty
+        return leaguesCubit.standingForGroups.isNotEmpty ||
+                leaguesCubit.standingForOneGroup.isNotEmpty
             ? Expanded(
-                // Check if League Or Champions League
-                child: leaguesCubit.standing.length > 1
-                    ? ListView.separated(
-                        physics: const BouncingScrollPhysics(),
-                        itemBuilder: (context, index) {
-                          List<Standing?> group = leaguesCubit.standing[index];
-                          return ListView.separated(
-                            shrinkWrap: true,
-                            itemBuilder: (context, index) {
-                              Standing? team = group[index];
-                              return TeamBuilder(
-                                leaguesCubit: leaguesCubit,
-                                index: index,
-                                team: team!,
-                              );
-                            },
-                            separatorBuilder: (context, index) {
-                              return const SizedBox(height: AppSize.s8);
-                            },
-                            itemCount: group.length,
-                          );
-                        },
-                        separatorBuilder: (context, index) {
-                          return const SizedBox(height: AppSize.s16);
-                        },
-                        itemCount: leaguesCubit.standing.length,
-                      )
-                    : ListView.separated(
-                        physics: const BouncingScrollPhysics(),
-                        itemBuilder: (context, index) {
-                          Standing? team = leaguesCubit.standing.first[index];
-                          return TeamBuilder(
-                            leaguesCubit: leaguesCubit,
-                            index: index,
-                            team: team!,
-                          );
-                        },
-                        separatorBuilder: (context, index) {
-                          return const SizedBox(height: AppSize.s10);
-                        },
-                        itemCount: leaguesCubit.standing.length,
-                      ),
+                // Check if League one Group or multi Groups
+                child: leaguesCubit.standingForGroups.length > 1
+                    ? LeagueOfGroups(leaguesCubit: leaguesCubit)
+                    : LeagueOfOneGroup(leaguesCubit: leaguesCubit),
               )
             : AdaptiveCircleIndicator();
       },
+    );
+  }
+}
+
+class LeagueOfGroups extends StatelessWidget {
+  const LeagueOfGroups({super.key, required this.leaguesCubit});
+
+  final LeaguesCubit leaguesCubit;
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView.separated(
+      physics: const BouncingScrollPhysics(),
+      itemBuilder: (context, index) {
+        List<Standing?> group = leaguesCubit.standingForGroups[index];
+        return ListView.separated(
+          shrinkWrap: true,
+          physics: const ClampingScrollPhysics(),
+          itemBuilder: (context, index) {
+            Standing? team = group[index];
+
+            return Column(
+              children: [
+                if (index == 0)
+                  Column(
+                    children: [
+                      Text(team!.group),
+                      separator(
+                          horizontalPadding: AppPadding.p100,
+                          verticalPadding: AppPadding.p6)
+                    ],
+                  ),
+                TeamBuilder(
+                  leaguesCubit: leaguesCubit,
+                  index: index,
+                  team: team!,
+                ),
+              ],
+            );
+          },
+          separatorBuilder: (context, index) {
+            return const SizedBox(height: AppSize.s8);
+          },
+          itemCount: group.length,
+        );
+      },
+      separatorBuilder: (context, index) {
+        return separator();
+      },
+      itemCount: leaguesCubit.standingForGroups.length,
+    );
+  }
+}
+
+class LeagueOfOneGroup extends StatelessWidget {
+  const LeagueOfOneGroup({super.key, required this.leaguesCubit});
+
+  final LeaguesCubit leaguesCubit;
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView.separated(
+      physics: const BouncingScrollPhysics(),
+      itemBuilder: (context, index) {
+        Standing? team = leaguesCubit.standingForOneGroup[index];
+        return TeamBuilder(
+          leaguesCubit: leaguesCubit,
+          index: index,
+          team: team!,
+        );
+      },
+      separatorBuilder: (context, index) {
+        return const SizedBox(height: AppSize.s10);
+      },
+      itemCount: leaguesCubit.standingForOneGroup.length,
     );
   }
 }
@@ -238,19 +277,28 @@ class TeamBuilder extends StatelessWidget {
     return Row(
       children: [
         if (index == 0) ...[
-          Text(
-            team.rank.toString(),
-            style: TextStyle(color: ColorManager.green),
+          SizedBox(
+            width: AppSize.s24,
+            child: Text(
+              team.rank.toString(),
+              style: TextStyle(color: ColorManager.green),
+            ),
           ),
-        ] else if (index >= leaguesCubit.standing.length - 3) ...[
-          Text(
-            team.rank.toString(),
-            style: TextStyle(color: ColorManager.red),
+        ] else if (index >= leaguesCubit.standingForOneGroup.length - 3) ...[
+          SizedBox(
+            width: AppSize.s24,
+            child: Text(
+              team.rank.toString(),
+              style: TextStyle(color: ColorManager.red),
+            ),
           ),
         ] else ...[
-          Text(team.rank.toString()),
+          SizedBox(
+            width: AppSize.s24,
+            child: Text(team.rank.toString()),
+          ),
         ],
-        const SizedBox(width: AppSize.s14),
+        const SizedBox(width: AppSize.s10),
         CachedNetworkImage(
           imageUrl: team.team.logo,
           height: AppSize.s40,
@@ -273,30 +321,50 @@ class TeamBuilder extends StatelessWidget {
             Icons.sports_soccer_sharp,
           ),
         ),
-        const SizedBox(width: AppSize.s6),
+        const SizedBox(width: AppSize.s4),
         Expanded(
           child: Text(
             team.team.name,
             overflow: TextOverflow.ellipsis,
           ),
         ),
-        Text(team.points.toString()),
-        const SizedBox(width: AppSize.s6),
-        Text(team.all.played.toString()),
-        const SizedBox(width: AppSize.s6),
-        Text(
-          team.all.win.toString(),
-          style: TextStyle(color: ColorManager.green),
+        SizedBox(
+          width: AppSize.s24,
+          child: Text(
+            team.points.toString(),
+            textAlign: TextAlign.center,
+          ),
         ),
-        const SizedBox(width: AppSize.s6),
-        Text(
-          team.all.draw.toString(),
-          style: TextStyle(color: ColorManager.grey),
+        SizedBox(
+          width: AppSize.s24,
+          child: Text(
+            team.all.played.toString(),
+            textAlign: TextAlign.center,
+          ),
         ),
-        const SizedBox(width: AppSize.s6),
-        Text(
-          team.all.lose.toString(),
-          style: TextStyle(color: ColorManager.red),
+        SizedBox(
+          width: AppSize.s24,
+          child: Text(
+            team.all.win.toString(),
+            textAlign: TextAlign.center,
+            style: TextStyle(color: ColorManager.green),
+          ),
+        ),
+        SizedBox(
+          width: AppSize.s16,
+          child: Text(
+            team.all.draw.toString(),
+            textAlign: TextAlign.center,
+            style: TextStyle(color: ColorManager.grey),
+          ),
+        ),
+        SizedBox(
+          width: AppSize.s24,
+          child: Text(
+            team.all.lose.toString(),
+            textAlign: TextAlign.center,
+            style: TextStyle(color: ColorManager.red),
+          ),
         ),
       ],
     );

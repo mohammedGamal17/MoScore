@@ -22,7 +22,7 @@ dependencies:
   lottie: ^2.1.0
   flutter_bloc: ^8.1.1
   bloc: ^8.1.0
-  introduction_screen: ^3.1.1
+  introduction_screen: 3.1.2
   font_awesome_flutter: ^10.3.0
   equatable: ^2.0.5
   universal_io: ^2.0.4
@@ -36,12 +36,12 @@ dependencies:
   google_mobile_ads: ^2.3.0
 
   # Firebase Packages
-  firebase_core: 2.4.0
-  firebase_auth: 4.2.3
-  cloud_firestore: 4.3.0
+  firebase_core: 2.4.1
+  firebase_auth: ^4.2.5
+  cloud_firestore: ^4.3.1
   google_sign_in: ^5.4.2
-  flutter_facebook_auth: ^5.0.6
-  firebase_storage: 11.0.9
+  flutter_facebook_auth: ^5.0.7
+  firebase_storage: ^11.0.10
 
 
 dev_dependencies:

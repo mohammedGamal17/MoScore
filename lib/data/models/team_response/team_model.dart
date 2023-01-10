@@ -1,15 +1,6 @@
 import '../../../domain/entities/entities.dart';
 import '../fixture_response/fixture_response_model.dart';
 
-class TeamInfoResponseModel extends TeamInfoResponse {
-  const TeamInfoResponseModel({required super.teamInfo});
-
-  factory TeamInfoResponseModel.fromJson(Map<String, dynamic> json) =>
-      TeamInfoResponseModel(
-        teamInfo: TeamInfoModel.fromJson(json[]),
-      );
-}
-
 class TeamInfoModel extends TeamInfo {
   const TeamInfoModel({
     required super.team,

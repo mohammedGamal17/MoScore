@@ -349,8 +349,8 @@ class TeamModel extends Team {
       name: json['name'],
       logo: json['logo'] ?? '',
       country: json['country'] ?? '',
-      founded: json['founded'] ?? -20,
-      national: json['national'] ?? '',
+      founded: json['founded'] ?? -1700,
+      national: json['national'],
     );
   }
 }

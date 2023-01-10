@@ -4,8 +4,10 @@ import '../../app/failure/Failure.dart';
 import '../../domain/entities/entities.dart';
 import '../../domain/repositories/repositories.dart';
 import '../../domain/use_cases/fixture_by_id_use_case.dart';
-import '../../domain/use_cases/get_standing_use_case.dart';
+import '../../domain/use_cases/standing_use_case.dart';
+import '../../domain/use_cases/team_info_use_case.dart';
 import '../models/leagues_response/league_standing_model.dart';
+import '../models/team_response/team_model.dart';
 import '../network/remote/remote_data_source/remote_data_source.dart';
 
 class RepositoriesImplementation implements Repositories {
@@ -79,6 +81,22 @@ class RepositoriesImplementation implements Repositories {
       GetLeagueStandingInputs inputs) async {
     final response = await _baseRemoteDataSource.getStanding(inputs);
 
+    try {
+      return Right(response);
+    } on RemoteErrorHandlerException catch (e) {
+      return Left(
+        RemoteErrorImplement(
+          e.remoteError.statusCode,
+          e.remoteError.statusMessage,
+        ),
+      );
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<TeamInfoModel>>> getTeamInfo(
+      GetTeamInfoInput inputs) async {
+    final response = await _baseRemoteDataSource.getTeamInfo(inputs);
     try {
       return Right(response);
     } on RemoteErrorHandlerException catch (e) {

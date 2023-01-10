@@ -1,6 +1,28 @@
 import '../../../domain/entities/entities.dart';
 import '../fixture_response/fixture_response_model.dart';
 
+class TeamInfoResponseModel extends TeamInfoResponse {
+  const TeamInfoResponseModel({required super.teamInfo});
+
+  factory TeamInfoResponseModel.fromJson(Map<String, dynamic> json) =>
+      TeamInfoResponseModel(
+        teamInfo: TeamInfoModel.fromJson(json[]),
+      );
+}
+
+class TeamInfoModel extends TeamInfo {
+  const TeamInfoModel({
+    required super.team,
+    required super.venue,
+  });
+
+  factory TeamInfoModel.fromJson(Map<String, dynamic> json) =>
+      TeamInfoModel(
+        team: TeamModel.fromJson(json['team']),
+        venue: VenueModel.fromJson(json['venue']),
+      );
+}
+
 class TeamStatisticsModel extends TeamStatistics {
   const TeamStatisticsModel({
     required super.league,

@@ -113,7 +113,6 @@ class StringManager {
   static const String middle = 'Middle';
   static const String forward = 'Forward';
 
-
   // League Screen
   static const String dash = '#';
   static const String points = 'Pts';
@@ -121,6 +120,13 @@ class StringManager {
   static const String win = 'W';
   static const String draw = 'D';
   static const String lose = 'L';
+  static const String goals = '+/-';
+
+  static const String founded = 'Founded';
+  static const String country = 'Country';
+  static const String nationalTeam = 'National Team';
+  static const String city = 'City';
+
 
   static String anonymouslyUser({required String firstThreeIndex}) =>
       'User$firstThreeIndex';

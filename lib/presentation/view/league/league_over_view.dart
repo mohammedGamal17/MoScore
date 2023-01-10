@@ -74,6 +74,8 @@ class Body extends StatelessWidget {
               Text(StringManager.draw),
               SizedBox(width: AppSize.s10),
               Text(StringManager.lose),
+              SizedBox(width: AppSize.s10),
+              Text(StringManager.goals),
               SizedBox(width: AppSize.s8),
             ],
           ),
@@ -366,6 +368,14 @@ class TeamBuilder extends StatelessWidget {
           width: AppSize.s24,
           child: Text(
             team.all.lose.toString(),
+            textAlign: TextAlign.center,
+            style: TextStyle(color: ColorManager.red),
+          ),
+        ),
+        SizedBox(
+          width: AppSize.s30,
+          child: Text(
+            team.goalsDiff.toString(),
             textAlign: TextAlign.center,
             style: TextStyle(color: ColorManager.red),
           ),

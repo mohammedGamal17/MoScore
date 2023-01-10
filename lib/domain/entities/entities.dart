@@ -663,6 +663,19 @@ class GoalsForStanding extends Equatable {
   List<Object> get props => [goalsFor, against];
 }
 
+// Team Info
+
+
+class TeamInfo extends Equatable {
+  const TeamInfo({required this.team, required this.venue});
+
+  final Team team;
+  final Venue venue;
+
+  @override
+  List<Object> get props => [team, venue];
+}
+
 // Team Statistics
 
 class TeamStatistics extends Equatable {
@@ -699,8 +712,6 @@ class TeamStatistics extends Equatable {
       ];
 }
 
-
-
 /// ANY THING HAVE HOME, AWAY & TOTAL TO AVOID REDUNDANCIES
 class CleanSheet extends Equatable {
   const CleanSheet({
@@ -716,6 +727,7 @@ class CleanSheet extends Equatable {
   @override
   List<Object> get props => [home, away, total];
 }
+
 /// ScoredOrMissed TO AVOID REDUNDANCIES
 class ScoredOrMissed extends Equatable {
   const ScoredOrMissed({

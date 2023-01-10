@@ -3,7 +3,8 @@ import 'package:dartz/dartz.dart';
 import '../../app/failure/Failure.dart';
 import '../entities/entities.dart';
 import '../use_cases/fixture_by_id_use_case.dart';
-import '../use_cases/get_standing_use_case.dart';
+import '../use_cases/standing_use_case.dart';
+import '../use_cases/team_info_use_case.dart';
 
 abstract class Repositories {
   Future<Either<Failure, List<FixtureLiveResponse>>> getLiveFixture();
@@ -17,4 +18,6 @@ abstract class Repositories {
 
   Future<Either<Failure, List<LeagueStandingResponse>>> getStanding(
       GetLeagueStandingInputs inputs);
+
+  Future<Either<Failure, List<TeamInfo>>> getTeamInfo(GetTeamInfoInput inputs);
 }

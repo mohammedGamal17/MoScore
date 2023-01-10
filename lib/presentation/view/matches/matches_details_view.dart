@@ -13,6 +13,7 @@ import '../../resources/string/string_manager.dart';
 import '../../resources/values/values_manager.dart';
 import '../../view_model/cubit/fixture_cubit/fixture_cubit.dart';
 import '../../view_model/cubit/fixture_cubit/fixture_state.dart';
+import '../team/team_over_view.dart';
 
 class MatchesDetailsView extends StatelessWidget {
   const MatchesDetailsView({super.key, required this.id});
@@ -95,35 +96,48 @@ class Body extends StatelessWidget {
                             children: [
                               // Home
                               Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    CachedNetworkImage(
-                                      imageUrl: liveMatch.teams.home.logo,
-                                      fit: BoxFit.cover,
-                                      height: AppSize.s100,
-                                    ),
-                                    const SizedBox(height: AppSize.s4),
-                                    Text(
-                                      liveMatch.teams.home.name,
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .headlineLarge,
-                                      textAlign: TextAlign.center,
-                                      maxLines: 2,
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                    const SizedBox(height: AppSize.s4),
-                                    Text(
-                                      StringManager.home,
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .labelMedium!
-                                          .copyWith(
-                                              color: ColorManager.content),
-                                    ),
-                                  ],
+                                child: InkWell(
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => TeamOverView(
+                                          id: liveMatch.teams.home.id,
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      CachedNetworkImage(
+                                        imageUrl: liveMatch.teams.home.logo,
+                                        fit: BoxFit.cover,
+                                        height: AppSize.s100,
+                                      ),
+                                      const SizedBox(height: AppSize.s4),
+                                      Text(
+                                        liveMatch.teams.home.name,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .headlineLarge,
+                                        textAlign: TextAlign.center,
+                                        maxLines: 2,
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                      const SizedBox(height: AppSize.s4),
+                                      Text(
+                                        StringManager.home,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .labelMedium!
+                                            .copyWith(
+                                                color: ColorManager.content),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
                               // Time and Score
@@ -199,35 +213,48 @@ class Body extends StatelessWidget {
                               ),
                               // Away
                               Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    CachedNetworkImage(
-                                      imageUrl: liveMatch.teams.away.logo,
-                                      fit: BoxFit.cover,
-                                      height: AppSize.s100,
-                                    ),
-                                    const SizedBox(height: AppSize.s4),
-                                    Text(
-                                      liveMatch.teams.away.name,
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .headlineLarge,
-                                      textAlign: TextAlign.center,
-                                      maxLines: 2,
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                    const SizedBox(height: AppSize.s4),
-                                    Text(
-                                      StringManager.away,
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .labelMedium!
-                                          .copyWith(
-                                              color: ColorManager.content),
-                                    ),
-                                  ],
+                                child: InkWell(
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => TeamOverView(
+                                          id: liveMatch.teams.away.id,
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      CachedNetworkImage(
+                                        imageUrl: liveMatch.teams.away.logo,
+                                        fit: BoxFit.cover,
+                                        height: AppSize.s100,
+                                      ),
+                                      const SizedBox(height: AppSize.s4),
+                                      Text(
+                                        liveMatch.teams.away.name,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .headlineLarge,
+                                        textAlign: TextAlign.center,
+                                        maxLines: 2,
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                      const SizedBox(height: AppSize.s4),
+                                      Text(
+                                        StringManager.away,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .labelMedium!
+                                            .copyWith(
+                                                color: ColorManager.content),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
                             ],
@@ -551,61 +578,65 @@ class MatchLineUp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Lineups homeTeam = fixtureCubit.lineups[0];
-    Lineups awayTeam = fixtureCubit.lineups[1];
     return fixtureCubit.lineups.isNotEmpty
-        ? Padding(
-            padding: const EdgeInsets.only(top: AppPadding.p6),
-            child: Row(
-              children: [
-                // HOME LINES-UP
-                Expanded(
-                  child: Column(
-                    children: [
-                      TeamLinesUpHeader(team: homeTeam),
-                      Expanded(
-                        child: ListView.separated(
-                          itemBuilder: (context, index) {
-                            StartXI lineup = homeTeam.startXI[index];
-                            return PlayerBuilder(
-                              teamLogo: homeTeam.team.logo,
-                              player: lineup.player,
-                            );
-                          },
-                          itemCount: fixtureCubit.lineups[0].startXI.length,
-                          separatorBuilder: (BuildContext context, int index) =>
-                              const SizedBox(height: AppSize.s6),
+        ? Builder(builder: (context) {
+            Lineups homeTeam = fixtureCubit.lineups[0];
+            Lineups awayTeam = fixtureCubit.lineups[1];
+            return Padding(
+              padding: const EdgeInsets.only(top: AppPadding.p6),
+              child: Row(
+                children: [
+                  // HOME LINES-UP
+                  Expanded(
+                    child: Column(
+                      children: [
+                        TeamLinesUpHeader(team: homeTeam),
+                        Expanded(
+                          child: ListView.separated(
+                            itemBuilder: (context, index) {
+                              StartXI lineup = homeTeam.startXI[index];
+                              return PlayerBuilder(
+                                teamLogo: homeTeam.team.logo,
+                                player: lineup.player,
+                              );
+                            },
+                            itemCount: fixtureCubit.lineups[0].startXI.length,
+                            separatorBuilder:
+                                (BuildContext context, int index) =>
+                                    const SizedBox(height: AppSize.s6),
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
-                separatorHorizontal(height: double.infinity),
-                // AWAY LINES-UP
-                Expanded(
-                  child: Column(
-                    children: [
-                      TeamLinesUpHeader(team: awayTeam),
-                      Expanded(
-                        child: ListView.separated(
-                          itemBuilder: (context, index) {
-                            StartXI lineup = awayTeam.startXI[index];
-                            return PlayerBuilder(
-                              teamLogo: awayTeam.team.logo,
-                              player: lineup.player,
-                            );
-                          },
-                          itemCount: fixtureCubit.lineups[0].startXI.length,
-                          separatorBuilder: (BuildContext context, int index) =>
-                              const SizedBox(height: AppSize.s6),
+                  separatorHorizontal(height: double.infinity),
+                  // AWAY LINES-UP
+                  Expanded(
+                    child: Column(
+                      children: [
+                        TeamLinesUpHeader(team: awayTeam),
+                        Expanded(
+                          child: ListView.separated(
+                            itemBuilder: (context, index) {
+                              StartXI lineup = awayTeam.startXI[index];
+                              return PlayerBuilder(
+                                teamLogo: awayTeam.team.logo,
+                                player: lineup.player,
+                              );
+                            },
+                            itemCount: fixtureCubit.lineups[0].startXI.length,
+                            separatorBuilder:
+                                (BuildContext context, int index) =>
+                                    const SizedBox(height: AppSize.s6),
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
-              ],
-            ),
-          )
+                ],
+              ),
+            );
+          })
         : const NoAvailableData();
   }
 }

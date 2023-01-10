@@ -285,7 +285,6 @@ class TeamBuilder extends StatelessWidget {
         const SizedBox(width: AppSize.s10),
         InkWell(
           onTap: () {
-            print(team.team.name);
             Navigator.push(
               context,
               MaterialPageRoute(
@@ -318,9 +317,19 @@ class TeamBuilder extends StatelessWidget {
         ),
         const SizedBox(width: AppSize.s4),
         Expanded(
-          child: Text(
-            team.team.name,
-            overflow: TextOverflow.ellipsis,
+          child: InkWell(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => TeamOverView(id:team.team.id),
+                ),
+              );
+            },
+            child: Text(
+              team.team.name,
+              overflow: TextOverflow.ellipsis,
+            ),
           ),
         ),
         SizedBox(

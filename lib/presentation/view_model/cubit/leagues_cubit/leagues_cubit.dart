@@ -6,7 +6,7 @@ import '../../../../app/no_input.dart';
 import '../../../../data/network/remote/info/network_info.dart';
 import '../../../../domain/entities/entities.dart';
 import '../../../../domain/use_cases/all_leagues_use_case.dart';
-import '../../../../domain/use_cases/get_standing_use_case.dart';
+import '../../../../domain/use_cases/standing_use_case.dart';
 import '../../../resources/colors/color_manager.dart';
 import '../../../resources/components/components.dart';
 import '../../../resources/string/string_manager.dart';

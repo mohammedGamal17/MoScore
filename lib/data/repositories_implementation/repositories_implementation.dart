@@ -1,4 +1,6 @@
 import 'package:dartz/dartz.dart';
+import 'package:moscore/domain/entities/player_entities.dart';
+import 'package:moscore/domain/use_cases/player_info_use_case.dart';
 
 import '../../app/failure/Failure.dart';
 import '../../domain/entities/entities.dart';
@@ -97,6 +99,23 @@ class RepositoriesImplementation implements Repositories {
   Future<Either<Failure, List<TeamInfoModel>>> getTeamInfo(
       GetTeamInfoInput inputs) async {
     final response = await _baseRemoteDataSource.getTeamInfo(inputs);
+    try {
+      return Right(response);
+    } on RemoteErrorHandlerException catch (e) {
+      return Left(
+        RemoteErrorImplement(
+          e.remoteError.statusCode,
+          e.remoteError.statusMessage,
+        ),
+      );
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<PlayerInfo>>> getPlayerInfo(
+      GetPlayerInfoInputs inputs) async {
+    final response = await _baseRemoteDataSource.getPlayerInfo(inputs);
+
     try {
       return Right(response);
     } on RemoteErrorHandlerException catch (e) {

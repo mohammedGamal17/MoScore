@@ -28,4 +28,7 @@ class APIConstants {
       '$baseUrl1/standings?season=$season&league=$leagueId';
 
   static String getTeamInfo({required int id}) => '$baseUrl1/teams?id=$id';
+
+  static String getPlayerInfo({required int id, required int season}) =>
+      '$baseUrl1/players?id=$id&season=$season';
 }

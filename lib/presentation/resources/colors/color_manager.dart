@@ -13,6 +13,7 @@ class ColorManager {
   static Color listTitle = const Color(0xFF797979);
   static Color navigationBarItemColor = const Color(0xFF858585);
   static Color content = const Color(0xFF9E9E9E);
+  static Color lightBackGround = const Color(0xFFBEBEBE);
   static Color backGround = const Color(0xFFF9F9FC);
 
   static Color error = const Color(0xFFFF0000);

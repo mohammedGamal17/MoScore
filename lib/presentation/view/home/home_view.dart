@@ -17,6 +17,7 @@ import '../../view_model/cubit/fixture_cubit/fixture_cubit.dart';
 import '../../view_model/cubit/fixture_cubit/fixture_state.dart';
 import '../../view_model/cubit/profile_cubit/profile_cubit.dart';
 import '../../view_model/cubit/profile_cubit/profile_state.dart';
+import '../player/player_view.dart';
 
 class HomeView extends StatelessWidget {
   const HomeView({super.key});
@@ -108,7 +109,16 @@ class DrawerComponent extends StatelessWidget {
                   Icons.live_tv_outlined,
                 ),
                 title: const Text(StringManager.live),
-                onTap: () {},
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) {
+                        return const PlayerView(id: 276,season: 2022,);
+                      },
+                    ),
+                  );
+                },
               ),
               ListTile(
                 leading: const Icon(Icons.sports_soccer_sharp),

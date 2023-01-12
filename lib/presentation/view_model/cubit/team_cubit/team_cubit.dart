@@ -15,16 +15,17 @@ class TeamCubit extends Cubit<TeamState> {
 
   static TeamCubit get(context) => BlocProvider.of(context);
 
-  Future getTeamInfo(context, {required int id}) async {
+  Future getTeamInfo(
+    context, {
+    required int id,
+  }) async {
     if (await _networkInfo.isConnected) {
+      emit(TeamInfoLoading());
       final response = await _teamInfoUseCase.call(GetTeamInfoInput(id: id));
 
       response.fold(
         (l) => emit(TeamInfoFail(l.message)),
-        (r) => {
-          emit(TeamInfoSuccess(r)),
-          print(r),
-        },
+        (r) => emit(TeamInfoSuccess(r)),
       );
     } else {
       alert(

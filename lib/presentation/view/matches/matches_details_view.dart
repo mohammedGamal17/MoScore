@@ -13,6 +13,7 @@ import '../../resources/string/string_manager.dart';
 import '../../resources/values/values_manager.dart';
 import '../../view_model/cubit/fixture_cubit/fixture_cubit.dart';
 import '../../view_model/cubit/fixture_cubit/fixture_state.dart';
+import '../player/player_view.dart';
 import '../team/team_over_view.dart';
 
 class MatchesDetailsView extends StatelessWidget {
@@ -301,7 +302,7 @@ class Body extends StatelessWidget {
           physics: const BouncingScrollPhysics(),
           children: <Widget>[
             MatchSummary(liveMatch: liveMatch, fixtureCubit: fixtureCubit),
-            MatchLineUp(fixtureCubit: fixtureCubit),
+            MatchLineUp(liveMatch: liveMatch, fixtureCubit: fixtureCubit),
             MatchStatistics(liveMatch: liveMatch, fixtureCubit: fixtureCubit),
           ],
         ),
@@ -515,12 +516,42 @@ class MatchSummary extends StatelessWidget {
                           Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Text(events.player.name),
-                              Text(
-                                events.assist.name ?? '',
-                                style: const TextStyle(
-                                  color: Colors.grey,
-                                  fontSize: FontsSize.s14,
+                              InkWell(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) {
+                                        return PlayerView(
+                                          id: events.player.id!,
+                                          season: liveMatch.league.season,
+                                        );
+                                      },
+                                    ),
+                                  );
+                                },
+                                child: Text(events.player.name),
+                              ),
+                              InkWell(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) {
+                                        return PlayerView(
+                                          id: events.player.id!,
+                                          season: liveMatch.league.season,
+                                        );
+                                      },
+                                    ),
+                                  );
+                                },
+                                child: Text(
+                                  events.assist.name ?? '',
+                                  style: const TextStyle(
+                                    color: Colors.grey,
+                                    fontSize: FontsSize.s14,
+                                  ),
                                 ),
                               ),
                             ],
@@ -537,12 +568,43 @@ class MatchSummary extends StatelessWidget {
                           Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Text(events.player.name),
-                              Text(
-                                events.assist.name ?? '',
-                                style: const TextStyle(
+                              InkWell(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) {
+                                        return PlayerView(
+                                          id: events.player.id!,
+                                          season: liveMatch.league.season,
+                                        );
+                                      },
+                                    ),
+                                  );
+                                },
+                                child: Text(events.player.name),
+                              ),
+                              InkWell(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) {
+                                        return PlayerView(
+                                          id: events.player.id!,
+                                          season: liveMatch.league.season,
+                                        );
+                                      },
+                                    ),
+                                  );
+                                },
+                                child: Text(
+                                  events.assist.name ?? '',
+                                  style: const TextStyle(
                                     color: Colors.grey,
-                                    fontSize: FontsSize.s14),
+                                    fontSize: FontsSize.s14,
+                                  ),
+                                ),
                               ),
                             ],
                           ),
@@ -572,9 +634,11 @@ class MatchLineUp extends StatelessWidget {
   const MatchLineUp({
     super.key,
     required this.fixtureCubit,
+    required this.liveMatch,
   });
 
   final FixtureCubit fixtureCubit;
+  final FixtureResponse liveMatch;
 
   @override
   Widget build(BuildContext context) {
@@ -598,6 +662,7 @@ class MatchLineUp extends StatelessWidget {
                               return PlayerBuilder(
                                 teamLogo: homeTeam.team.logo,
                                 player: lineup.player,
+                                season: liveMatch.league.season,
                               );
                             },
                             itemCount: fixtureCubit.lineups[0].startXI.length,
@@ -622,6 +687,7 @@ class MatchLineUp extends StatelessWidget {
                               return PlayerBuilder(
                                 teamLogo: awayTeam.team.logo,
                                 player: lineup.player,
+                                season: liveMatch.league.season,
                               );
                             },
                             itemCount: fixtureCubit.lineups[0].startXI.length,
@@ -784,10 +850,12 @@ class PlayerBuilder extends StatelessWidget {
     super.key,
     required this.teamLogo,
     required this.player,
+    required this.season,
   });
 
   final String teamLogo;
   final Player player;
+  final int season;
 
   @override
   Widget build(BuildContext context) {
@@ -817,67 +885,80 @@ class PlayerBuilder extends StatelessWidget {
         ),
         const SizedBox(width: AppSize.s6),
         Expanded(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                player.name,
-                style: Theme.of(context).textTheme.bodyMedium,
-              ),
-              Row(
-                children: [
-                  Text(
-                    player.number.toString() ?? '',
-                    style: Theme.of(context).textTheme.displaySmall!.copyWith(
-                          fontSize: FontsSize.s14,
+          child: InkWell(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) {
+                  return PlayerView(
+                    id: player.id!,
+                    season: season,
+                  );
+                }),
+              );
+            },
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  player.name,
+                  style: Theme.of(context).textTheme.bodyMedium,
+                ),
+                Row(
+                  children: [
+                    Text(
+                      player.number.toString() ?? '',
+                      style: Theme.of(context).textTheme.displaySmall!.copyWith(
+                            fontSize: FontsSize.s14,
+                          ),
+                    ),
+                    const SizedBox(width: AppSize.s6),
+                    if (player.pos == 'G') ...[
+                      Expanded(
+                        child: Text(
+                          StringManager.goalKeeper,
+                          style: Theme.of(context).textTheme.displaySmall,
+                          overflow: TextOverflow.ellipsis,
                         ),
-                  ),
-                  const SizedBox(width: AppSize.s6),
-                  if (player.pos == 'G') ...[
-                    Expanded(
-                      child: Text(
-                        StringManager.goalKeeper,
-                        style: Theme.of(context).textTheme.displaySmall,
-                        overflow: TextOverflow.ellipsis,
                       ),
-                    ),
-                  ] else if (player.pos == 'D') ...[
-                    Expanded(
-                      child: Text(
-                        StringManager.defender,
-                        style: Theme.of(context).textTheme.displaySmall,
-                        overflow: TextOverflow.ellipsis,
+                    ] else if (player.pos == 'D') ...[
+                      Expanded(
+                        child: Text(
+                          StringManager.defender,
+                          style: Theme.of(context).textTheme.displaySmall,
+                          overflow: TextOverflow.ellipsis,
+                        ),
                       ),
-                    ),
-                  ] else if (player.pos == 'M') ...[
-                    Expanded(
-                      child: Text(
-                        StringManager.middle,
-                        style: Theme.of(context).textTheme.displaySmall,
-                        overflow: TextOverflow.ellipsis,
+                    ] else if (player.pos == 'M') ...[
+                      Expanded(
+                        child: Text(
+                          StringManager.middle,
+                          style: Theme.of(context).textTheme.displaySmall,
+                          overflow: TextOverflow.ellipsis,
+                        ),
                       ),
-                    ),
-                  ] else if (player.pos == 'F') ...[
-                    Expanded(
-                      child: Text(
-                        StringManager.forward,
-                        style: Theme.of(context).textTheme.displaySmall,
-                        overflow: TextOverflow.ellipsis,
+                    ] else if (player.pos == 'F') ...[
+                      Expanded(
+                        child: Text(
+                          StringManager.forward,
+                          style: Theme.of(context).textTheme.displaySmall,
+                          overflow: TextOverflow.ellipsis,
+                        ),
                       ),
-                    ),
-                  ] else ...[
-                    Expanded(
-                      child: Text(
-                        StringManager.unKnown,
-                        style: Theme.of(context).textTheme.displaySmall,
-                        overflow: TextOverflow.ellipsis,
+                    ] else ...[
+                      Expanded(
+                        child: Text(
+                          StringManager.unKnown,
+                          style: Theme.of(context).textTheme.displaySmall,
+                          overflow: TextOverflow.ellipsis,
+                        ),
                       ),
-                    ),
-                  ]
-                ],
-              ),
-            ],
+                    ]
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ],

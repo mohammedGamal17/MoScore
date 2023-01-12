@@ -127,6 +127,47 @@ class StringManager {
   static const String nationalTeam = 'National Team';
   static const String city = 'City';
 
+  // Player View
+  static const String details = 'Details';
+  static const String fullName = 'Full Name';
+  static const String nationality = 'Nationality';
+  static const String years = 'YRS';
+  static const String age = 'Age';
+  static const String placeOfBirth = 'Place of birth';
+  static const String height = 'Height';
+  static const String weight = 'Weight';
+  static const String dateOfBirth = 'Date of birth';
+  static const String season = 'Season';
+  static const String position = 'Position';
+  static const String goal = 'Goals';
+  static const String passes = 'Passes';
+  static const String cards = 'Cards';
+  static const String other = 'Other';
+  static const String totalGoals = 'Total Goals';
+  static const String concededGoals = 'Goals Conceded';
+  static const String assists = 'Assists';
+  static const String saves = 'Saves';
+  static const String penaltyScored = 'Penalty Scored';
+  static const String penaltyMissed = 'Penalty Missed';
+  static const String penaltyWon = 'Penalty Won';
+  static const String penaltySaved = 'Penalty Saved';
+  static const String penaltyCommitted = 'Penalty Committed';
+  static const String totalPasses = 'Total Passes';
+  static const String keyPasses = 'Key Passes';
+  static const String accuracyPasses = 'Accuracy Passes';
+  static const String totalTackles = 'Total Tackles';
+  static const String blocksTackles = 'Blocks Tackles';
+  static const String interceptionsTackles = 'Interceptions Tackles';
+  static const String committedFouls = 'Committed Fouls';
+  static const String drawnFouls = 'Drawn Fouls';
+  static const String yellowCards = 'Yellow Cards';
+  static const String yellowRedCards = 'Yellow Red Cards';
+  static const String redCards = 'Red Cards';
+  static const String totalShots = 'Total Shots';
+  static const String totalOn = 'Total On';
+  static const String attemptsPast = 'Attempts Past';
+  static const String successDribbles = 'Success Dribbles';
+  static const String attemptsDribbles = 'Attempts Dribbles';
 
   static String anonymouslyUser({required String firstThreeIndex}) =>
       'User$firstThreeIndex';

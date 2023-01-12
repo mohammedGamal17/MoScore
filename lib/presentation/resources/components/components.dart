@@ -240,5 +240,6 @@ Future alert(
     borderRadius: borderRadius,
     confirmBtnColor: ColorManager.primary,
     widget: widget,
+    animType: QuickAlertAnimType.slideInUp
   );
 }

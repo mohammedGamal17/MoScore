@@ -50,7 +50,7 @@ class NoAvailableData extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: AppSize.s100,
+      height: AppSize.s230,
       width: double.infinity,
       child: Center(
         child: Column(

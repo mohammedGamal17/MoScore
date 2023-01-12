@@ -183,7 +183,6 @@ class TeamOverView extends StatelessWidget {
                                   ),
                                 ],
                               ),
-
                               Row(
                                 children: [
                                   Text(

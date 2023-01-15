@@ -45,8 +45,7 @@ class HomeView extends StatelessWidget {
       drawer: const DrawerComponent(),
       body: BlocProvider(
         create: (context) => getIt<FixtureCubit>()
-          ..getLiveFixture(context)
-          ..getTodayMatches(context),
+          ..reloadHome(context),
         child: BlocConsumer<FixtureCubit, FixtureState>(
           listener: (context, state) {},
           builder: (context, state) {

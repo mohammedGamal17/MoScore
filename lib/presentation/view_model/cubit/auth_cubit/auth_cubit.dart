@@ -91,12 +91,7 @@ class AuthCubit extends Cubit<AuthState> {
         );
       }
     } else {
-      alert(
-        context,
-        quickAlertType: QuickAlertType.error,
-        text: StringManager.noInternetError,
-        textColor: ColorManager.error,
-      );
+      noInternet(context);
       return null;
     }
   }
@@ -129,25 +124,17 @@ class AuthCubit extends Cubit<AuthState> {
         emit(UserRegisterSuccess());
       } on FirebaseAuthException catch (e) {
         emit(UserRegisterFail(e.message.toString()));
-        snack(context,
-            content: e.message.toString(), bgColor: ColorManager.red);
+        snack(
+          context,
+          content: e.message.toString(),
+          bgColor: ColorManager.red,
+        );
       } catch (e) {
         emit(UserRegisterFail(e.toString()));
         snack(context, content: e.toString(), bgColor: ColorManager.red);
-        if (kDebugMode) {
-          print(onError.toString());
-        }
       }
     } else {
-      if (kDebugMode) {
-        print(StringManager.noInternetError);
-      }
-      return alert(
-        context,
-        quickAlertType: QuickAlertType.error,
-        text: StringManager.noInternetError,
-        textColor: ColorManager.error,
-      );
+      return noInternet(context);
     }
   }
 
@@ -171,27 +158,15 @@ class AuthCubit extends Cubit<AuthState> {
         });
       } on FirebaseAuthException catch (e) {
         emit(UserLoginFail(e.message.toString()));
-        //snack(context, content: e.message.toString(), bgColor: ColorManager.error);
         alert(
           context,
           quickAlertType: QuickAlertType.error,
           text: e.message.toString(),
           textColor: ColorManager.error,
         );
-        if (kDebugMode) {
-          print(onError.toString());
-        }
       }
     } else {
-      if (kDebugMode) {
-        print(StringManager.noInternetError);
-      }
-      return alert(
-        context,
-        quickAlertType: QuickAlertType.error,
-        text: StringManager.noInternetError,
-        textColor: ColorManager.error,
-      );
+      return noInternet(context);
     }
   }
 
@@ -223,9 +198,6 @@ class AuthCubit extends Cubit<AuthState> {
         emit(SignInWithGoogleSuccess());
         return value;
       }).catchError((onError) {
-        if (kDebugMode) {
-          print(onError.toString());
-        }
         alert(
           context,
           quickAlertType: QuickAlertType.error,
@@ -234,12 +206,7 @@ class AuthCubit extends Cubit<AuthState> {
         );
       });
     } else {
-      alert(
-        context,
-        quickAlertType: QuickAlertType.error,
-        text: StringManager.noInternetError,
-        textColor: ColorManager.error,
-      );
+      noInternet(context);
       return null;
     }
   }
@@ -265,9 +232,6 @@ class AuthCubit extends Cubit<AuthState> {
         emit(SignInWithFaceBookSuccess());
         return value;
       }).catchError((onError) {
-        if (kDebugMode) {
-          print(onError.toString());
-        }
         alert(
           context,
           quickAlertType: QuickAlertType.error,
@@ -277,12 +241,7 @@ class AuthCubit extends Cubit<AuthState> {
         emit(SignInWithFaceBookFail(onError.toString()));
       });
     } else {
-      alert(
-        context,
-        quickAlertType: QuickAlertType.error,
-        text: StringManager.noInternetError,
-        textColor: ColorManager.red,
-      );
+      noInternet(context);
       emit(SignInWithFaceBookFail(StringManager.noInternetError));
       return null;
     }
@@ -304,12 +263,9 @@ class AuthCubit extends Cubit<AuthState> {
       getIt<AppPreferences>().setIsSignIn(isSign: false);
       emit(SignOutSuccess());
     }).catchError((onError) {
-      if (kDebugMode) {
-        print(onError.toString());
-      }
       alert(
         context,
-        quickAlertType: QuickAlertType.success,
+        quickAlertType: QuickAlertType.error,
         text: onError.toString(),
         textColor: ColorManager.primary,
       );

@@ -83,12 +83,7 @@ class ProfileCubit extends Cubit<ProfileState> {
         );
       });
     } else {
-      alert(
-        context,
-        quickAlertType: QuickAlertType.error,
-        text: StringManager.noInternetError,
-        textColor: ColorManager.error,
-      );
+      noInternet(context);
     }
   }
 
@@ -133,12 +128,7 @@ class ProfileCubit extends Cubit<ProfileState> {
       }
     } else {
       emit(ImageUploadFail(StringManager.noInternetError));
-      alert(
-        context,
-        quickAlertType: QuickAlertType.error,
-        text: StringManager.noInternetError,
-        textColor: ColorManager.error,
-      );
+      noInternet(context);
     }
   }
 

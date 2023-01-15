@@ -247,7 +247,7 @@ class PlayerStatistics extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         PlayerStatisticsLeague(statistics: statistics),
-                         separator(
+                        separator(
                           horizontalPadding: AppPadding.p80,
                           verticalPadding: AppPadding.p2,
                         ),
@@ -339,56 +339,32 @@ class PlayerStatisticsLeague extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        InkWell(
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) {
-                  return TeamOverView(id: statistics.team!.id!);
-                },
-              ),
-            );
-          },
-          child: CircleAvatar(
-            radius: AppSize.s30,
-            backgroundColor: Colors.transparent,
-            child: CachedNetworkImage(
-              imageUrl: statistics.league!.logo!,
-              fit: BoxFit.cover,
-              placeholder: (context, url) {
-                return Shimmer(
-                  gradient: LinearGradient(
-                    colors: [
-                      ColorManager.darkPrimary,
-                      ColorManager.primary,
-                      ColorManager.primary,
-                      ColorManager.backGround
-                    ],
-                  ),
-                  child: const CircleAvatar(radius: AppSize.s30),
-                );
-              },
-            ),
+        CircleAvatar(
+          radius: AppSize.s30,
+          backgroundColor: Colors.transparent,
+          child: CachedNetworkImage(
+            imageUrl: statistics.league!.logo!,
+            fit: BoxFit.cover,
+            placeholder: (context, url) {
+              return Shimmer(
+                gradient: LinearGradient(
+                  colors: [
+                    ColorManager.darkPrimary,
+                    ColorManager.primary,
+                    ColorManager.primary,
+                    ColorManager.backGround
+                  ],
+                ),
+                child: const CircleAvatar(radius: AppSize.s30),
+              );
+            },
           ),
         ),
         const SizedBox(width: AppSize.s6),
         Expanded(
-          child: InkWell(
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) {
-                    return TeamOverView(id: statistics.team!.id!);
-                  },
-                ),
-              );
-            },
-            child: Text(
-              statistics.league!.name!,
-              overflow: TextOverflow.ellipsis,
-            ),
+          child: Text(
+            statistics.league!.name!,
+            overflow: TextOverflow.ellipsis,
           ),
         ),
         Text(

@@ -1,10 +1,11 @@
-import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:moscore/app/constants/constants.dart';
-import 'package:moscore/presentation/resources/colors/color_manager.dart';
+import 'package:flutter/material.dart';
 import 'package:quickalert/quickalert.dart';
 
+import '../../../app/constants/constants.dart';
+import '../colors/color_manager.dart';
 import '../constants/constants.dart';
+import '../string/string_manager.dart';
 import '../values/values_manager.dart';
 
 void navigateTo(context, widget) => Navigator.push(
@@ -211,8 +212,9 @@ class AdaptiveCircleIndicator extends StatelessWidget {
   Widget build(BuildContext context) {
     if (os == 'IOS' || os == 'MacOS' || os == 'ios') {
       return Center(
-        child:
-            CupertinoActivityIndicator(color: Theme.of(context).primaryColor),
+        child: CupertinoActivityIndicator(
+          color: Theme.of(context).primaryColor,
+        ),
       );
     }
     return Center(
@@ -233,13 +235,21 @@ Future alert(
   Widget? widget,
 }) {
   return QuickAlert.show(
-    context: context,
-    type: quickAlertType,
-    textColor: textColor,
-    text: text,
-    borderRadius: borderRadius,
-    confirmBtnColor: ColorManager.primary,
-    widget: widget,
-    animType: QuickAlertAnimType.slideInUp
+      context: context,
+      type: quickAlertType,
+      textColor: textColor,
+      text: text,
+      borderRadius: borderRadius,
+      confirmBtnColor: ColorManager.primary,
+      widget: widget,
+      animType: QuickAlertAnimType.slideInUp);
+}
+
+Future noInternet(context) {
+  return alert(
+    context,
+    quickAlertType: QuickAlertType.error,
+    text: StringManager.noInternetError,
+    textColor: ColorManager.error,
   );
 }

@@ -1,15 +1,11 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:quickalert/models/quickalert_type.dart';
-
 import '../../../../app/no_input.dart';
 import '../../../../data/network/remote/info/network_info.dart';
 import '../../../../domain/entities/entities.dart';
 import '../../../../domain/use_cases/all_leagues_use_case.dart';
 import '../../../../domain/use_cases/standing_use_case.dart';
-import '../../../resources/colors/color_manager.dart';
 import '../../../resources/components/components.dart';
-import '../../../resources/string/string_manager.dart';
 import 'leagues_state.dart';
 
 class LeaguesCubit extends Cubit<LeaguesState> {
@@ -40,12 +36,7 @@ class LeaguesCubit extends Cubit<LeaguesState> {
         },
       );
     } else {
-      alert(
-        context,
-        quickAlertType: QuickAlertType.error,
-        text: StringManager.noInternetError,
-        textColor: ColorManager.error,
-      );
+      noInternet(context);
     }
   }
 
@@ -92,16 +83,14 @@ class LeaguesCubit extends Cubit<LeaguesState> {
         },
         (r) => {
           emit(GetStandingLeagueSuccess(league: r)),
-
           standingForGroups = [],
-          standingForOneGroup=[],
+          standingForOneGroup = [],
           r.forEach((element) {
-            if (element.league.standings!.length>1) {
+            if (element.league.standings!.length > 1) {
               for (List<Standing?>? e in element.league.standings!) {
                 standingForGroups.add(e!);
               }
-            }
-            else {
+            } else {
               for (Standing? e in element.league.standings!.first!) {
                 standingForOneGroup.add(e!);
               }
@@ -112,12 +101,7 @@ class LeaguesCubit extends Cubit<LeaguesState> {
         },
       );
     } else {
-      alert(
-        context,
-        quickAlertType: QuickAlertType.error,
-        text: StringManager.noInternetError,
-        textColor: ColorManager.error,
-      );
+      noInternet(context);
     }
   }
 

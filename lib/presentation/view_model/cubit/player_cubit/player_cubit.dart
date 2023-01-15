@@ -1,11 +1,8 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:quickalert/models/quickalert_type.dart';
 
 import '../../../../data/network/remote/info/network_info.dart';
 import '../../../../domain/use_cases/player_info_use_case.dart';
-import '../../../resources/colors/color_manager.dart';
 import '../../../resources/components/components.dart';
-import '../../../resources/string/string_manager.dart';
 import 'player_state.dart';
 
 class PlayerCubit extends Cubit<PlayerState> {
@@ -35,14 +32,12 @@ class PlayerCubit extends Cubit<PlayerState> {
         (r) => emit(GetPlayerInfoSuccess(r)),
       );
     } else {
-      alert(
-        context,
-        quickAlertType: QuickAlertType.error,
-        text: StringManager.error,
-        textColor: ColorManager.error,
-      );
+      noInternet(context);
     }
   }
+
+
+
 
   bool isView = false;
 

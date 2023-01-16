@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">MoScore</string>
-    <string name="facebook_app_id">452714613717114</string>
-    <string name="fb_login_protocol_scheme">8d844298363950b8b3aec2be2d17d08f</string>
-    <string name="facebook_client_token">27813345e192fbfa93d19575ff5c7cc4</string>
+    <string name="facebook_app_id">facebook_app_id</string>
+    <string name="fb_login_protocol_scheme">fb_login_protocol_scheme</string>
+    <string name="facebook_client_token">facebook_client_token</string>
 </resources>

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shimmer/shimmer.dart';
 
+import '../../../app/ads/ads_helper.dart';
 import '../../../app/dependency_injection/dependency_injection.dart';
 import '../../resources/assets/assets.dart';
 import '../../resources/colors/color_manager.dart';
@@ -67,7 +68,8 @@ class HomeView extends StatelessWidget {
                     children: [
                       LiveMatches(),
                       separator(horizontalPadding: AppPadding.p0),
-                      const TodayMatches()
+                      const BannerAdComponent(),
+                      const TodayMatches(),
                     ],
                   ),
                 ),

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shimmer/shimmer.dart';
 
+import '../../../app/ads/ads_helper.dart';
 import '../../../app/dependency_injection/dependency_injection.dart';
 import '../../../domain/entities/entities.dart';
 import '../../resources/colors/color_manager.dart';
@@ -57,11 +58,7 @@ class LeaguesView extends StatelessWidget {
                           ),
                         ),
                       ),
-                      Container(
-                        height: AppSize.s60,
-                        width: double.infinity,
-                        color: Colors.grey,
-                      ),
+                      const BannerAdComponent(),
                     ],
                   )
                 : AdaptiveCircleIndicator(),

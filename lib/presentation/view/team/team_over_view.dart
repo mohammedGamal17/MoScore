@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shimmer/shimmer.dart';
 
+import '../../../app/ads/ads_helper.dart';
 import '../../../app/dependency_injection/dependency_injection.dart';
 import '../../../domain/entities/entities.dart';
 import '../../resources/colors/color_manager.dart';
@@ -37,7 +38,7 @@ class TeamOverView extends StatelessWidget {
                           return [
                             SliverAppBar(
                               pinned: true,
-                              floating: true,
+                              floating: false,
                               snap: false,
                               scrolledUnderElevation: AppSize.s20,
                               expandedHeight: AppSize.s200,
@@ -202,6 +203,8 @@ class TeamOverView extends StatelessWidget {
                                   ),
                                 ],
                               ),
+                              Spacer(),
+                              const BannerAdComponent(),
                             ],
                           ),
                         ),

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shimmer/shimmer.dart';
 
+import '../../../app/ads/ads_helper.dart';
 import '../../../app/dependency_injection/dependency_injection.dart';
 import '../../../domain/entities/entities.dart';
 import '../../resources/colors/color_manager.dart';
@@ -296,7 +297,6 @@ class Body extends StatelessWidget {
         padding: const EdgeInsets.only(
           right: AppPadding.p20,
           left: AppPadding.p20,
-          bottom: AppPadding.p70,
         ),
         child: TabBarView(
           physics: const BouncingScrollPhysics(),
@@ -495,137 +495,144 @@ class MatchSummary extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return fixtureCubit.event.isNotEmpty && fixtureCubit.homeEvents.isNotEmpty
-        ? ListView.separated(
-            shrinkWrap: true,
-            itemBuilder: (context, index) {
-              Events events = liveMatch.events[index];
-              return fixtureCubit.homeEvents[0].team.id ==
-                      events.team.id // Check Home Or Away
-                  ? Padding(
-                      padding: const EdgeInsets.all(6),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        mainAxisSize: MainAxisSize.max,
-                        children: [
-                          Text(events.detail),
-                          const SizedBox(width: AppSize.s4),
-                          Text('${events.time.elapsed.toString()}\''),
-                          const SizedBox(width: AppSize.s6),
-                          separatorHorizontal(width: AppSize.s2),
-                          const SizedBox(width: AppSize.s6),
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              InkWell(
-                                onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) {
-                                        return PlayerView(
-                                          id: events.player.id!,
-                                          season: liveMatch.league.season,
+        ? Column(
+          children: [
+            Expanded(
+              child: ListView.separated(
+                  shrinkWrap: true,
+                  itemBuilder: (context, index) {
+                    Events events = liveMatch.events[index];
+                    return fixtureCubit.homeEvents[0].team.id ==
+                            events.team.id // Check Home Or Away
+                        ? Padding(
+                            padding: const EdgeInsets.all(6),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              mainAxisSize: MainAxisSize.max,
+                              children: [
+                                Text(events.detail),
+                                const SizedBox(width: AppSize.s4),
+                                Text('${events.time.elapsed.toString()}\''),
+                                const SizedBox(width: AppSize.s6),
+                                separatorHorizontal(width: AppSize.s2),
+                                const SizedBox(width: AppSize.s6),
+                                Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    InkWell(
+                                      onTap: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) {
+                                              return PlayerView(
+                                                id: events.player.id!,
+                                                season: liveMatch.league.season,
+                                              );
+                                            },
+                                          ),
                                         );
                                       },
+                                      child: Text(events.player.name),
                                     ),
-                                  );
-                                },
-                                child: Text(events.player.name),
-                              ),
-                              InkWell(
-                                onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) {
-                                        return PlayerView(
-                                          id: events.player.id!,
-                                          season: liveMatch.league.season,
+                                    InkWell(
+                                      onTap: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) {
+                                              return PlayerView(
+                                                id: events.player.id!,
+                                                season: liveMatch.league.season,
+                                              );
+                                            },
+                                          ),
                                         );
                                       },
+                                      child: Text(
+                                        events.assist.name ?? '',
+                                        style: const TextStyle(
+                                          color: Colors.grey,
+                                          fontSize: FontsSize.s14,
+                                        ),
+                                      ),
                                     ),
-                                  );
-                                },
-                                child: Text(
-                                  events.assist.name ?? '',
-                                  style: const TextStyle(
-                                    color: Colors.grey,
-                                    fontSize: FontsSize.s14,
-                                  ),
+                                  ],
                                 ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    )
-                  : Padding(
-                      padding: const EdgeInsets.all(6),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        mainAxisSize: MainAxisSize.max,
-                        children: [
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              InkWell(
-                                onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) {
-                                        return PlayerView(
-                                          id: events.player.id!,
-                                          season: liveMatch.league.season,
+                              ],
+                            ),
+                          )
+                        : Padding(
+                            padding: const EdgeInsets.all(6),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              mainAxisSize: MainAxisSize.max,
+                              children: [
+                                Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    InkWell(
+                                      onTap: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) {
+                                              return PlayerView(
+                                                id: events.player.id!,
+                                                season: liveMatch.league.season,
+                                              );
+                                            },
+                                          ),
                                         );
                                       },
+                                      child: Text(events.player.name),
                                     ),
-                                  );
-                                },
-                                child: Text(events.player.name),
-                              ),
-                              InkWell(
-                                onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) {
-                                        return PlayerView(
-                                          id: events.player.id!,
-                                          season: liveMatch.league.season,
+                                    InkWell(
+                                      onTap: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) {
+                                              return PlayerView(
+                                                id: events.player.id!,
+                                                season: liveMatch.league.season,
+                                              );
+                                            },
+                                          ),
                                         );
                                       },
+                                      child: Text(
+                                        events.assist.name ?? '',
+                                        style: const TextStyle(
+                                          color: Colors.grey,
+                                          fontSize: FontsSize.s14,
+                                        ),
+                                      ),
                                     ),
-                                  );
-                                },
-                                child: Text(
-                                  events.assist.name ?? '',
-                                  style: const TextStyle(
-                                    color: Colors.grey,
-                                    fontSize: FontsSize.s14,
-                                  ),
+                                  ],
                                 ),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(width: AppSize.s6),
-                          separatorHorizontal(width: AppSize.s2),
-                          const SizedBox(width: AppSize.s6),
-                          Text('${events.time.elapsed.toString()}\''),
-                          const SizedBox(width: AppSize.s4),
-                          Text(events.detail),
-                        ],
-                      ),
+                                const SizedBox(width: AppSize.s6),
+                                separatorHorizontal(width: AppSize.s2),
+                                const SizedBox(width: AppSize.s6),
+                                Text('${events.time.elapsed.toString()}\''),
+                                const SizedBox(width: AppSize.s4),
+                                Text(events.detail),
+                              ],
+                            ),
+                          );
+                  },
+                  itemCount: liveMatch.events.length,
+                  separatorBuilder: (BuildContext context, int index) {
+                    return separator(
+                      verticalPadding: AppPadding.p6,
+                      horizontalPadding: AppPadding.p60,
                     );
-            },
-            itemCount: liveMatch.events.length,
-            separatorBuilder: (BuildContext context, int index) {
-              return separator(
-                verticalPadding: AppPadding.p6,
-                horizontalPadding: AppPadding.p60,
-              );
-            },
-          )
+                  },
+                ),
+            ),
+            const BannerAdComponent(),
+          ],
+        )
         : const NoAvailableData();
   }
 }
@@ -643,66 +650,75 @@ class MatchLineUp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return fixtureCubit.lineups.isNotEmpty
-        ? Builder(builder: (context) {
-            Lineups homeTeam = fixtureCubit.lineups[0];
-            Lineups awayTeam = fixtureCubit.lineups[1];
-            return Padding(
-              padding: const EdgeInsets.only(top: AppPadding.p6),
-              child: Row(
-                children: [
-                  // HOME LINES-UP
-                  Expanded(
-                    child: Column(
-                      children: [
-                        TeamLinesUpHeader(team: homeTeam),
-                        Expanded(
-                          child: ListView.separated(
-                            itemBuilder: (context, index) {
-                              StartXI lineup = homeTeam.startXI[index];
-                              return PlayerBuilder(
-                                teamLogo: homeTeam.team.logo,
-                                player: lineup.player,
-                                season: liveMatch.league.season,
-                              );
-                            },
-                            itemCount: fixtureCubit.lineups[0].startXI.length,
-                            separatorBuilder:
-                                (BuildContext context, int index) =>
-                                    const SizedBox(height: AppSize.s6),
+        ? Builder(
+            builder: (context) {
+              Lineups homeTeam = fixtureCubit.lineups[0];
+              Lineups awayTeam = fixtureCubit.lineups[1];
+              return Padding(
+                padding: const EdgeInsets.only(top: AppPadding.p6),
+                child: Column(
+                  children: [
+                    Expanded(
+                      child: Row(
+                        children: [
+                          // HOME LINES-UP
+                          Expanded(
+                            child: Column(
+                              children: [
+                                TeamLinesUpHeader(team: homeTeam),
+                                Expanded(
+                                  child: ListView.separated(
+                                    itemBuilder: (context, index) {
+                                      StartXI lineup = homeTeam.startXI[index];
+                                      return PlayerBuilder(
+                                        teamLogo: homeTeam.team.logo,
+                                        player: lineup.player,
+                                        season: liveMatch.league.season,
+                                      );
+                                    },
+                                    itemCount: fixtureCubit.lineups[0].startXI.length,
+                                    separatorBuilder:
+                                        (BuildContext context, int index) =>
+                                            const SizedBox(height: AppSize.s6),
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  separatorHorizontal(height: double.infinity),
-                  // AWAY LINES-UP
-                  Expanded(
-                    child: Column(
-                      children: [
-                        TeamLinesUpHeader(team: awayTeam),
-                        Expanded(
-                          child: ListView.separated(
-                            itemBuilder: (context, index) {
-                              StartXI lineup = awayTeam.startXI[index];
-                              return PlayerBuilder(
-                                teamLogo: awayTeam.team.logo,
-                                player: lineup.player,
-                                season: liveMatch.league.season,
-                              );
-                            },
-                            itemCount: fixtureCubit.lineups[0].startXI.length,
-                            separatorBuilder:
-                                (BuildContext context, int index) =>
-                                    const SizedBox(height: AppSize.s6),
+                          separatorHorizontal(height: double.infinity),
+                          // AWAY LINES-UP
+                          Expanded(
+                            child: Column(
+                              children: [
+                                TeamLinesUpHeader(team: awayTeam),
+                                Expanded(
+                                  child: ListView.separated(
+                                    itemBuilder: (context, index) {
+                                      StartXI lineup = awayTeam.startXI[index];
+                                      return PlayerBuilder(
+                                        teamLogo: awayTeam.team.logo,
+                                        player: lineup.player,
+                                        season: liveMatch.league.season,
+                                      );
+                                    },
+                                    itemCount: fixtureCubit.lineups[0].startXI.length,
+                                    separatorBuilder:
+                                        (BuildContext context, int index) =>
+                                            const SizedBox(height: AppSize.s6),
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
-                  ),
-                ],
-              ),
-            );
-          })
+                    const BannerAdComponent(),
+                  ],
+                ),
+              );
+            },
+          )
         : const NoAvailableData();
   }
 }
@@ -720,47 +736,54 @@ class MatchStatistics extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return liveMatch.statistics.isNotEmpty
-        ? ListView.builder(
-            itemBuilder: (context, index) {
-              Statisticss statistics = fixtureCubit.homeStatistics[index];
-              Statisticss statisticss = fixtureCubit.awayStatistics[index];
+        ? Column(
+          children: [
+            Expanded(
+              child: ListView.builder(
+                  itemBuilder: (context, index) {
+                    Statisticss statistics = fixtureCubit.homeStatistics[index];
+                    Statisticss statisticss = fixtureCubit.awayStatistics[index];
 
-              double maxValue =
-                  statistics.value.toDouble() + statisticss.value.toDouble();
-              return Column(
-                children: [
-                  Text(statistics.type),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(statistics.value.toString()),
-                      Text(statisticss.value.toString()),
-                    ],
-                  ),
-                  SliderTheme(
-                    data: SliderTheme.of(context).copyWith(
-                      trackHeight: AppSize.s30,
-                      thumbColor: Colors.transparent,
-                      thumbShape: const RoundSliderThumbShape(
-                        enabledThumbRadius: 0.0,
-                      ),
-                    ),
-                    child: Slider(
-                      value: statistics.value.toDouble(),
-                      onChanged: (double value) {},
-                      min: 0,
-                      max: maxValue,
-                      activeColor: ColorManager.selectedItem,
-                      inactiveColor: ColorManager.primary,
-                      thumbColor: Colors.transparent,
-                    ),
-                  ),
-                  separator(),
-                ],
-              );
-            },
-            itemCount: 9,
-          )
+                    double maxValue =
+                        statistics.value.toDouble() + statisticss.value.toDouble();
+                    return Column(
+                      children: [
+                        Text(statistics.type),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(statistics.value.toString()),
+                            Text(statisticss.value.toString()),
+                          ],
+                        ),
+                        SliderTheme(
+                          data: SliderTheme.of(context).copyWith(
+                            trackHeight: AppSize.s30,
+                            thumbColor: Colors.transparent,
+                            thumbShape: const RoundSliderThumbShape(
+                              enabledThumbRadius: 0.0,
+                            ),
+                          ),
+                          child: Slider(
+                            value: statistics.value.toDouble(),
+                            onChanged: (double value) {},
+                            min: 0,
+                            max: maxValue,
+                            activeColor: ColorManager.selectedItem,
+                            inactiveColor: ColorManager.primary,
+                            thumbColor: Colors.transparent,
+                          ),
+                        ),
+                        separator(),
+                      ],
+                    );
+                  },
+                  itemCount: 9,
+                ),
+            ),
+            const BannerAdComponent(),
+          ],
+        )
         : const NoAvailableData();
   }
 }

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shimmer/shimmer.dart';
 
+import '../../../app/ads/ads_helper.dart';
 import '../../../domain/entities/entities.dart';
 import '../../view/matches/matches_details_view.dart';
 import '../../view_model/cubit/fixture_cubit/fixture_cubit.dart';
@@ -66,6 +67,7 @@ class TodayMatches extends StatelessWidget {
                     itemCount: fixtureCubit.fixtureToday.length,
                   )
                 : AdaptiveCircleIndicator(),
+            const BannerAdComponent(),
           ],
         );
       },

@@ -3,6 +3,7 @@ import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:moscore/app/ads/ads_helper.dart';
 import 'package:shimmer/shimmer.dart';
 
 import '../../../app/dependency_injection/dependency_injection.dart';
@@ -163,41 +164,48 @@ class PlayerDetails extends StatelessWidget {
   Widget build(BuildContext context) {
     DateTime date = player.player.birth!.date!;
     String dateOfBirth = DateFormat('yyyy-MM-dd').format(date);
-    return GridView(
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 3,
-        mainAxisSpacing: AppSize.s10,
-      ),
+    return Column(
       children: [
-        PlayerInfoBuilder(
-          stringKey: StringManager.fullName,
-          value: '${player.player.firstname} ${player.player.lastname}',
+        Expanded(
+          child: GridView(
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 3,
+              mainAxisSpacing: AppSize.s10,
+            ),
+            children: [
+              PlayerInfoBuilder(
+                stringKey: StringManager.fullName,
+                value: '${player.player.firstname} ${player.player.lastname}',
+              ),
+              PlayerInfoBuilder(
+                stringKey: StringManager.dateOfBirth,
+                value: '$dateOfBirth\n${player.player.age} ${StringManager.years}',
+              ),
+              PlayerInfoBuilder(
+                stringKey: StringManager.placeOfBirth,
+                value:
+                    '${player.player.birth!.place}, ${player.player.birth!.country}',
+              ),
+              PlayerInfoBuilder(
+                stringKey: StringManager.nationality,
+                value: player.player.nationality!,
+              ),
+              PlayerInfoBuilder(
+                stringKey: StringManager.height,
+                value: player.player.height!,
+              ),
+              PlayerInfoBuilder(
+                stringKey: StringManager.weight,
+                value: player.player.weight!,
+              ),
+              PlayerInfoBuilder(
+                stringKey: StringManager.position,
+                value: player.statistics![0]!.games!.position!,
+              ),
+            ],
+          ),
         ),
-        PlayerInfoBuilder(
-          stringKey: StringManager.dateOfBirth,
-          value: '$dateOfBirth\n${player.player.age} ${StringManager.years}',
-        ),
-        PlayerInfoBuilder(
-          stringKey: StringManager.placeOfBirth,
-          value:
-              '${player.player.birth!.place}, ${player.player.birth!.country}',
-        ),
-        PlayerInfoBuilder(
-          stringKey: StringManager.nationality,
-          value: player.player.nationality!,
-        ),
-        PlayerInfoBuilder(
-          stringKey: StringManager.height,
-          value: player.player.height!,
-        ),
-        PlayerInfoBuilder(
-          stringKey: StringManager.weight,
-          value: player.player.weight!,
-        ),
-        PlayerInfoBuilder(
-          stringKey: StringManager.position,
-          value: player.statistics![0]!.games!.position!,
-        ),
+        const BannerAdComponent(),
       ],
     );
   }
@@ -270,6 +278,7 @@ class PlayerStatistics extends StatelessWidget {
                 itemCount: player.statistics!.length,
               ),
             ),
+            const BannerAdComponent(),
           ],
         ),
       ),

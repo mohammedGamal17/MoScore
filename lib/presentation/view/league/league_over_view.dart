@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:moscore/presentation/view/team/team_over_view.dart';
 import 'package:shimmer/shimmer.dart';
 
+import '../../../app/ads/ads_helper.dart';
 import '../../../app/dependency_injection/dependency_injection.dart';
 import '../../../domain/entities/entities.dart';
 import '../../resources/colors/color_manager.dart';
@@ -81,6 +82,7 @@ class Body extends StatelessWidget {
           ),
           const SizedBox(height: AppSize.s10),
           const StandingTable(),
+          const BannerAdComponent(),
         ],
       ),
     );

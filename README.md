@@ -2,7 +2,7 @@
 # MoScore
 
 
-MoScore is a flutter mobile application for the football.
+MoScore is a flutter mobile application for football.
 
 ## Brief
 

@@ -1,16 +1,32 @@
-# moscore
+# MoScore
 
-MoScore is football live application
+MoScore is a flutter mobile application for the football.
 
-## Getting Started
+## Brief
 
-This project is a starting point for a Flutter application.
+You can Find Live Matched from all over the world
+- Live Matches
+	- Events
+	- Lines-Up
+	- Statistics
 
-A few resources to get you started if this is your first Flutter project:
+- Today matches
+- All Leagues
+	- standing Table from 2010 - Now
+- Team
+	- info
+- Player
+	- info
+	- Season Statistics
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+You can Find API from here https://www.api-football.com/
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Fetures
+- FaceBook, Google, Email and Anonymous Authentication
+- Google Ads
+- Profile
+
+- Cubit as StateManagment 
+- MVVM as Archeture pattern
+- Dependance Injection
+- Postman as Restful Api handler

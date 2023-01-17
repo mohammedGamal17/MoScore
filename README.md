@@ -28,10 +28,13 @@ You can Find API from here https://www.api-football.com/
 - Google Ads
 - Profile
 
+## Tools
 - Cubit as StateManagment 
 - MVVM as Archeture pattern
 - Dependance Injection
 - Postman as Restful Api handler
+- Dio
+- Shared Preferences
 
 ### Screen Shot
 
